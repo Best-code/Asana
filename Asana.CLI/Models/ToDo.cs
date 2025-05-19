@@ -2,7 +2,7 @@ using System;
 
 namespace MyApp.Models
 {
-    public class ToDos
+    public class ToDo
     {
         private int? id;
         public int? Id
@@ -11,7 +11,7 @@ namespace MyApp.Models
             set
             {
                 if (value != id)
-                    value = id;
+                    id = value;
             }
         }
 
@@ -22,7 +22,7 @@ namespace MyApp.Models
             set
             {
                 if (value != name)
-                    value = name;
+                    name = value;
             }
         }
 
@@ -33,7 +33,7 @@ namespace MyApp.Models
             set
             {
                 if (value != description)
-                    value = description;
+                    description = value;
             }
         }
 
@@ -44,7 +44,7 @@ namespace MyApp.Models
             set
             {
                 if (value != priority)
-                    value = priority;
+                    priority = value;
             }
         }
 
@@ -55,10 +55,10 @@ namespace MyApp.Models
             set
             {
                 if (value != isComplete)
-                    value = isComplete;
+                    isComplete = value;
             }
         }
-        
+
         private int? projectId;
         public int? ProjectId
         {
@@ -66,8 +66,14 @@ namespace MyApp.Models
             set
             {
                 if (value != projectId)
-                    value = projectId;
+                    projectId = value;
             }
+        }
+
+        
+        public override string ToString()
+        {
+            return $"{name} - {description}";
         }
     }
 }
