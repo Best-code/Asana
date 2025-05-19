@@ -6,7 +6,7 @@ namespace MyApp.Models
     public class Project
     {
 
-        public void Use()
+        public void Run()
         {
             int selection = -1;
             while (selection != 0)
@@ -17,7 +17,7 @@ namespace MyApp.Models
             }
         }
 
-        public static string[] projectOptions = {
+        private static string[] projectOptions = {
             "Create ToDo",
             "Delete ToDo",
             "Update ToDo",
@@ -44,7 +44,7 @@ namespace MyApp.Models
             return choiceInt;
         }
 
-        public int HandleMainMenuSelection(int selection)
+        private int HandleMainMenuSelection(int selection)
         {
             selection = HandleInput("0");
             Console.WriteLine();
@@ -72,7 +72,7 @@ namespace MyApp.Models
 
             return selection;
         }
-        public void CreateTodo()
+        private void CreateTodo()
         {
             ToDo createTask = new ToDo();
             Console.Write($"Name: ");
@@ -85,7 +85,7 @@ namespace MyApp.Models
             Console.WriteLine($"Todo '{createTask.Name}' created\n");
         }
 
-        public void DeleteTodo()
+        private void DeleteTodo()
         {
             if (ToDos.Count == 0)
             {
@@ -98,7 +98,7 @@ namespace MyApp.Models
             ToDos.RemoveAt(toDoIndex);
         }
 
-        public void UpdateTodo()
+        private void UpdateTodo()
         {
             if (ToDos.Count == 0)
             {
@@ -146,7 +146,7 @@ namespace MyApp.Models
             }
         }
 
-        public void ListTodos()
+        private void ListTodos()
         {
             if (ToDos.Count() == 0)
             {
@@ -156,9 +156,11 @@ namespace MyApp.Models
             int toDoIndex = 0;
             foreach (ToDo toDo in ToDos)
                 Console.WriteLine($"{toDoIndex++ + 1}. {toDo}");
+
+            Console.WriteLine();
         }
 
-        public int SelectTodo(string prompt, string defaultRead = "0")
+        private int SelectTodo(string prompt, string defaultRead = "0")
         {
             string readIndex = "";
             int toDoIndex;
