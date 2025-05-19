@@ -1,5 +1,5 @@
 ﻿using System;
-using MyApp.Models
+using MyApp.Models;
 
 namespace MyApp
 {
