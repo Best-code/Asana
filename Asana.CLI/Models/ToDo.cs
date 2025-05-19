@@ -48,8 +48,8 @@ namespace MyApp.Models
             }
         }
 
-        private bool? isComplete;
-        public bool? IsComplete
+        private bool isComplete = false;
+        public bool IsComplete
         {
             get { return isComplete; }
             set
@@ -73,7 +73,7 @@ namespace MyApp.Models
         
         public override string ToString()
         {
-            return $"{name} - {description}";
+            return $"{name} - {isComplete} - {description}";
         }
     }
 }
