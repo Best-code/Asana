@@ -1,15 +1,19 @@
 using System;
 using System.Runtime.CompilerServices;
 using Asana.CLI.Interfaces;
+using Asana.CLI.Models;
 
 namespace MyApp.Models
 {
     public class Project
     {
         IUserInterface ui;
-        public Project(IUserInterface ui)
+        private readonly IIdGenerator toDoIdGenerator = new SequentialIdGenerator();
+        public Project(string name, IIdGenerator projectIdGenerator, IUserInterface ui)
         {
+            this.name = name;
             this.ui = ui;
+            this.id = projectIdGenerator.GetNextId();
         }
 
         public void Run()
@@ -80,7 +84,7 @@ namespace MyApp.Models
         }
         private void CreateTodo()
         {
-            ToDo createTask = new ToDo();
+            ToDo createTask = new ToDo(toDoIdGenerator);
             ui.Write($"Name: ");
             createTask.Name = ui.ReadLine();
             ui.Write($"Description: ");
@@ -198,8 +202,8 @@ namespace MyApp.Models
             }
         }
 
-        private string? name;
-        public string? Name
+        private string name;
+        public string Name
         {
             get { return name; }
             set

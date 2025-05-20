@@ -1,9 +1,14 @@
 using System;
+using Asana.CLI.Interfaces;
 
 namespace MyApp.Models
 {
     public class ToDo
     {
+        public ToDo(IIdGenerator toDoIdGenerator)
+        {
+            this.id = toDoIdGenerator.GetNextId();
+        }
         private int? id;
         public int? Id
         {
