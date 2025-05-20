@@ -1,4 +1,6 @@
 ﻿using System;
+using Asana.CLI.Interfaces;
+using Asana.CLI.IO;
 using MyApp.Models;
 
 namespace MyApp
@@ -7,7 +9,8 @@ namespace MyApp
     {
         static void Main(string[] args)
         {
-            AsanaUnit unit = new AsanaUnit();
+            IUserInterface ui = new ConsoleUserInterface();
+            AsanaUnit unit = new AsanaUnit(ui);
             unit.Run();
         }
     }

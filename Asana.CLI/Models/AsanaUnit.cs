@@ -1,10 +1,16 @@
 using System;
 using System.Runtime.CompilerServices;
+using Asana.CLI.Interfaces;
 
 namespace MyApp.Models
 {
     public class AsanaUnit
     {
+        private readonly IUserInterface ui;
+        public AsanaUnit(IUserInterface ui)
+        {
+            this.ui = ui;
+        }
 
         static private string[] UnitOptions = {
             "Create Project",
@@ -30,15 +36,15 @@ namespace MyApp.Models
             int optionIndex = 0;
             foreach (string option in UnitOptions)
             {
-                Console.WriteLine($"{optionIndex++ + 1}. {option}");
+                ui.WriteLine($"{optionIndex++ + 1}. {option}");
             }
-            Console.WriteLine("0. Exit\n");
+            ui.WriteLine("0. Exit\n");
         }
 
         private int HandleUnitOptionSelection(int selection)
         {
-            selection = Project.HandleInput("0");
-            Console.WriteLine();
+            selection = Project.HandleInput("0", ui);
+            ui.WriteLine();
             switch (selection)
             {
                 case 1:
@@ -60,7 +66,7 @@ namespace MyApp.Models
                     // Exit case
                     break;
                 default:
-                    Console.WriteLine($"You did not enter a valid selection\n");
+                    ui.WriteLine($"You did not enter a valid selection\n");
                     break;
             }
 
@@ -69,15 +75,15 @@ namespace MyApp.Models
 
         private void CreateProject()
         {
-            Project createProject = new Project();
-            Console.Write($"Name: ");
-            createProject.Name = Console.ReadLine();
-            Console.Write($"Description: ");
-            createProject.Description = Console.ReadLine();
+            Project createProject = new Project(ui);
+            ui.Write($"Name: ");
+            createProject.Name = ui.ReadLine();
+            ui.Write($"Description: ");
+            createProject.Description = ui.ReadLine();
 
             projects.Add(createProject);
 
-            Console.WriteLine($"Project '{createProject.Name}' created\n");
+            ui.WriteLine($"Project '{createProject.Name}' created\n");
 
         }
 
@@ -85,7 +91,7 @@ namespace MyApp.Models
         {
             if (projects.Count == 0)
             {
-                Console.WriteLine($"This Unit has no Projects\n");
+                ui.WriteLine($"This Unit has no Projects\n");
                 return;
             }
             int toDoIndex = SelectProject("Which Project would you like to Delete?\n");
@@ -98,7 +104,7 @@ namespace MyApp.Models
         {
             if (Projects.Count == 0)
             {
-                Console.WriteLine($"This Unit has no Projects\n");
+                ui.WriteLine($"This Unit has no Projects\n");
                 return;
             }
             int projectIndex = SelectProject("Which Project would you like to Update?\n");
@@ -108,26 +114,26 @@ namespace MyApp.Models
             int selection = -1;
             while (selection != 0)
             {
-                Console.WriteLine($"Project {projects[projectIndex].Name}");
-                Console.WriteLine($"1. Change name");
-                Console.WriteLine($"2. Change description");
-                Console.WriteLine($"3. Update ToDos");
-                Console.WriteLine($"0. Exit Project {projects[projectIndex].Name}\n");
+                ui.WriteLine($"Project {projects[projectIndex].Name}");
+                ui.WriteLine($"1. Change name");
+                ui.WriteLine($"2. Change description");
+                ui.WriteLine($"3. Update ToDos");
+                ui.WriteLine($"0. Exit Project {projects[projectIndex].Name}\n");
 
-                selection = Project.HandleInput("0");
+                selection = Project.HandleInput("0", ui);
 
-                Console.WriteLine();
+                ui.WriteLine();
                 switch (selection)
                 {
                     case 1:
-                        Console.Write($"Name: ");
-                        Projects[projectIndex].Name = Console.ReadLine();
-                        Console.WriteLine($"Name Updated to {projects[projectIndex].Name}\n");
+                        ui.Write($"Name: ");
+                        Projects[projectIndex].Name = ui.ReadLine();
+                        ui.WriteLine($"Name Updated to {projects[projectIndex].Name}\n");
                         break;
                     case 2:
-                        Console.Write($"Description: ");
-                        projects[projectIndex].Description = Console.ReadLine();
-                        Console.WriteLine($"{projects[projectIndex].Name} Description Updated\n");
+                        ui.Write($"Description: ");
+                        projects[projectIndex].Description = ui.ReadLine();
+                        ui.WriteLine($"{projects[projectIndex].Name} Description Updated\n");
                         break;
                     case 3:
                         projects[projectIndex].Run();
@@ -135,7 +141,7 @@ namespace MyApp.Models
                     case 0:
                         break;
                     default:
-                        Console.WriteLine($"You did not enter a valid selection\n");
+                        ui.WriteLine($"You did not enter a valid selection\n");
                         break;
                 }
             }
@@ -143,14 +149,14 @@ namespace MyApp.Models
 
         private void ListProjects()
         {
-            Console.WriteLine($"Projects");
+            ui.WriteLine($"Projects");
 
             if (Projects.Count == 0)
             {
-                Console.WriteLine($"This Unit has no Projects\n");
+                ui.WriteLine($"This Unit has no Projects\n");
                 return;
             }
-            Console.WriteLine(this);
+            ui.WriteLine(this.ToString());
         }
 
         private void ListAllTodos()
@@ -158,20 +164,20 @@ namespace MyApp.Models
             int toDoCount = 0;
             if (Projects.Count == 0)
             {
-                Console.WriteLine($"This Unit has no ToDos\n");
+                ui.WriteLine($"This Unit has no ToDos\n");
                 return;
             }
             foreach (Project project in Projects)
             {
                 if (project.ToDos.Any())
                 {
-                    Console.WriteLine($"{project}\n");
+                    ui.WriteLine($"{project}\n");
                     toDoCount++;
                 }
             }
 
             if (toDoCount == 0)
-                Console.WriteLine($"This Unit has no ToDos\n");
+                ui.WriteLine($"This Unit has no ToDos\n");
         }
 
         private int SelectProject(string prompt, string defaultRead = "0")
@@ -181,16 +187,16 @@ namespace MyApp.Models
 
             while (!int.TryParse(readIndex, out projectIndex) || projectIndex < 1 || projectIndex > projects.Count())
             {
-                Console.Write(this);
-                Console.WriteLine("0. Back");
+                ui.Write(this.ToString());
+                ui.WriteLine("0. Back");
 
-                Console.WriteLine(prompt);
-                readIndex = Console.ReadLine() ?? defaultRead;
+                ui.WriteLine(prompt);
+                readIndex = ui.ReadLine() ?? defaultRead;
                 if (readIndex == "0")
                     return -1;
             }
 
-            Console.WriteLine();
+            ui.WriteLine();
 
             return projectIndex - 1;
         }

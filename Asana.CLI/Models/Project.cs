@@ -1,17 +1,23 @@
 using System;
 using System.Runtime.CompilerServices;
+using Asana.CLI.Interfaces;
 
 namespace MyApp.Models
 {
     public class Project
     {
+        IUserInterface ui;
+        public Project(IUserInterface ui)
+        {
+            this.ui = ui;
+        }
 
         public void Run()
         {
             int selection = -1;
             while (selection != 0)
             {
-                Console.WriteLine($"Project {name}");
+                ui.WriteLine($"Project {name}");
                 PrintOptions();
                 selection = HandleMainMenuSelection(selection);
             }
@@ -29,15 +35,15 @@ namespace MyApp.Models
             int optionIndex = 0;
             foreach (string option in projectOptions)
             {
-                Console.WriteLine($"{optionIndex++ + 1}. {option}");
+                ui.WriteLine($"{optionIndex++ + 1}. {option}");
             }
-            Console.WriteLine($"0. Back\n");
+            ui.WriteLine($"0. Back\n");
 
         }
 
-        static public int HandleInput(string defaultRead)
+        static public int HandleInput(string defaultRead, IUserInterface ui)
         {
-            var choice = Console.ReadLine() ?? defaultRead;
+            var choice = ui.ReadLine() ?? defaultRead;
             int choiceInt;
             int.TryParse(choice, out choiceInt);
 
@@ -46,8 +52,8 @@ namespace MyApp.Models
 
         private int HandleMainMenuSelection(int selection)
         {
-            selection = HandleInput("0");
-            Console.WriteLine();
+            selection = HandleInput("0", ui);
+            ui.WriteLine();
             switch (selection)
             {
                 case 1:
@@ -66,7 +72,7 @@ namespace MyApp.Models
                     // Exit case
                     break;
                 default:
-                    Console.WriteLine($"You did not enter a valid selection\n");
+                    ui.WriteLine($"You did not enter a valid selection\n");
                     break;
             }
 
@@ -75,21 +81,21 @@ namespace MyApp.Models
         private void CreateTodo()
         {
             ToDo createTask = new ToDo();
-            Console.Write($"Name: ");
-            createTask.Name = Console.ReadLine();
-            Console.Write($"Description: ");
-            createTask.Description = Console.ReadLine();
+            ui.Write($"Name: ");
+            createTask.Name = ui.ReadLine();
+            ui.Write($"Description: ");
+            createTask.Description = ui.ReadLine();
 
             ToDos.Add(createTask);
 
-            Console.WriteLine($"Todo '{createTask.Name}' created\n");
+            ui.WriteLine($"Todo '{createTask.Name}' created\n");
         }
 
         private void DeleteTodo()
         {
             if (ToDos.Count == 0)
             {
-                Console.WriteLine($"This project has no ToDos\n");
+                ui.WriteLine($"This project has no ToDos\n");
                 return;
             }
             int toDoIndex = SelectTodo("Which ToDo would you like to Delete?\n");
@@ -102,7 +108,7 @@ namespace MyApp.Models
         {
             if (ToDos.Count == 0)
             {
-                Console.WriteLine($"This project has no ToDos\n");
+                ui.WriteLine($"This project has no ToDos\n");
                 return;
             }
             int toDoIndex = SelectTodo("Which ToDo would you like to Update?\n");
@@ -111,36 +117,36 @@ namespace MyApp.Models
             int selection = -1;
             while (selection != 0)
             {
-                Console.WriteLine($"ToDo {Name}");
+                ui.WriteLine($"ToDo {Name}");
 
-                Console.WriteLine($"1. Change name");
-                Console.WriteLine($"2. Change description");
-                Console.WriteLine($"3. Change status");
-                Console.WriteLine($"0. Back\n");
+                ui.WriteLine($"1. Change name");
+                ui.WriteLine($"2. Change description");
+                ui.WriteLine($"3. Change status");
+                ui.WriteLine($"0. Back\n");
 
-                selection = HandleInput("0");
+                selection = HandleInput("0", ui);
 
                 switch (selection)
                 {
                     case 1:
-                        Console.Write($"Name: ");
-                        ToDos[toDoIndex].Name = Console.ReadLine();
-                        Console.WriteLine($"Name Updated to {ToDos[toDoIndex].Name}\n");
+                        ui.Write($"Name: ");
+                        ToDos[toDoIndex].Name = ui.ReadLine();
+                        ui.WriteLine($"Name Updated to {ToDos[toDoIndex].Name}\n");
                         break;
                     case 2:
-                        Console.Write($"Description: ");
-                        ToDos[toDoIndex].Description = Console.ReadLine();
-                        Console.WriteLine($"{ToDos[toDoIndex].Name} Description Updated\n");
+                        ui.Write($"Description: ");
+                        ToDos[toDoIndex].Description = ui.ReadLine();
+                        ui.WriteLine($"{ToDos[toDoIndex].Name} Description Updated\n");
                         break;
                     case 3:
                         ToDos[toDoIndex].IsComplete = !ToDos[toDoIndex].IsComplete;
-                        Console.WriteLine($"{ToDos[toDoIndex].Name} Status Updated to {(ToDos[toDoIndex].IsComplete ? "Complete" : "Incomplete")}\n");
+                        ui.WriteLine($"{ToDos[toDoIndex].Name} Status Updated to {(ToDos[toDoIndex].IsComplete ? "Complete" : "Incomplete")}\n");
                         break;
                     case 0:
                         // Exit case
                         break;
                     default:
-                        Console.WriteLine($"You did not enter a valid selection\n");
+                        ui.WriteLine($"You did not enter a valid selection\n");
                         break;
                 }
             }
@@ -150,14 +156,14 @@ namespace MyApp.Models
         {
             if (ToDos.Count() == 0)
             {
-                Console.WriteLine($"This project has no ToDos\n");
+                ui.WriteLine($"This project has no ToDos\n");
                 return;
             }
             int toDoIndex = 0;
             foreach (ToDo toDo in ToDos)
-                Console.WriteLine($"{toDoIndex++ + 1}. {toDo}");
+                ui.WriteLine($"{toDoIndex++ + 1}. {toDo}");
 
-            Console.WriteLine();
+            ui.WriteLine();
         }
 
         private int SelectTodo(string prompt, string defaultRead = "0")
@@ -167,16 +173,16 @@ namespace MyApp.Models
 
             while (!int.TryParse(readIndex, out toDoIndex) || toDoIndex < 1 || toDoIndex > ToDos.Count())
             {
-                Console.Write(this);
-                Console.WriteLine("0. Back\n");
+                ui.Write(this.ToString());
+                ui.WriteLine("0. Back\n");
 
-                Console.WriteLine(prompt);
-                readIndex = Console.ReadLine() ?? defaultRead;
+                ui.WriteLine(prompt);
+                readIndex = ui.ReadLine() ?? defaultRead;
                 if (readIndex == "0")
                     return -1;
             }
 
-            Console.WriteLine();
+            ui.WriteLine();
 
             return toDoIndex - 1;
         }
