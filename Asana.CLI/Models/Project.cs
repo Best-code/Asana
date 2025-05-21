@@ -1,10 +1,18 @@
 using System;
 using System.Runtime.CompilerServices;
+using Asana.CLI.Interfaces;
+using Asana.CLI.Models;
 
 namespace MyApp.Models
 {
     public class Project
     {
+        private readonly IIdGenerator toDoIdGenerator = new SequentialIdGenerator();
+        public Project(string name, IIdGenerator projectIdGenerator)
+        {
+            id = projectIdGenerator.GetNextId();
+            this.name = name;
+        }
 
         public void Run()
         {
@@ -74,11 +82,12 @@ namespace MyApp.Models
         }
         private void CreateTodo()
         {
-            ToDo createTask = new ToDo();
+
             Console.Write($"Name: ");
-            createTask.Name = Console.ReadLine();
+            var toDoName = Console.ReadLine() ?? "Project";
             Console.Write($"Description: ");
-            createTask.Description = Console.ReadLine();
+            var toDoDescription = Console.ReadLine(); ;
+            ToDo createTask = new ToDo(toDoName, this.id, toDoIdGenerator) {Description = toDoDescription};
 
             ToDos.Add(createTask);
 
@@ -124,7 +133,7 @@ namespace MyApp.Models
                 {
                     case 1:
                         Console.Write($"Name: ");
-                        ToDos[toDoIndex].Name = Console.ReadLine();
+                        ToDos[toDoIndex].Name = Console.ReadLine() ?? "Project";
                         Console.WriteLine($"Name Updated to {ToDos[toDoIndex].Name}\n");
                         break;
                     case 2:
@@ -181,8 +190,8 @@ namespace MyApp.Models
             return toDoIndex - 1;
         }
 
-        private int? id;
-        public int? Id
+        private int id;
+        public int Id
         {
             get { return id; }
             set

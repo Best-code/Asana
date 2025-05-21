@@ -1,11 +1,14 @@
 using System;
 using System.Runtime.CompilerServices;
+using Asana.CLI.Interfaces;
+using Asana.CLI.Models;
 
 namespace MyApp.Models
 {
     public class AsanaUnit
     {
 
+        private readonly IIdGenerator projectIdGenerator = new SequentialIdGenerator();
         static private string[] UnitOptions = {
             "Create Project",
             "Delete Project",
@@ -69,12 +72,12 @@ namespace MyApp.Models
 
         private void CreateProject()
         {
-            Project createProject = new Project();
             Console.Write($"Name: ");
-            createProject.Name = Console.ReadLine();
+            var projectName = Console.ReadLine() ?? "Project";
             Console.Write($"Description: ");
-            createProject.Description = Console.ReadLine();
+            var projectDescription = Console.ReadLine(); ;
 
+            Project createProject = new Project(projectName, projectIdGenerator) {Description = projectDescription};
             projects.Add(createProject);
 
             Console.WriteLine($"Project '{createProject.Name}' created\n");
@@ -121,7 +124,7 @@ namespace MyApp.Models
                 {
                     case 1:
                         Console.Write($"Name: ");
-                        Projects[projectIndex].Name = Console.ReadLine();
+                        Projects[projectIndex].Name = Console.ReadLine() ?? "Project";
                         Console.WriteLine($"Name Updated to {projects[projectIndex].Name}\n");
                         break;
                     case 2:

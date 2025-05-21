@@ -1,9 +1,16 @@
 using System;
+using Asana.CLI.Interfaces;
 
 namespace MyApp.Models
 {
     public class ToDo
     {
+        public ToDo(string name, int projectId, IIdGenerator toDoIdGenerator)
+        {
+            this.name = name;
+            this.projectId = projectId;
+            id = toDoIdGenerator.GetNextId();
+        }
         private int? id;
         public int? Id
         {
@@ -15,8 +22,8 @@ namespace MyApp.Models
             }
         }
 
-        private string? name;
-        public string? Name
+        private string name;
+        public string Name
         {
             get { return name; }
             set
