@@ -1,10 +1,18 @@
 using System;
 using System.Runtime.CompilerServices;
+using Asana.CLI.Interfaces;
+using Asana.CLI.Models;
 
 namespace MyApp.Models
 {
     public class Project
     {
+        private readonly IIdGenerator toDoIdGenerator = new SequentialIdGenerator();
+        public Project(string name, IIdGenerator projectIdGenerator)
+        {
+            id = projectIdGenerator.GetNextId();
+            this.name = name;
+        }
 
         public void Run()
         {
@@ -74,11 +82,13 @@ namespace MyApp.Models
         }
         private void CreateTodo()
         {
-            ToDo createTask = new ToDo();
+
             Console.Write($"Name: ");
-            createTask.Name = Console.ReadLine();
+            var toDoName = Console.ReadLine() ?? "ToDo";
+            if (toDoName == "") toDoName = "ToDo";
             Console.Write($"Description: ");
-            createTask.Description = Console.ReadLine();
+            var toDoDescription = Console.ReadLine(); ;
+            ToDo createTask = new ToDo(toDoName, this.id, toDoIdGenerator) { Description = toDoDescription };
 
             ToDos.Add(createTask);
 
@@ -124,7 +134,10 @@ namespace MyApp.Models
                 {
                     case 1:
                         Console.Write($"Name: ");
-                        ToDos[toDoIndex].Name = Console.ReadLine();
+
+                        // Set null or empty string to 'ToDo'
+                        ToDos[toDoIndex].Name = Console.ReadLine() ?? "ToDo";
+                        if (ToDos[toDoIndex].Name == "") ToDos[toDoIndex].Name = "ToDo";
                         Console.WriteLine($"Name Updated to {ToDos[toDoIndex].Name}\n");
                         break;
                     case 2:
@@ -146,6 +159,7 @@ namespace MyApp.Models
             }
         }
 
+        // Prints each todo in this project name, completion, description
         private void ListTodos()
         {
             if (ToDos.Count() == 0)
@@ -160,6 +174,7 @@ namespace MyApp.Models
             Console.WriteLine();
         }
 
+        // Select a valid todo with bounds checking. Bad input results in 0
         private int SelectTodo(string prompt, string defaultRead = "0")
         {
             string readIndex = "";
@@ -181,8 +196,8 @@ namespace MyApp.Models
             return toDoIndex - 1;
         }
 
-        private int? id;
-        public int? Id
+        private int id;
+        public int Id
         {
             get { return id; }
             set
@@ -214,6 +229,7 @@ namespace MyApp.Models
             }
         }
 
+        // Calculate what percent of tasks in this project are complete
         public float CompletePercent()
         {
             float complete = 0;
@@ -243,6 +259,7 @@ namespace MyApp.Models
             }
         }
 
+        // List Project Name, Description and loops over all the Tasks showing name, completion, description
         public override string ToString()
         {
             string projToString = $"Project {name} - {description}\n";

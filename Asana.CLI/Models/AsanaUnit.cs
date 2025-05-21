@@ -1,11 +1,15 @@
 using System;
 using System.Runtime.CompilerServices;
+using Asana.CLI.Interfaces;
+using Asana.CLI.Models;
 
 namespace MyApp.Models
 {
     public class AsanaUnit
     {
 
+        // Keep track of each projectId
+        private readonly IIdGenerator projectIdGenerator = new SequentialIdGenerator();
         static private string[] UnitOptions = {
             "Create Project",
             "Delete Project",
@@ -15,6 +19,7 @@ namespace MyApp.Models
         };
 
 
+        // Main loop
         public void Run()
         {
             int selection = -1;
@@ -24,7 +29,7 @@ namespace MyApp.Models
                 selection = HandleUnitOptionSelection(selection);
             }
         }
-
+        // Prints out the Unit Options
         private void PrintUnitOptions()
         {
             int optionIndex = 0;
@@ -67,14 +72,18 @@ namespace MyApp.Models
             return selection;
         }
 
+        // Create a project
         private void CreateProject()
         {
-            Project createProject = new Project();
             Console.Write($"Name: ");
-            createProject.Name = Console.ReadLine();
+            // Set null or empty string to 'Project'
+            var projectName = Console.ReadLine() ?? "Project";
+            if (projectName == "") projectName = "Project";
             Console.Write($"Description: ");
-            createProject.Description = Console.ReadLine();
+            var projectDescription = Console.ReadLine(); ;
 
+            
+            Project createProject = new Project(projectName, projectIdGenerator) {Description = projectDescription};
             projects.Add(createProject);
 
             Console.WriteLine($"Project '{createProject.Name}' created\n");
@@ -101,10 +110,12 @@ namespace MyApp.Models
                 Console.WriteLine($"This Unit has no Projects\n");
                 return;
             }
+            // Select the project to update
             int projectIndex = SelectProject("Which Project would you like to Update?\n");
             if (projectIndex == -1) return;
 
-
+            // After you have selected the project to update
+            // Select which part you would like to update for that project
             int selection = -1;
             while (selection != 0)
             {
@@ -114,6 +125,7 @@ namespace MyApp.Models
                 Console.WriteLine($"3. Update ToDos");
                 Console.WriteLine($"0. Exit Project {projects[projectIndex].Name}\n");
 
+                // Take input but bad input defaults to 0
                 selection = Project.HandleInput("0");
 
                 Console.WriteLine();
@@ -121,7 +133,10 @@ namespace MyApp.Models
                 {
                     case 1:
                         Console.Write($"Name: ");
-                        Projects[projectIndex].Name = Console.ReadLine();
+                        // Set null or empty string to 'Project'
+                        Projects[projectIndex].Name = Console.ReadLine() ?? "Project";
+                        if (Projects[projectIndex].Name == "") Projects[projectIndex].Name = "Project";
+
                         Console.WriteLine($"Name Updated to {projects[projectIndex].Name}\n");
                         break;
                     case 2:
@@ -130,6 +145,7 @@ namespace MyApp.Models
                         Console.WriteLine($"{projects[projectIndex].Name} Description Updated\n");
                         break;
                     case 3:
+                        // Enter than project loop where you see the options of each project like add task and stuff
                         projects[projectIndex].Run();
                         break;
                     case 0:
@@ -150,12 +166,15 @@ namespace MyApp.Models
                 Console.WriteLine($"This Unit has no Projects\n");
                 return;
             }
+
+            // Returns this.toString() which shows all Projects name, description
             Console.WriteLine(this);
         }
 
         private void ListAllTodos()
         {
             int toDoCount = 0;
+            // If no Projects then automatically no ToDos
             if (Projects.Count == 0)
             {
                 Console.WriteLine($"This Unit has no ToDos\n");
@@ -165,6 +184,8 @@ namespace MyApp.Models
             {
                 if (project.ToDos.Any())
                 {
+                    // Prints Project.toString() which shows Name, Description
+                    //  and loops over all the tasks name, completion, description
                     Console.WriteLine($"{project}\n");
                     toDoCount++;
                 }
@@ -174,6 +195,7 @@ namespace MyApp.Models
                 Console.WriteLine($"This Unit has no ToDos\n");
         }
 
+        // Ensures you select a valid project with bounds checking
         private int SelectProject(string prompt, string defaultRead = "0")
         {
             string readIndex = "";
@@ -206,6 +228,7 @@ namespace MyApp.Models
             }
         }
 
+        // Prints out name and description for each project
         public override string ToString()
         {
             string unitToString = "";
