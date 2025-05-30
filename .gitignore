@@ -399,3 +399,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+Asana.CLI/obj/Debug/net9.0/Asana.CLI.AssemblyInfo.cs
+Asana.CLI/obj/Debug/net9.0/Asana.CLI.AssemblyInfoInputs.cache
