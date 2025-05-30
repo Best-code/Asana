@@ -401,3 +401,5 @@ FodyWeavers.xsd
 *.sln.iml
 Asana.CLI/obj/Debug/net9.0/Asana.CLI.AssemblyInfo.cs
 Asana.CLI/obj/Debug/net9.0/Asana.CLI.AssemblyInfoInputs.cache
+Asana.CLI/obj/Debug/net9.0/Asana.CLI.AssemblyInfo.cs
+Asana.CLI/obj/Debug/net9.0/Asana.CLI.AssemblyInfoInputs.cache
