@@ -1,13 +1,14 @@
-using System;
-using Asana.CLI.Interfaces;
-using Asana.CLI.Models;
+using Asana.Core.Interfaces;
 
-public class ToDo
+namespace Asana.Core.Models;
+
+public class ToDo : INameDescription
 {
     private readonly ToDoIdGenerator tIdGen = new ToDoIdGenerator();
-    public ToDo(string name, int projectId)
+    public ToDo(string name, string description, int projectId)
     {
         this.name = name;
+        this.description = description;
         this.projectId = projectId;
         id = tIdGen.GetNextId();
     }
