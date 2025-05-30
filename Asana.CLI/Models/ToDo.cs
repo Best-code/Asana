@@ -1,86 +1,85 @@
 using System;
 using Asana.CLI.Interfaces;
+using Asana.CLI.Models;
 
-namespace MyApp.Models
+public class ToDo
 {
-    public class ToDo
+    private readonly ToDoIdGenerator tIdGen = new ToDoIdGenerator();
+    public ToDo(string name, int projectId)
     {
-        public ToDo(string name, int projectId, IIdGenerator toDoIdGenerator)
+        this.name = name;
+        this.projectId = projectId;
+        id = tIdGen.GetNextId();
+    }
+    private int? id;
+    public int? Id
+    {
+        get { return id; }
+        set
         {
-            this.name = name;
-            this.projectId = projectId;
-            id = toDoIdGenerator.GetNextId();
+            if (value != id)
+                id = value;
         }
-        private int? id;
-        public int? Id
-        {
-            get { return id; }
-            set
-            {
-                if (value != id)
-                    id = value;
-            }
-        }
+    }
 
-        private string name;
-        public string Name
+    private string name;
+    public string Name
+    {
+        get { return name; }
+        set
         {
-            get { return name; }
-            set
-            {
-                if (value != name)
-                    name = value;
-            }
+            if (value != name)
+                name = value;
         }
+    }
 
-        private string? description;
-        public string? Description
+    private string? description;
+    public string? Description
+    {
+        get { return description; }
+        set
         {
-            get { return description; }
-            set
-            {
-                if (value != description)
-                    description = value;
-            }
+            if (value != description)
+                description = value;
         }
+    }
 
-        private int? priority;
-        public int? Priority
+    private int? priority;
+    public int? Priority
+    {
+        get { return priority; }
+        set
         {
-            get { return priority; }
-            set
-            {
-                if (value != priority)
-                    priority = value;
-            }
+            if (value != priority)
+                priority = value;
         }
+    }
 
-        private bool isComplete = false;
-        public bool IsComplete
+    private bool isComplete = false;
+    public bool IsComplete
+    {
+        get { return isComplete; }
+        set
         {
-            get { return isComplete; }
-            set
-            {
-                if (value != isComplete)
-                    isComplete = value;
-            }
+            if (value != isComplete)
+                isComplete = value;
         }
+    }
 
-        private int? projectId;
-        public int? ProjectId
+    private int? projectId;
+    public int? ProjectId
+    {
+        get { return projectId; }
+        set
         {
-            get { return projectId; }
-            set
-            {
-                if (value != projectId)
-                    projectId = value;
-            }
+            if (value != projectId)
+                projectId = value;
         }
+    }
 
-        
-        public override string ToString()
-        {
-            return $"{name} - {isComplete} - {description}";
-        }
+
+    public override string ToString()
+    {
+        return $"{name} - {isComplete} - {description}";
     }
 }
