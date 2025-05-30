@@ -1,7 +1,6 @@
-using System;
-using Asana.CLI.Interfaces;
+using Asana.Core.Interfaces;
 
-namespace Asana.CLI.Models;
+namespace Asana.Core.Models;
 
 public class ProjectIdGenerator : IIdGenerator
 {

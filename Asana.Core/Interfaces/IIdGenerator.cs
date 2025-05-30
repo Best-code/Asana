@@ -1,6 +1,6 @@
 using System;
 
-namespace Asana.CLI.Interfaces;
+namespace Asana.Core.Interfaces;
 
 public interface IIdGenerator
 {
