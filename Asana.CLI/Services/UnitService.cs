@@ -32,6 +32,7 @@ public static class UnitService
 
     }
 
+    // Delete a project
     public static void DeleteProject()
     {
         if (projects.Count == 0)
@@ -68,7 +69,7 @@ public static class UnitService
             Console.WriteLine($"0. Exit Project {projects[projectIndex].Name}\n");
 
             // Take input but bad input defaults to 0
-            selection = Project.HandleInput("0");
+            selection = ProjectService.HandleInput("0");
 
             Console.WriteLine();
             switch (selection)
@@ -140,14 +141,14 @@ public static class UnitService
     {
         int toDoCount = 0;
         // If no Projects then automatically no ToDos
-        if (UnitService.Projects.Count == 0)
+        if (Projects.Count == 0)
         {
             Console.WriteLine($"This Unit has no ToDos\n");
             return;
         }
-        foreach (Project project in UnitService.Projects)
+        foreach (Project project in Projects)
         {
-            if (project.ToDos.Any())
+            if (project.projSvc.ToDos.Any())
             {
                 // Prints Project.toString() which shows Name, Description
                 //  and loops over all the tasks name, completion, description
@@ -171,4 +172,5 @@ public static class UnitService
 
         return unitToString;
     }
+
 }

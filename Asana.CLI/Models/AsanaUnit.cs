@@ -8,18 +8,6 @@ using Microsoft.VisualBasic;
 
 public static class AsanaUnit
 {
-
-    // Keep track of each projectId
-    // private readonly IIdGenerator projectIdGenerator = new SequentialIdGenerator();
-    private static string[] UnitOptions = {
-            "Create Project",
-            "Delete Project",
-            "Update Project",
-            "List All Projects",
-            "List All ToDos",
-        };
-
-
     // Main loop
     public static void Run()
     {
@@ -30,6 +18,15 @@ public static class AsanaUnit
             selection = HandleUnitOptionSelection(selection);
         }
     }
+    private static string[] UnitOptions = {
+            "Create Project",
+            "Delete Project",
+            "Update Project",
+            "List All Projects",
+            "List All ToDos",
+        };
+
+
     // Prints out the Unit Options
     private static void PrintUnitOptions()
     {
@@ -43,7 +40,7 @@ public static class AsanaUnit
 
     private static int HandleUnitOptionSelection(int selection)
     {
-        selection = Project.HandleInput("0");
+        selection = ProjectService.HandleInput("0");
         Console.WriteLine();
         switch (selection)
         {
@@ -73,5 +70,7 @@ public static class AsanaUnit
         return selection;
     }
 
-  
+
+
+
 }
