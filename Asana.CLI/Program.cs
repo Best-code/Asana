@@ -1,5 +1,4 @@
 ﻿using System;
-using MyApp.Models;
 
 namespace MyApp
 {
@@ -7,8 +6,7 @@ namespace MyApp
     {
         static void Main(string[] args)
         {
-            AsanaUnit unit = new AsanaUnit();
-            unit.Run();
+            AsanaUnit.Run();
         }
     }
 }

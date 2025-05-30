@@ -6,4 +6,3 @@ public interface IIdGenerator
 {
     int GetNextId();
 }
-
