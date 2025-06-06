@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="Asana.CLI/Asana.CLI.csproj" />
   <Project Path="Asana.Core/Asana.Core.csproj" />
+  <Project Path="Asana.Maui/Asana.Maui.csproj" />
 </Solution>
