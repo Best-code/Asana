@@ -29,8 +29,8 @@ public class Project : INameDescription
         }
     }
 
-    private string? name;
-    public string? Name
+    private string name;
+    public string Name
     {
         get { return name; }
         set
@@ -40,8 +40,8 @@ public class Project : INameDescription
         }
     }
 
-    private string? description;
-    public string? Description
+    private string description;
+    public string Description
     {
         get { return description; }
         set
