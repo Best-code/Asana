@@ -21,12 +21,12 @@
                         Text="Show Completed Tasks:"/>
                 <CheckBox Margin="5"
                         Grid.Column="1"
-                        IsChecked="{Binding IsShowCompleteProjects}"/>
+                        IsChecked="{Binding IsShowCompleteToDos}"/>
             </Grid>
             <!-- List of Projects -->
             <ListView
                 Grid.Row="1"
-                ItemsSource="{Binding Projects}">
+                ItemsSource="{Binding ToDos}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

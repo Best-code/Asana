@@ -2,41 +2,43 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Asana.Core.Models;
+using System.Threading.Tasks;
+
 
 namespace Asana.Maui.ViewModels;
 
 public class MainPageViewModel : INotifyPropertyChanged
 {
-    AsanaUnit _unit;
+    Project _project;
     public MainPageViewModel()
     {
-        _unit = new();
+        _project = new("Project One", "This is my first project");
     }
 
-    public ObservableCollection<Project> Projects
+    public ObservableCollection<ToDo> ToDos
     {
         get
         {
-            var projects = _unit.Projects;
+            var todos = _project.ToDos;
             // if (IsShowCompleteProjects)
             // {
             //     projects = _unit.Projects;
             // }
-            return new ObservableCollection<Project>(projects);
+            return new ObservableCollection<ToDo>(todos);
         }
     }
 
-    private bool isShowCompleteProjects;
-    public bool IsShowCompleteProjects
+    private bool isShowCompleteToDos;
+    public bool IsShowCompleteToDos
     {
-        get { return isShowCompleteProjects; }
+        get { return isShowCompleteToDos; }
         set
         {
-            if (isShowCompleteProjects != value)
+            if (isShowCompleteToDos != value)
             {
-                isShowCompleteProjects = value;
+                isShowCompleteToDos = value;
                 NotifyPropertyChanged();
-                NotifyPropertyChanged(nameof(Projects));
+                NotifyPropertyChanged(nameof(ToDos));
             }
         }
     }

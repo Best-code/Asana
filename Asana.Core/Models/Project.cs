@@ -16,6 +16,9 @@ public class Project : INameDescription
         this.name = name;
         this.description = description;
         projSvc = new ProjectService();
+
+        ToDos.Add(new ToDo("ToDo One", "This is my first ToDo", pIdGen.GetNextId()));
+        ToDos.Add(new ToDo("ToDo Two", "This is my second ToDo", pIdGen.GetNextId()));
     }
 
     private int id;
