@@ -7,7 +7,20 @@ public class Project : INameDescription
 {
     private readonly ProjectIdGenerator pIdGen;
     public ProjectService projSvc;
-    public List<ToDo> ToDos { get; private set; }
+
+    private List<ToDo> _toDoList;
+    public List<ToDo> ToDos
+    {
+        get
+        {
+            return _toDoList.Take(100).ToList();
+        }
+        private set
+        {
+            if (value != _toDoList)
+                _toDoList = value;
+        }
+    }
 
     public Project(string name, string description)
     {
