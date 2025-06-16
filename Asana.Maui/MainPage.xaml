@@ -18,10 +18,10 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0"
-                        Text="Show Completed Tasks:"/>
+                       Text="Show Completed Tasks:"/>
                 <CheckBox Margin="5"
-                        Grid.Column="1"
-                        IsChecked="{Binding IsShowCompleteToDos}"/>
+                          Grid.Column="1"
+                          IsChecked="{Binding IsShowCompleteToDos}"/>
             </Grid>
             <!-- List of Projects -->
             <ListView
@@ -36,12 +36,24 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <CheckBox Grid.Column="0" IsChecked="{Binding IsComplete}"/>
-                                <Label TextColor="Red"
-                                       Grid.Column="0"
-                                       Text="{Binding Name}"/>
-                                <Label Grid.Column="1"
-                                       Text="{Binding Description}"/>
+                                <CheckBox Grid.Column="0"
+                                          IsChecked="{Binding IsComplete}"/>
+                                <!-- Name / Description -->
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0"
+                                            TextColor="Red"
+                                           Grid.Column="1"
+                                           Text="{Binding Name}"/>
+                                    <Label Grid.Row="1"
+                                            Grid.Column="2"
+                                           Text="{Binding Description}"/>
+                                </Grid>
+                                <Button Grid.Column="2"
+                                        Text="Delete"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

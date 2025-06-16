@@ -19,11 +19,14 @@ public class MainPageViewModel : INotifyPropertyChanged
     {
         get
         {
-            var todos = _project.ToDos;
-            // if (IsShowCompleteProjects)
-            // {
-            //     projects = _unit.Projects;
-            // }
+            List<ToDo> todos;
+            // if (IsShowCompleteToDos)
+            //     todos = _project.ToDos;
+            // else
+            //     todos = _project.ToDos.Where(t => !t.IsComplete).ToList();
+
+            todos = _project.ToDos;
+
             return new ObservableCollection<ToDo>(todos);
         }
     }
@@ -37,7 +40,6 @@ public class MainPageViewModel : INotifyPropertyChanged
             if (isShowCompleteToDos != value)
             {
                 isShowCompleteToDos = value;
-                NotifyPropertyChanged();
                 NotifyPropertyChanged(nameof(ToDos));
             }
         }
