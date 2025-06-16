@@ -7,7 +7,20 @@ public class Project : INameDescription
 {
     private readonly ProjectIdGenerator pIdGen;
     public ProjectService projSvc;
-    public List<ToDo> ToDos { get; set; } = new();
+
+    private List<ToDo> _toDoList;
+    public List<ToDo> ToDos
+    {
+        get
+        {
+            return _toDoList.Take(100).ToList();
+        }
+        set
+        {
+            if (value != _toDoList)
+                _toDoList = value;
+        }
+    }
 
     public Project(string name, string description)
     {
@@ -17,8 +30,14 @@ public class Project : INameDescription
         this.description = description;
         projSvc = new ProjectService();
 
-        ToDos.Add(new ToDo("ToDo One", "This is my first ToDo", pIdGen.GetNextId()));
-        ToDos.Add(new ToDo("ToDo Two", "This is my second ToDo", pIdGen.GetNextId()));
+        ToDos = new List<ToDo>() {
+            new ToDo("ToDo One",   "This is my first ToDo",  pIdGen.GetNextId()),
+            new ToDo("ToDo Two",   "This is my second ToDo", pIdGen.GetNextId()),
+            new ToDo("ToDo Three", "This is my third ToDo",  pIdGen.GetNextId())
+        };
+
+        ToDos.First().IsComplete = true;
+        ToDos.Last().IsComplete = true;
     }
 
     private int id;
