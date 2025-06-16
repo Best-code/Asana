@@ -19,6 +19,9 @@ public class Project : INameDescription
 
         ToDos.Add(new ToDo("ToDo One", "This is my first ToDo", pIdGen.GetNextId()));
         ToDos.Add(new ToDo("ToDo Two", "This is my second ToDo", pIdGen.GetNextId()));
+        ToDos.Add(new ToDo("ToDo Three", "This is my third ToDo", pIdGen.GetNextId()));
+
+        ToDos.First().IsComplete = true;
     }
 
     private int id;

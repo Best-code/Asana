@@ -34,7 +34,9 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0" IsChecked="{Binding IsComplete}"/>
                                 <Label TextColor="Red"
                                        Grid.Column="0"
                                        Text="{Binding Name}"/>
