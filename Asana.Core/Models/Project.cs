@@ -15,7 +15,7 @@ public class Project : INameDescription
         {
             return _toDoList.Take(100).ToList();
         }
-        set
+        private set
         {
             if (value != _toDoList)
                 _toDoList = value;
