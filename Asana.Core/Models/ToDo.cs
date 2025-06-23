@@ -20,7 +20,7 @@ public class ToDo : INameDescription
         }
     }
 
-    private DateTime dueDate;
+    private DateTime dueDate = DateTime.Now;
     public DateTime DueDate
     {
         get

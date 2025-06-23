@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Asana.Core.Models;
-using System.Threading.Tasks;
 
 
 namespace Asana.Maui.ViewModels;

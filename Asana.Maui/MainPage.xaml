@@ -10,6 +10,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <!-- Tool bar Up Top -->
             <Grid Grid.Row="0">
@@ -24,8 +25,7 @@
                           IsChecked="{Binding IsShowCompleteToDos}"/>
             </Grid>
             <!-- List of Projects -->
-            <ListView
-                Grid.Row="1"
+            <ListView Grid.Row="1"
                 ItemsSource="{Binding ToDos}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -46,14 +46,15 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <Label Grid.Row="0"
-                                            TextColor="Red"
+                                           TextColor="Red"
                                            Grid.Column="1"
                                            Text="{Binding Name}"/>
                                     <Label Grid.Row="1"
-                                            Grid.Column="2"
+                                           Grid.Column="2"
                                            Text="{Binding Description}"/>
                                 </Grid>
-                                <DatePicker Grid.Column="2" Date="{Binding DueDate}"/>
+                                <DatePicker Grid.Column="2"
+                                            Date="{Binding DueDate}"/>
                                 <Button Grid.Column="3"
                                         Text="Delete"/>
                             </Grid>
@@ -61,6 +62,10 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!-- Add ToDo Bar -->
+            <Grid Grid.Row="2">
+                <Button Text="Add ToDo" Clicked="AddToDoClicked"/>
+            </Grid>
         </Grid>
     </VerticalStackLayout>
 </ContentPage>
