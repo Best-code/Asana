@@ -5,11 +5,8 @@ namespace Asana.Core.Models;
 public class ToDo : INameDescription
 {
     private readonly ToDoIdGenerator tIdGen = new ToDoIdGenerator();
-    public ToDo(string name, string description, int projectId)
+    public ToDo()
     {
-        this.name = name;
-        this.description = description;
-        this.projectId = projectId;
         id = tIdGen.GetNextId();
     }
     private int? id;
@@ -20,6 +17,20 @@ public class ToDo : INameDescription
         {
             if (value != id)
                 id = value;
+        }
+    }
+
+    private DateTime dueDate;
+    public DateTime DueDate
+    {
+        get
+        {
+            return dueDate;
+        }
+        set
+        {
+            if (value != dueDate)
+                dueDate = value;
         }
     }
 
