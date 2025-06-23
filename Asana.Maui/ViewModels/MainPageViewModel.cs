@@ -2,25 +2,26 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Asana.Core.Models;
+using Asana.Core.Services;
 
 
 namespace Asana.Maui.ViewModels;
 
 public class MainPageViewModel : INotifyPropertyChanged
 {
-    Project _project;
+    ProjectService _project;
     public MainPageViewModel()
     {
-        _project = new("Project One", "This is my first project");
+        _project = ProjectService.Current;
         UpdateShownToDos();
     }
 
-    private ObservableCollection<ToDo> displayedTodos;
-    public ObservableCollection<ToDo> ToDos
+    private ObservableCollection<ToDoDetailViewModel>? displayedTodos;
+    public ObservableCollection<ToDoDetailViewModel> ToDos
     {
         get
         {
-            return new ObservableCollection<ToDo>(displayedTodos);
+            return displayedTodos ?? new ObservableCollection<ToDoDetailViewModel>();
         }
         set
         {
@@ -30,13 +31,20 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
     }
 
+    public void RefreshPage()
+    {
+        UpdateShownToDos();
+    }
+
     private void UpdateShownToDos()
     {
-        var todos = isShowCompleteToDos ?
-            _project.ToDos :
-            _project.ToDos.Where(t => !t.IsComplete).ToList();
+        var toDos = _project.ToDos.Select(t => new ToDoDetailViewModel(t)).Take(100);
+        // If you don't want to show complete todos
+        if (!IsShowCompleteToDos)
+            // Show todos where IsComplete is false
+            toDos = _project.ToDos.Select(t => new ToDoDetailViewModel(t)).Where(t => !t?.Model?.IsComplete ?? false).Take(100);
 
-        ToDos = new ObservableCollection<ToDo>(todos);
+        ToDos = new ObservableCollection<ToDoDetailViewModel>(toDos);
     }
 
     private bool isShowCompleteToDos = true;

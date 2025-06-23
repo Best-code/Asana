@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Asana.Core.Interfaces;
 using Asana.Core.Services;
 using Microsoft.VisualBasic;
@@ -6,45 +7,13 @@ namespace Asana.Core.Models;
 
 public class Project : INameDescription
 {
-    private readonly ProjectIdGenerator pIdGen;
-    public ProjectService projSvc;
+    public Project() { }
+    public ObservableCollection<ToDo>? ToDos = ProjectService.Current.ToDos;
 
-    private List<ToDo> _toDoList;
-    public List<ToDo> ToDos
-    {
-        get
-        {
-            return _toDoList.Take(100).ToList();
-        }
-        private set
-        {
-            if (value != _toDoList)
-                _toDoList = value;
-        }
-    }
-
-    public Project(string name, string description)
-    {
-        pIdGen = new ProjectIdGenerator();
-        id = pIdGen.GetNextId();
-        this.name = name;
-        this.description = description;
-        projSvc = new ProjectService();
-
-        ToDos = new List<ToDo>() {
-            new ToDo(){Name = "ToDo One",  Description = "This is my first ToDo", ProjectId = pIdGen.GetNextId(), DueDate = new DateTime(2025,6,25)},
-            new ToDo(){Name = "ToDo Two",  Description = "This is my second ToDo", ProjectId = pIdGen.GetNextId(), DueDate = new DateTime(2025,6,25)},
-            new ToDo(){Name = "ToDo Three",  Description = "This is my third ToDo", ProjectId = pIdGen.GetNextId(), DueDate = new DateTime(2025,6,25)},
-        };
-
-        ToDos.First().IsComplete = true;
-        ToDos.Last().IsComplete = true;
-    }
-
-    private int id;
+    private int? id;
     public int Id
     {
-        get { return id; }
+        get { return id ?? ProjectIdGenerator.Current.GetNextId(); }
         set
         {
             if (value != id)
@@ -52,10 +21,10 @@ public class Project : INameDescription
         }
     }
 
-    private string name;
+    private string? name;
     public string Name
     {
-        get { return name; }
+        get { return name ?? ""; }
         set
         {
             if (value != name)
@@ -63,10 +32,10 @@ public class Project : INameDescription
         }
     }
 
-    private string description;
+    private string? description;
     public string Description
     {
-        get { return description; }
+        get { return description ?? ""; }
         set
         {
             if (value != description)
@@ -81,7 +50,7 @@ public class Project : INameDescription
         {
             float complete = 0;
             float incomplete = 0;
-            foreach (ToDo toDo in ToDos)
+            foreach (ToDo toDo in ToDos ?? new ObservableCollection<ToDo>())
             {
                 if (toDo.IsComplete)
                     complete++;
@@ -91,7 +60,7 @@ public class Project : INameDescription
 
             if (incomplete == 0) return 1.0f;
 
-            return complete / ToDos.Count();
+            return complete / (ToDos?.Count() ?? 1);
         }
     }
 

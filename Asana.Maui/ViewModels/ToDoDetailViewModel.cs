@@ -12,10 +12,22 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
     {
         Model = new ToDo();
     }
+
+    public ToDoDetailViewModel(int toDoId)
+    {
+        Model = ProjectService.Current.ToDos.First(t => t.Id == toDoId) ?? new ToDo();
+    }
+
+    public ToDoDetailViewModel(ToDo model)
+    {
+        Model = model ?? new ToDo();
+    }
+
     public ToDo? Model { get; set; }
 
     public void AddToDo()
     {
+        ProjectService.Current.AddTodo(Model ?? new ToDo());
     }
 
     public List<int> Priorities

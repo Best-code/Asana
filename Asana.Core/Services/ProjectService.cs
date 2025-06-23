@@ -1,78 +1,123 @@
+using System.Collections.ObjectModel;
 using Asana.Core.Models;
 using Microsoft.VisualBasic;
 namespace Asana.Core.Services;
 
 public class ProjectService
 {
-    public void CreateTodo(Project project, string toDoName, string toDoDescription, int projId, DateTime dueDate)
+
+    private ObservableCollection<ToDo> _toDoList;
+    public ObservableCollection<ToDo> ToDos
     {
-        if (toDoName == "") toDoName = "ToDo";
-        ToDo createToDo = new ToDo(){Name = toDoName, Description = toDoDescription, ProjectId = projId, DueDate = dueDate};
-        AddTodo(project, createToDo);
+        get
+        {
+            return _toDoList;
+        }
+
+        private set
+        {
+            if (value != _toDoList)
+            {
+                _toDoList = value;
+            }
+        }
+    }
+    // Singleton Set up
+    private static ProjectService? instance;
+    public static ProjectService Current
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new ProjectService();
+            }
+
+            return instance;
+        }
     }
 
-    public void AddTodo(Project project, ToDo toDo)
+
+    private readonly ToDoIdGenerator tIdGen = new ToDoIdGenerator();
+
+    private ProjectService()
     {
-        project.ToDos.Add(toDo);
+        ToDos = new ObservableCollection<ToDo>() {
+            new ToDo(){Name = "ToDo One",  Description = "This is my first ToDo", Id = tIdGen.GetNextId(), DueDate = DateTime.Now},
+            new ToDo(){Name = "ToDo Two",  Description = "This is my second ToDo", Id = tIdGen.GetNextId(), DueDate = DateTime.Now},
+            new ToDo(){Name = "ToDo Three",  Description = "This is my third ToDo", Id = tIdGen.GetNextId(), DueDate = DateTime.Now},
+        };
+
+        ToDos.First().IsComplete = true;
+        ToDos.Last().IsComplete = true;
     }
 
-    public bool DeleteTodo(Project project, int toDoIndex)
+    // public void CreateTodo(string toDoName, string toDoDescription, int projId, DateTime dueDate)
+    // {
+    //     if (toDoName == "") toDoName = "ToDo";
+    //     ToDo createToDo = new ToDo() { Name = toDoName, Description = toDoDescription, ProjectId = projId, DueDate = dueDate };
+    //     AddTodo(createToDo);
+    // }
+
+    public void AddTodo(ToDo toDo)
     {
-        if (project.ToDos.Count == 0)
+        ToDos.Add(toDo);
+    }
+
+    public bool DeleteTodo(int toDoIndex)
+    {
+        if (ToDos.Count == 0)
             return false;
-        if (toDoIndex < 0 || toDoIndex > project.ToDos.Count())
+        if (toDoIndex < 0 || toDoIndex >= ToDos.Count())
             return false;
 
-        project.ToDos.RemoveAt(toDoIndex);
+        ToDos.RemoveAt(toDoIndex);
         return true;
     }
 
-    public bool UpdateTodoName(Project project, int toDoIndex, string name)
-    {
-        if (project.ToDos.Count == 0)
-            return false;
-        if (toDoIndex < 0 || toDoIndex > project.ToDos.Count())
-            return false;
-        // if (name == "")
-        //     return false;
+    // public bool UpdateTodoName(int toDoIndex, string name)
+    // {
+    //     if (ToDos.Count == 0)
+    //         return false;
+    //     if (toDoIndex < 0 || toDoIndex > ToDos.Count())
+    //         return false;
 
-        project.ToDos[toDoIndex].Name = name;
-        return true;
-    }
+    //     ToDos[toDoIndex].Name = name;
+    //     return true;
+    // }
 
-    public bool UpdateTodoDescription(Project project, int toDoIndex, string description)
-    {
-        if (project.ToDos.Count == 0)
-            return false;
-        if (toDoIndex < 0 || toDoIndex > project.ToDos.Count())
-            return false;
-        // if (description == "")
-        //     return false;
+    // public bool UpdateTodoDescription(int toDoIndex, string description)
+    // {
+    //     if (ToDos.Count == 0)
+    //         return false;
+    //     if (toDoIndex < 0 || toDoIndex > ToDos.Count())
+    //         return false;
 
-        project.ToDos[toDoIndex].Description = description;
-        return true;
-    }
 
-    public bool UpdateTodoDueDate(Project project, int toDoIndex, DateTime dueDate)
-    {
-        if (project.ToDos.Count == 0)
-            return false;
-        if (toDoIndex < 0 || toDoIndex > project.ToDos.Count())
-            return false;
+    //     ToDos[toDoIndex].Description = description;
+    //     return true;
+    // }
 
-        project.ToDos[toDoIndex].DueDate = dueDate;
-        return true;
-    }
+    // public bool UpdateTodoDueDate(int toDoIndex, DateTime dueDate)
+    // {
+    //     if (ToDos.Count == 0)
+    //         return false;
+    //     if (toDoIndex < 0 || toDoIndex > ToDos.Count())
+    //         return false;
 
-    public bool UpdateTodoStatus(Project project, int toDoIndex, bool status)
-    {
-        if (project.ToDos.Count == 0)
-            return false;
-        if (toDoIndex < 0 || toDoIndex > project.ToDos.Count())
-            return false;
+    //     ToDos[toDoIndex].DueDate = dueDate;
+    //     return true;
+    // }
 
-        project.ToDos[toDoIndex].IsComplete = status;
-        return true;
-    }
+    // public bool UpdateTodoStatus(int toDoIndex, bool status)
+    // {
+    //     if (ToDos.Count == 0)
+    //         return false;
+    //     if (toDoIndex < 0 || toDoIndex > ToDos.Count())
+    //         return false;
+
+    //     ToDos[toDoIndex].IsComplete = status;
+    //     return true;
+    // }
 
 }

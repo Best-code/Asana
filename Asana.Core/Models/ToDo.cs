@@ -4,10 +4,9 @@ namespace Asana.Core.Models;
 
 public class ToDo : INameDescription
 {
-    private readonly ToDoIdGenerator tIdGen = new ToDoIdGenerator();
     public ToDo()
     {
-        id = tIdGen.GetNextId();
+        id = ToDoIdGenerator.Current.GetNextId();
     }
     private int? id;
     public int? Id
@@ -20,12 +19,12 @@ public class ToDo : INameDescription
         }
     }
 
-    private DateTime dueDate = DateTime.Now;
+    private DateTime? dueDate;
     public DateTime DueDate
     {
         get
         {
-            return dueDate;
+            return dueDate ?? DateTime.Now;
         }
         set
         {
@@ -34,10 +33,10 @@ public class ToDo : INameDescription
         }
     }
 
-    private string name;
+    private string? name;
     public string Name
     {
-        get { return name; }
+        get { return name ?? ""; }
         set
         {
             if (value != name)
@@ -46,9 +45,9 @@ public class ToDo : INameDescription
     }
 
     private string? description;
-    public string? Description
+    public string Description
     {
-        get { return description; }
+        get { return description ?? ""; }
         set
         {
             if (value != description)
@@ -57,9 +56,9 @@ public class ToDo : INameDescription
     }
 
     private int? priority;
-    public int? Priority
+    public int Priority
     {
-        get { return priority; }
+        get { return priority ?? 0; }
         set
         {
             if (value != priority)
@@ -67,10 +66,10 @@ public class ToDo : INameDescription
         }
     }
 
-    private bool isComplete = false;
+    private bool? isComplete;
     public bool IsComplete
     {
-        get { return isComplete; }
+        get { return isComplete ?? false; }
         set
         {
             if (value != isComplete)
@@ -79,9 +78,9 @@ public class ToDo : INameDescription
     }
 
     private int? projectId;
-    public int? ProjectId
+    public int ProjectId
     {
-        get { return projectId; }
+        get { return projectId ?? -1; }
         set
         {
             if (value != projectId)

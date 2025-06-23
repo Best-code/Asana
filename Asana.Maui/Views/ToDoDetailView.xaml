@@ -43,22 +43,27 @@
 
               </Grid>
 
-              <!-- Priority -->
+              <!-- Priority and Completion Status -->
               <Grid>
                      <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
                      </Grid.ColumnDefinitions>
                      <Label Grid.Column="0"
-                                   Text="Priority"/>
+                            Text="Priority"/>
                      <Picker Grid.Column="1"
-                                   ItemsSource="{Binding Priorities}"
-                                   SelectedIndex="{Binding SelectedPriority}"/>
+                             ItemsSource="{Binding Priorities}"
+                             SelectedIndex="{Binding SelectedPriority}"/>
+                     <Label Grid.Column="2"
+                            Text="Completed: "/>
+                     <CheckBox Grid.Column="3" IsChecked="{Binding Model.IsComplete}"/>
               </Grid>
 
 
-              <Button Text="Ok"
-                      Clicked="OkClicked"/>
+              <Button Text="Add ToDo"
+                      Clicked="AddToDoClicked"/>
               <Button Text="Cancel"
                       Clicked="CancelClicked"/>
        </VerticalStackLayout>
