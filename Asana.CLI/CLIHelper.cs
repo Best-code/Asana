@@ -167,7 +167,7 @@ public static class CLIHelper
                     var toDoDescription = Console.ReadLine() ?? "";
                     Console.WriteLine();
 
-                    currentProject.projSvc.CreateTodo(currentProject, toDoName, toDoDescription, currentProject.Id);
+                    currentProject.projSvc.CreateTodo(currentProject, toDoName, toDoDescription, currentProject.Id, DateTime.Now);
                     break;
                 // Delete ToDo
                 case 4:

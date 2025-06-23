@@ -1,5 +1,6 @@
 using Asana.Core.Interfaces;
 using Asana.Core.Services;
+using Microsoft.VisualBasic;
 
 namespace Asana.Core.Models;
 
@@ -31,9 +32,9 @@ public class Project : INameDescription
         projSvc = new ProjectService();
 
         ToDos = new List<ToDo>() {
-            new ToDo("ToDo One",   "This is my first ToDo",  pIdGen.GetNextId()),
-            new ToDo("ToDo Two",   "This is my second ToDo", pIdGen.GetNextId()),
-            new ToDo("ToDo Three", "This is my third ToDo",  pIdGen.GetNextId())
+            new ToDo(){Name = "ToDo One",  Description = "This is my first ToDo", ProjectId = pIdGen.GetNextId(), DueDate = new DateTime(2025,6,25)},
+            new ToDo(){Name = "ToDo Two",  Description = "This is my second ToDo", ProjectId = pIdGen.GetNextId(), DueDate = new DateTime(2025,6,25)},
+            new ToDo(){Name = "ToDo Three",  Description = "This is my third ToDo", ProjectId = pIdGen.GetNextId(), DueDate = new DateTime(2025,6,25)},
         };
 
         ToDos.First().IsComplete = true;
