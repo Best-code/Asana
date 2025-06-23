@@ -1,13 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Asana.Maui.MainPage">
+             x:Class="Asana.Maui.MainPage"
+             NavigatedTo="ContentPage_NavigatedTo"
+             NavigatedFrom="ContentPage_NavigatedFrom">
 
     <VerticalStackLayout
         Padding="30,0"
         Spacing="25">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -24,9 +27,8 @@
                           IsChecked="{Binding IsShowCompleteToDos}"/>
             </Grid>
             <!-- List of Projects -->
-            <ListView
-                Grid.Row="1"
-                ItemsSource="{Binding ToDos}">
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding ToDos}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -38,7 +40,7 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <CheckBox Grid.Column="0"
-                                          IsChecked="{Binding IsComplete}"/>
+                                          IsChecked="{Binding Model.IsComplete}"/>
                                 <!-- Name / Description -->
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
@@ -46,14 +48,15 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <Label Grid.Row="0"
-                                            TextColor="Red"
+                                           TextColor="Red"
                                            Grid.Column="1"
-                                           Text="{Binding Name}"/>
+                                           Text="{Binding Model.Name}"/>
                                     <Label Grid.Row="1"
-                                            Grid.Column="2"
-                                           Text="{Binding Description}"/>
+                                           Grid.Column="2"
+                                           Text="{Binding Model.Description}"/>
                                 </Grid>
-                                <DatePicker Grid.Column="2" Date="{Binding DueDate}"/>
+                                <DatePicker Grid.Column="2"
+                                            Date="{Binding Model.DueDate}"/>
                                 <Button Grid.Column="3"
                                         Text="Delete"/>
                             </Grid>
@@ -61,6 +64,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!-- Add ToDo Bar -->
+            <Grid Grid.Row="2">
+                <Button Text="Add ToDo"
+                        Clicked="AddToDoClicked"/>
+            </Grid>
         </Grid>
     </VerticalStackLayout>
 </ContentPage>

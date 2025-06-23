@@ -1,11 +1,70 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Asana.Maui.Views.ToDoDetailView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
-</ContentView>
+             x:Class="Asana.Maui.Views.ToDoDetailView"
+             Title="ToDoDetailView">
+       <VerticalStackLayout>
+              <!-- Name and Due Date -->
+              <Grid>
+                     <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                     </Grid.ColumnDefinitions>
+
+                     <Label Grid.Column="0"
+                            Text="Name: "/>
+                     <Entry Grid.Column="1"
+                            Text="{Binding Model.Name}"/>
+                     <Label Grid.Column="2"
+                            Text="DueDate: "/>
+                     <DatePicker Grid.Column="3"
+                                 Date="{Binding Model.DueDate}"/>
+
+              </Grid>
+              <!-- Description and ID -->
+              <Grid>
+                     <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                     </Grid.ColumnDefinitions>
+                     <Label Grid.Column="0"
+                            Text="Description: "/>
+                     <Entry Grid.Column="1"
+                            Text="{Binding Model.Description}"/>
+
+                     <Label Grid.Column="2"
+                            Text="ID: "/>
+                     <Label Grid.Column="3"
+                            Text="{Binding Model.Id}"/>
+
+              </Grid>
+
+              <!-- Priority and Completion Status -->
+              <Grid>
+                     <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                     </Grid.ColumnDefinitions>
+                     <Label Grid.Column="0"
+                            Text="Priority"/>
+                     <Picker Grid.Column="1"
+                             ItemsSource="{Binding Priorities}"
+                             SelectedIndex="{Binding SelectedPriority}"/>
+                     <Label Grid.Column="2"
+                            Text="Completed: "/>
+                     <CheckBox Grid.Column="3" IsChecked="{Binding Model.IsComplete}"/>
+              </Grid>
+
+
+              <Button Text="Add ToDo"
+                      Clicked="AddToDoClicked"/>
+              <Button Text="Cancel"
+                      Clicked="CancelClicked"/>
+       </VerticalStackLayout>
+</ContentPage>

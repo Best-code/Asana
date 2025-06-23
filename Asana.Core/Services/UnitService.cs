@@ -8,7 +8,7 @@ public class UnitService
     public void CreateProject(AsanaUnit unit, string projectName, string projectDescription)
     {
         if (projectName == "") projectName = "Project";
-        Project newProject = new Project(projectName, projectDescription);
+        Project newProject = new Project();
         AddProject(unit, newProject);
     }
 
