@@ -31,10 +31,22 @@ public class ToDoViewModel : INotifyPropertyChanged
     public void InitializeViewModel()
     {
         _unitSvc = UnitService.Current;
-        ProjectName = _unitSvc.GetProjectById(Model.ProjectId).Name;
+        ProjectName = _unitSvc.GetProjectById(Model.ProjectId).Name ?? "Project ID Doesn't Exist";
     }
 
-    public ToDo? Model { get; set; }
+    private ToDo? model;
+    public ToDo? Model
+    {
+        get => model;
+        set
+        {
+            if (model != value)
+            {
+                model = value;
+                NotifyPropertyChanged(nameof(Model));
+            }
+        }
+    }
 
 
     private string? projectName;

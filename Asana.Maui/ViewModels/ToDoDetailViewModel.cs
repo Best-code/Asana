@@ -67,6 +67,8 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
     {
         _projSvc.AddTodo(Model ?? new ToDo());
         Model = new();
+        SelectedProject = ProjectNames.FirstOrDefault() ?? "No Projects";
+        SelectedPriority = 0;
     }
 
     public List<int> Priorities
@@ -116,16 +118,13 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         {
             if (selectedProject != value)
             {
+                var ProjectedId = UnitService.Current.GetProjectByName(value).Id;
                 selectedProject = value;
-                if (Model != null)
-                    Model.ProjectId = UnitService.Current.GetProjectByName(value).Id;
-                else
-                {
+                if (Model == null)
                     Model = new();
-                    Model.ProjectId = UnitService.Current.GetProjectByName(value).Id;
-                }
+                Model.ProjectId = ProjectedId;
 
-                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(SelectedProject));
             }
         }
     }
