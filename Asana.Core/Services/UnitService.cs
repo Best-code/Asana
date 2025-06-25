@@ -37,13 +37,13 @@ public class UnitService
         }
     }
 
-    private readonly ProjectIdGenerator pIdGen = new ProjectIdGenerator();
+    private readonly ProjectIdGenerator pIdGen = ProjectIdGenerator.Current;
     
     public UnitService()
     {
         Projects = new ObservableCollection<Project>() {
-            new Project(){Name = "Project One",  Description = "This is my first project", Id = 1},
-            new Project(){Name = "Project Two",  Description = "This is my second project", Id = 2},
+            new Project(){Name = "Project One",  Description = "This is my first project", Id = pIdGen.GetNextId()},
+            new Project(){Name = "Project Two",  Description = "This is my second project", Id = pIdGen.GetNextId()},
         };
     }
 
@@ -58,6 +58,7 @@ public class UnitService
     // Add a project to the array
     public bool AddProject(Project project)
     {
+        project.Id = pIdGen.GetNextId();
         Projects.Add(project);
         return true;
     }

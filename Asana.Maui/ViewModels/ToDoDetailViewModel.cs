@@ -49,11 +49,24 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
     }
 
 
-    public ToDo? Model { get; set; }
+    private ToDo? model;
+    public ToDo? Model
+    {
+        get => model;
+        set
+        {
+            if (model != value)
+            {
+                model = value;
+                NotifyPropertyChanged(nameof(Model));
+            }
+        }
+    }
 
     public void AddToDo()
     {
         _projSvc.AddTodo(Model ?? new ToDo());
+        Model = new();
     }
 
     public List<int> Priorities

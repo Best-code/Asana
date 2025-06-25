@@ -21,14 +21,15 @@ public partial class ToDoDetailView : ContentPage
 
 	private void AddToDoClicked(object sender, EventArgs e)
 	{
-		(BindingContext as ToDoDetailViewModel)?.AddToDo();
+		(BindingContext as ToDoDetailViewModel).AddToDo();
 		Shell.Current.GoToAsync("//MainPage");
+		(BindingContext as ToDoDetailViewModel).RefreshPage();
 	}
 
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
-		BindingContext = new ToDoDetailViewModel(ToDoId);
-		(BindingContext as ToDoDetailViewModel).RefreshPage();
+		// BindingContext = new ToDoDetailViewModel(ToDoId);
+		(BindingContext as ToDoDetailViewModel)?.RefreshPage();
 	}
 
 	private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)

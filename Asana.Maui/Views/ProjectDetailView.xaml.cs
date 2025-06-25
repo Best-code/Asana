@@ -12,8 +12,8 @@ public partial class ProjectDetailView : ContentPage
 		BindingContext = new ProjectDetailViewModel();
 	}
 
-	public int ProjectId {get; set;}
-	
+	public int ProjectId { get; set; }
+
 	private void CancelClicked(object sender, EventArgs e)
 	{
 		Shell.Current.GoToAsync("//MainPage");
@@ -28,7 +28,6 @@ public partial class ProjectDetailView : ContentPage
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
 		BindingContext = new ProjectDetailViewModel(ProjectId);
-		(BindingContext as ProjectDetailViewModel).RefreshPage();
 	}
 
 	private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)
