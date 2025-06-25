@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Asana.Maui.Views.ProjectDetailView"
+             Title="ProjectDetailView"
+             NavigatedTo="ContentPage_NavigatedTo"
+             NavigatedFrom="ContentPage_NavigatedFrom">
+       <VerticalStackLayout
+              Padding="30,0"
+              Spacing="25">
+              <!-- Name and Description -->
+              <Grid ColumnSpacing="10">
+                     <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                     </Grid.ColumnDefinitions>
+
+                     <Label Grid.Column="0"
+                            Text="Name: "/>
+                     <Entry Grid.Column="1"
+                            Text="{Binding Model.Name}"/>
+                     <Label Grid.Column="2"
+                            Text="Description: "/>
+                     <Entry Grid.Column="3"
+                            Text="{Binding Model.Description}"/>
+
+              </Grid>
+              <Grid Margin="10"
+                    RowSpacing="10">
+                     <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                     </Grid.RowDefinitions>
+                     <Button Grid.Row="0"
+                             Text="Add Project"
+                             Clicked="AddProjectClicked"/>
+                     <Button Grid.Row="1"
+                             Text="Cancel"
+                             Clicked="CancelClicked"/>
+              </Grid>
+       </VerticalStackLayout>
+</ContentPage>

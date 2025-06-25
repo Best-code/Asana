@@ -2,10 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Asana.Maui.Views.ToDoDetailView"
-             Title="ToDoDetailView">
-       <VerticalStackLayout>
+             Title="ToDoDetailView"
+             NavigatedTo="ContentPage_NavigatedTo"
+             NavigatedFrom="ContentPage_NavigatedFrom">
+       <VerticalStackLayout
+              Padding="30,0"
+              Spacing="25">
               <!-- Name and Due Date -->
-              <Grid>
+              <Grid ColumnSpacing="10">
                      <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="3*"/>
@@ -24,7 +28,7 @@
 
               </Grid>
               <!-- Description and ID -->
-              <Grid>
+              <Grid ColumnSpacing="10">
                      <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="3*"/>
@@ -44,7 +48,7 @@
               </Grid>
 
               <!-- Priority and Completion Status -->
-              <Grid>
+              <Grid ColumnSpacing="10">
                      <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="3*"/>
@@ -58,13 +62,34 @@
                              SelectedIndex="{Binding SelectedPriority}"/>
                      <Label Grid.Column="2"
                             Text="Completed: "/>
-                     <CheckBox Grid.Column="3" IsChecked="{Binding Model.IsComplete}"/>
+                     <CheckBox Grid.Column="3"
+                               IsChecked="{Binding Model.IsComplete}"/>
               </Grid>
 
-
-              <Button Text="Add ToDo"
-                      Clicked="AddToDoClicked"/>
-              <Button Text="Cancel"
-                      Clicked="CancelClicked"/>
+              <Grid ColumnSpacing="10">
+                     <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                     </Grid.ColumnDefinitions>
+                     <Label Grid.Column="0"
+                            Text="Select Project:"/>
+                     <Picker Grid.Column="1"
+                             ItemsSource="{Binding ProjectNames}"
+                             SelectedItem="{Binding SelectedProject}"/>
+              </Grid>
+              <Grid ColumnSpacing="10">
+                     <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                     </Grid.ColumnDefinitions>
+                     <Button Grid.Column="0"
+                                   Text="Add ToDo"
+                             Clicked="AddToDoClicked"/>
+                     <Button Grid.Column="1"
+                                   Text="Cancel"
+                             Clicked="CancelClicked"/>
+              </Grid>
        </VerticalStackLayout>
 </ContentPage>

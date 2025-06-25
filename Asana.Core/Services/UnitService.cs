@@ -1,61 +1,115 @@
+using System.Collections.ObjectModel;
 using Asana.Core.Models;
 namespace Asana.Core.Services;
 
 public class UnitService
 {
 
-    // Create a project
-    public void CreateProject(AsanaUnit unit, string projectName, string projectDescription)
+    private ObservableCollection<Project>? _projectsList;
+    public ObservableCollection<Project> Projects
     {
-        if (projectName == "") projectName = "Project";
-        Project newProject = new Project();
-        AddProject(unit, newProject);
+        get
+        {
+            return _projectsList ?? new ObservableCollection<Project>();
+        }
+
+        private set
+        {
+            if (value != _projectsList)
+            {
+                _projectsList = value;
+            }
+        }
+    }
+
+    // Singleton Set up
+    private static UnitService? instance;
+    public static UnitService Current
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new UnitService();
+            }
+
+            return instance;
+        }
+    }
+
+    private readonly ProjectIdGenerator pIdGen = ProjectIdGenerator.Current;
+    
+    public UnitService()
+    {
+        Projects = new ObservableCollection<Project>() {
+            new Project(){Name = "Project One",  Description = "This is my first project", Id = pIdGen.GetNextId()},
+            new Project(){Name = "Project Two",  Description = "This is my second project", Id = pIdGen.GetNextId()},
+        };
+    }
+
+
+    // Create a project
+    public void CreateProject(string projectName, string projectDescription)
+    {
+        Project newProject = new Project() { Name = projectName, Description = projectDescription };
+        AddProject(newProject);
     }
 
     // Add a project to the array
-    public void AddProject(AsanaUnit unit, Project project)
+    public bool AddProject(Project project)
     {
-        unit.Projects.Add(project);
-    }
-
-    // Delete a project
-    public bool DeleteProject(AsanaUnit unit, int projectIndex)
-    {
-        if (unit.Projects.Count == 0)
-            return false;
-        if (projectIndex < 1 || projectIndex > unit.Projects.Count())
-            return false;
-
-        unit.Projects.RemoveAt(projectIndex);
+        project.Id = pIdGen.GetNextId();
+        Projects.Add(project);
         return true;
     }
 
-    // Update project name
-    public bool UpdateProjectName(AsanaUnit unit, int projectIndex, string name)
+    public Project GetProjectAt(int index)
     {
-        if (unit.Projects.Count == 0)
+        return Projects.ElementAtOrDefault(index) ?? new Project();
+    }
+
+    public Project GetProjectByName(string name)
+    {
+        return Projects.FirstOrDefault(p => p.Name == name) ?? new Project();
+    }
+
+        public Project GetProjectById(int id)
+    {
+        return Projects.FirstOrDefault(p => p.Id == id) ?? new Project();
+    }
+
+    // Delete a project
+    public bool DeleteProject(Project project)
+    {
+        return Projects.Remove(project);
+    }
+
+    // Update project name
+    public bool UpdateProjectName(int projectIndex, string name)
+    {
+        if (Projects.Count == 0)
             return false;
-        if (projectIndex < 0 || projectIndex >= unit.Projects.Count())
+        if (projectIndex < 0 || projectIndex >= Projects.Count())
             return false;
         if (name == "")
             return false;
 
-        unit.Projects[projectIndex].Name = name;
+        Projects[projectIndex].Name = name;
         return true;
     }
 
     // Update project description
-    public bool UpdateProjectDescription(AsanaUnit unit, int projectIndex, string description)
+    public bool UpdateProjectDescription(int projectIndex, string description)
     {
-        if (unit.Projects.Count == 0)
+        if (Projects.Count == 0)
             return false;
-        if (projectIndex < 0 || projectIndex >= unit.Projects.Count())
+        if (projectIndex < 0 || projectIndex >= Projects.Count())
             return false;
         if (description == "")
             return false;
 
 
-        unit.Projects[projectIndex].Description = description;
+        Projects[projectIndex].Description = description;
         return true;
     }
 

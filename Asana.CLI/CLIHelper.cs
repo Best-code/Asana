@@ -1,5 +1,7 @@
 using Asana.Core.Models;
 using Asana.Core.Interfaces;
+using Asana.Core.Services;
+using System.Collections.ObjectModel;
 namespace Asana.CLI;
 
 public static class CLIHelper
@@ -8,12 +10,12 @@ public static class CLIHelper
     // Main loop
     public static void run()
     {
-        AsanaUnit Unit = new();
+        List<Project> Projects = UnitService.Current.Projects.ToList();
         int selection = -1;
         while (selection != 0)
         {
             PrintUnitOptions();
-            selection = HandleUnitOptionSelection(Unit);
+            selection = HandleUnitOptionSelection(Projects);
         }
     }
 
@@ -37,7 +39,7 @@ public static class CLIHelper
         return choiceInt;
     }
 
-    private static int HandleUnitOptionSelection(AsanaUnit unit)
+    private static int HandleUnitOptionSelection(List<Project> Projects)
     {
         int selection = HandleUnitMenu("0");
         Console.WriteLine();
@@ -50,28 +52,29 @@ public static class CLIHelper
                 Console.Write($"Description: ");
                 var projectDescription = Console.ReadLine() ?? "";
                 Console.WriteLine();
+                Project addProject = new Project() { Name = projectName, Description = projectDescription };
 
-                unit.unitSvc.CreateProject(unit, projectName, projectDescription);
+                UnitService.Current.AddProject(addProject);
                 break;
             case 2:
-                int toDoIndex = SelectItem(unit, "Which Project would you like to Delete?\n", unit.Projects);
-                if (toDoIndex == -1) break;
-                unit.unitSvc.DeleteProject(unit, 1);
+                int projIndex = SelectItem("Which Project would you like to Delete?\n", Projects);
+                if (projIndex == -1) break;
+                UnitService.Current.DeleteProject(UnitService.Current.GetProjectAt(projIndex));
                 break;
             case 3:
-                UpdateProject(unit);
+                UpdateProject(Projects);
                 break;
             // List all projects
             case 4:
                 {
-                    if (!unit.Projects.Any())
+                    if (!Projects.Any())
                     {
-                        Console.WriteLine($"There are no Units - Create a unit first to add ToDos\n");
+                        Console.WriteLine($"There are no Projects - Create a project first to add ToDos\n");
                         break;
                     }
 
                     int index = 1;
-                    foreach (Project project in unit.Projects)
+                    foreach (Project project in Projects)
                     {
                         Console.WriteLine($"{index}. {project.Name} - {project.Description} - {project.CompletePercent * 100}%");
                     }
@@ -81,10 +84,10 @@ public static class CLIHelper
             // List all todos
             case 5:
                 {
-                    if (!unit.Projects.Any()) Console.WriteLine($"There are no Units - Create a unit first to add ToDos");
+                    if (!Projects.Any()) Console.WriteLine($"There are no Units - Create a unit first to add ToDos");
 
                     int pIndex = 1;
-                    foreach (Project project in unit.Projects)
+                    foreach (Project project in Projects)
                     {
                         int tIndex = 1;
                         Console.WriteLine($"{pIndex}. {project.Name} - {project.Description} - {project.CompletePercent * 100}% Complete");
@@ -114,15 +117,15 @@ public static class CLIHelper
     }
 
 
-    public static void UpdateProject(AsanaUnit unit)
+    public static void UpdateProject(List<Project> Projects)
     {
-        if (unit.Projects.Count == 0)
+        if (Projects.Count == 0)
         {
             Console.WriteLine($"This Unit has no Projects\n");
             return;
         }
         // Select the project to update
-        int projectIndex = SelectItem(unit, "Which Project would you like to Update?\n", unit.Projects);
+        int projectIndex = SelectItem("Which Project would you like to Update?\n", Projects);
         if (projectIndex == -1) return;
 
         // After you have selected the project to update
@@ -130,18 +133,18 @@ public static class CLIHelper
         int selection = -1;
         while (selection != 0)
         {
-            Console.WriteLine($"Project {unit.Projects[projectIndex].Name}");
+            Console.WriteLine($"Project {Projects[projectIndex].Name}");
             Console.WriteLine($"1. Change name");
             Console.WriteLine($"2. Change description");
             Console.WriteLine($"3. Create ToDo");
             Console.WriteLine($"4. Delete ToDo");
             Console.WriteLine($"5. Update ToDos");
             Console.WriteLine($"6. List ToDos");
-            Console.WriteLine($"0. Exit Project {unit.Projects[projectIndex].Name}\n");
+            Console.WriteLine($"0. Exit Project {Projects[projectIndex].Name}\n");
 
             // Take input but bad input defaults to 0
             selection = HandleUnitMenu("0");
-            Project currentProject = unit.Projects[projectIndex];
+            Project currentProject = Projects[projectIndex];
 
             Console.WriteLine();
             switch (selection)
@@ -149,13 +152,13 @@ public static class CLIHelper
                 // Update name
                 case 1:
                     Console.Write($"Name: ");
-                    if (unit.unitSvc.UpdateProjectName(unit, projectIndex, Console.ReadLine() ?? "Project"))
+                    if (UnitService.Current.UpdateProjectName(projectIndex, Console.ReadLine() ?? "Project"))
                         Console.WriteLine($"Name Updated to {currentProject.Name}\n");
                     break;
                 // Update description
                 case 2:
                     Console.Write($"Description: ");
-                    if (unit.unitSvc.UpdateProjectDescription(unit, projectIndex, Console.ReadLine() ?? ""))
+                    if (UnitService.Current.UpdateProjectDescription(projectIndex, Console.ReadLine() ?? ""))
                         Console.WriteLine($"{currentProject.Name} Description Updated\n");
                     break;
                 // Create ToDo
@@ -166,8 +169,9 @@ public static class CLIHelper
                     Console.Write($"Description: ");
                     var toDoDescription = Console.ReadLine() ?? "";
                     Console.WriteLine();
+                    ToDo addMe = new ToDo() { Name = toDoName, Description = toDoDescription, DueDate = DateTime.Now };
 
-                    currentProject.projSvc.CreateTodo(currentProject, toDoName, toDoDescription, currentProject.Id, DateTime.Now);
+                    ProjectService.Current.AddTodo(addMe);
                     break;
                 // Delete ToDo
                 case 4:
@@ -176,24 +180,25 @@ public static class CLIHelper
                         Console.WriteLine($"This project has no ToDos yet\n");
                         break;
                     }
-                    int toDoIndex = SelectItem(unit, "Which ToDo would you like to Delete?\n", currentProject.ToDos);
+                    // int toDoIndex = SelectItem(unit, "Which ToDo would you like to Delete?\n", currentProject.ToDos);
+                    int toDoIndex = 0;
                     if (toDoIndex == -1) break;
-                    currentProject.projSvc.DeleteTodo(currentProject, toDoIndex);
+                    ProjectService.Current.DeleteTodo(ProjectService.Current.GetToDoAt(toDoIndex));
                     break;
                 // Update ToDo
                 case 5:
-                    if (!currentProject.ToDos.Any())
+                    if (!ProjectService.Current.ToDos.Any())
                     {
                         Console.WriteLine($"This project has no ToDos yet\n");
                         break;
                     }
-                    UpdateTodo(unit, currentProject);
+                    UpdateTodo(currentProject);
                     break;
                 case 6:
                     int tIndex = 1;
-                    if (currentProject.ToDos.Any())
+                    if (ProjectService.Current.ToDos.Any())
                     {
-                        foreach (ToDo toDo in currentProject.ToDos)
+                        foreach (ToDo toDo in ProjectService.Current.ToDos)
                         {
                             Console.WriteLine($">  {tIndex}. {toDo.Name} - {(toDo.IsComplete ? "Complete" : "Incomplete")} - {toDo.Description}");
                         }
@@ -211,9 +216,9 @@ public static class CLIHelper
         }
     }
 
-    private static void UpdateTodo(AsanaUnit unit, Project project)
+    private static void UpdateTodo(Project project)
     {
-        int toDoIndex = SelectItem(unit, "Which ToDo would you like to Update?\n", project.ToDos);
+        int toDoIndex = SelectItem<ToDo>("Which ToDo would you like to Update?\n", project.ToDos.ToList());
         if (toDoIndex == -1) return;
 
         int selection = -1;
@@ -232,16 +237,16 @@ public static class CLIHelper
             {
                 case 1:
                     Console.Write($"Name: ");
-                    if (project.projSvc.UpdateTodoName(project, toDoIndex, Console.ReadLine() ?? "ToDo"))
+                    if (ProjectService.Current.UpdateTodoName(toDoIndex, Console.ReadLine() ?? "ToDo"))
                         Console.WriteLine($"Name Updated to {project.ToDos[toDoIndex].Name}\n");
                     break;
                 case 2:
                     Console.Write($"Description: ");
-                    if (project.projSvc.UpdateTodoDescription(project, toDoIndex, Console.ReadLine() ?? "ToDo"))
+                    if (ProjectService.Current.UpdateTodoDescription(toDoIndex, Console.ReadLine() ?? "ToDo"))
                         Console.WriteLine($"{project.ToDos[toDoIndex].Name} Description Updated\n");
                     break;
                 case 3:
-                    project.projSvc.UpdateTodoStatus(project, toDoIndex, !project.ToDos[toDoIndex].IsComplete);
+                    ProjectService.Current.UpdateTodoStatus(toDoIndex, !project.ToDos[toDoIndex].IsComplete);
                     Console.WriteLine($"{project.ToDos[toDoIndex].Name} Status Updated to {(project.ToDos[toDoIndex].IsComplete ? "Complete" : "Incomplete")}\n");
                     break;
                 case 0:
@@ -255,7 +260,7 @@ public static class CLIHelper
     }
 
     // Ensures you select a valid item with bounds checking - Returns the display value -1 for 0 index
-    private static int SelectItem<T>(AsanaUnit unit, string prompt, List<T> itemsList, string defaultRead = "0") where T : INameDescription
+    private static int SelectItem<T>(string prompt, List<T> itemsList, string defaultRead = "0") where T : INameDescription
     {
         string readIndex = "";
         int projectIndex;

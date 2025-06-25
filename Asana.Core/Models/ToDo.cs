@@ -1,4 +1,5 @@
 using Asana.Core.Interfaces;
+using Asana.Core.Services;
 
 namespace Asana.Core.Models;
 
@@ -6,10 +7,10 @@ public class ToDo : INameDescription
 {
     public ToDo()
     {
-        id = ToDoIdGenerator.Current.GetNextId();
+        Id = ToDoIdGenerator.Current.GetNextId();
     }
-    private int? id;
-    public int? Id
+    private int id;
+    public int Id
     {
         get { return id; }
         set
@@ -44,6 +45,8 @@ public class ToDo : INameDescription
         }
     }
 
+
+
     private string? description;
     public string Description
     {
@@ -55,10 +58,10 @@ public class ToDo : INameDescription
         }
     }
 
-    private int? priority;
+    private int priority = 0;
     public int Priority
     {
-        get { return priority ?? 0; }
+        get { return priority; }
         set
         {
             if (value != priority)
@@ -66,10 +69,10 @@ public class ToDo : INameDescription
         }
     }
 
-    private bool? isComplete;
+    private bool isComplete = false;
     public bool IsComplete
     {
-        get { return isComplete ?? false; }
+        get { return isComplete; }
         set
         {
             if (value != isComplete)
@@ -77,10 +80,10 @@ public class ToDo : INameDescription
         }
     }
 
-    private int? projectId;
+    private int projectId = -1;
     public int ProjectId
     {
-        get { return projectId ?? -1; }
+        get { return projectId; }
         set
         {
             if (value != projectId)

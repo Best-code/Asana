@@ -8,26 +8,67 @@ namespace Asana.Maui.ViewModels;
 
 public class ToDoDetailViewModel : INotifyPropertyChanged
 {
+
+    UnitService _unitSvc;
+    ProjectService _projSvc;
     public ToDoDetailViewModel()
     {
         Model = new ToDo();
+        InitializeViewModel();
     }
 
     public ToDoDetailViewModel(int toDoId)
     {
         Model = ProjectService.Current.ToDos.First(t => t.Id == toDoId) ?? new ToDo();
+        InitializeViewModel();
     }
 
     public ToDoDetailViewModel(ToDo model)
     {
         Model = model ?? new ToDo();
+        InitializeViewModel();
     }
 
-    public ToDo? Model { get; set; }
+    public void InitializeViewModel()
+    {
+        _unitSvc = UnitService.Current;
+        _projSvc = ProjectService.Current;
+
+        RefreshPage();
+    }
+
+
+    public void RefreshPage()
+    {
+        ProjectNames = new ObservableCollection<string>(_unitSvc.Projects.Select(p => p.Name));
+
+        if (ProjectNames.Any())
+        {
+            SelectedProject = ProjectNames.First();
+        }
+    }
+
+
+    private ToDo? model;
+    public ToDo? Model
+    {
+        get => model;
+        set
+        {
+            if (model != value)
+            {
+                model = value;
+                NotifyPropertyChanged(nameof(Model));
+            }
+        }
+    }
 
     public void AddToDo()
     {
-        ProjectService.Current.AddTodo(Model ?? new ToDo());
+        _projSvc.AddTodo(Model ?? new ToDo());
+        Model = new();
+        SelectedProject = ProjectNames.FirstOrDefault() ?? "No Projects";
+        SelectedPriority = 0;
     }
 
     public List<int> Priorities
@@ -52,7 +93,41 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
                 NotifyPropertyChanged(nameof(SelectedPriority));
             }
         }
-    } 
+    }
+
+
+    private ObservableCollection<String>? _projectNames;
+    public ObservableCollection<String> ProjectNames
+    {
+        get => _projectNames ?? new ObservableCollection<String>();
+        private set
+        {
+            if (_projectNames != value)
+            {
+                _projectNames = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    private string? selectedProject;
+    public string SelectedProject
+    {
+        get => selectedProject ?? "Null Project";
+        set
+        {
+            if (selectedProject != value)
+            {
+                var ProjectedId = UnitService.Current.GetProjectByName(value).Id;
+                selectedProject = value;
+                if (Model == null)
+                    Model = new();
+                Model.ProjectId = ProjectedId;
+
+                NotifyPropertyChanged(nameof(SelectedProject));
+            }
+        }
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
