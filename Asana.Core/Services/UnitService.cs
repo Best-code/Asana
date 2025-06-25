@@ -75,6 +75,11 @@ public class UnitService
         return Projects.FirstOrDefault(p => p.Name == name) ?? new Project();
     }
 
+        public Project GetProjectById(int id)
+    {
+        return Projects.FirstOrDefault(p => p.Id == id) ?? new Project();
+    }
+
     // Delete a project
     public bool DeleteProject(Project project)
     {

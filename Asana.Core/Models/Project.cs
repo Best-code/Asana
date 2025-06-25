@@ -7,7 +7,9 @@ namespace Asana.Core.Models;
 
 public class Project : INameDescription
 {
-    public Project(){ }
+    public Project()
+    { 
+    }
     public ObservableCollection<ToDo>? ToDos = ProjectService.Current.ToDos;
 
     private int? id;

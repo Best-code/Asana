@@ -58,7 +58,22 @@
                              SelectedIndex="{Binding SelectedPriority}"/>
                      <Label Grid.Column="2"
                             Text="Completed: "/>
-                     <CheckBox Grid.Column="3" IsChecked="{Binding Model.IsComplete}"/>
+                     <CheckBox Grid.Column="3"
+                               IsChecked="{Binding Model.IsComplete}"/>
+              </Grid>
+
+              <Grid>
+                     <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                     </Grid.ColumnDefinitions>
+                     <Label Grid.Column="0"
+                            Text="Select Project:"/>
+                     <Picker Grid.Column="1"
+                             ItemsSource="{Binding ProjectNames}"
+                             SelectedItem="{Binding SelectedProject}"/>
               </Grid>
 
 

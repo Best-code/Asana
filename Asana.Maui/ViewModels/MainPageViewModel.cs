@@ -69,12 +69,12 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
     }
 
-    private ObservableCollection<ToDoDetailViewModel>? displayedToDos;
-    public ObservableCollection<ToDoDetailViewModel> ToDos
+    private ObservableCollection<ToDoViewModel>? displayedToDos;
+    public ObservableCollection<ToDoViewModel> ToDos
     {
         get
         {
-            return displayedToDos ?? new ObservableCollection<ToDoDetailViewModel>();
+            return displayedToDos ?? new ObservableCollection<ToDoViewModel>();
         }
         set
         {
@@ -88,26 +88,28 @@ public class MainPageViewModel : INotifyPropertyChanged
 
     public void RefreshPage()
     {
-        UpdateShownProjects();
+        ProjectNames = new ObservableCollection<string>(_unitSvc.Projects.Select(p => p.Name));
+        if (ProjectNames != null && ProjectNames.Any())
+            SelectedProject = ProjectNames.First();
     }
 
     private void UpdateShownProjects()
     {
-        var toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Take(100);
+        var toDos = _projSvc.ToDos.Select(t => new ToDoViewModel(t)).Take(100);
         // If you don't want to show complete projects
         if (!IsShowCompleteToDos)
             // Show todos where IsComplete is not true
-            toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Where(t => !t.Model?.IsComplete ?? false).Take(100);
+            toDos = _projSvc.ToDos.Select(t => new ToDoViewModel(t)).Where(t => !t?.Model?.IsComplete ?? false).Take(100);
 
 
         // Only get ToDos in selected project
         if (SelectedProject != null)
         {
             int selectedId = _unitSvc.GetProjectByName(SelectedProject).Id;
-            toDos = toDos.Where(t => t.Model?.ProjectId == selectedId);
+            toDos = toDos.Where(t => t?.Model?.ProjectId == selectedId);
         }
 
-        ToDos = new ObservableCollection<ToDoDetailViewModel>(toDos);
+        ToDos = new ObservableCollection<ToDoViewModel>(toDos);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
