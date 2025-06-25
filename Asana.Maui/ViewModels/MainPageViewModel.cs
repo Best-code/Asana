@@ -9,57 +9,105 @@ namespace Asana.Maui.ViewModels;
 
 public class MainPageViewModel : INotifyPropertyChanged
 {
-    ProjectService _project;
+    ProjectService _projSvc;
+    UnitService _unitSvc;
     public MainPageViewModel()
     {
-        _project = ProjectService.Current;
-        UpdateShownToDos();
+        _projSvc = ProjectService.Current;
+        _unitSvc = UnitService.Current;
+
+        ProjectNames = new ObservableCollection<string>(_unitSvc.Projects.Select(p => p.Name));
+        if (ProjectNames != null && ProjectNames.Any())
+            SelectedProject = ProjectNames.First();
     }
 
-    private ObservableCollection<ToDoDetailViewModel>? displayedTodos;
-    public ObservableCollection<ToDoDetailViewModel> ToDos
+    public ToDo? Model { get; set; } = new();
+
+    private ObservableCollection<String>? _projectNames;
+    public ObservableCollection<String> ProjectNames
     {
-        get
+        get => _projectNames ?? new ObservableCollection<String>();
+        private set
         {
-            return displayedTodos ?? new ObservableCollection<ToDoDetailViewModel>();
+            if (_projectNames != value)
+            {
+                _projectNames = value;
+                NotifyPropertyChanged();
+            }
         }
+    }
+
+
+    private string? selectedProject;
+    public string SelectedProject
+    {
+        get => selectedProject ?? "Null Project";
         set
         {
-            if (value != displayedTodos)
-                displayedTodos = value;
-            NotifyPropertyChanged(nameof(ToDos));
+            if (selectedProject != value)
+            {
+                selectedProject = value;
+                NotifyPropertyChanged();
+                UpdateShownProjects();
+            }
         }
     }
 
-    public void RefreshPage()
-    {
-        UpdateShownToDos();
-    }
 
-    private void UpdateShownToDos()
-    {
-        var toDos = _project.ToDos.Select(t => new ToDoDetailViewModel(t)).Take(100);
-        // If you don't want to show complete todos
-        if (!IsShowCompleteToDos)
-            // Show todos where IsComplete is false
-            toDos = _project.ToDos.Select(t => new ToDoDetailViewModel(t)).Where(t => !t?.Model?.IsComplete ?? false).Take(100);
-
-        ToDos = new ObservableCollection<ToDoDetailViewModel>(toDos);
-    }
-
-    private bool isShowCompleteToDos = true;
+    private bool? isShowCompleteToDos;
     public bool IsShowCompleteToDos
     {
-        get { return isShowCompleteToDos; }
+        get { return isShowCompleteToDos ?? true; }
         set
         {
             if (isShowCompleteToDos != value)
             {
                 isShowCompleteToDos = value;
-                UpdateShownToDos();
+                UpdateShownProjects();
                 NotifyPropertyChanged();
             }
         }
+    }
+
+    private ObservableCollection<ToDoDetailViewModel>? displayedToDos;
+    public ObservableCollection<ToDoDetailViewModel> ToDos
+    {
+        get
+        {
+            return displayedToDos ?? new ObservableCollection<ToDoDetailViewModel>();
+        }
+        set
+        {
+            if (value != displayedToDos)
+            {
+                displayedToDos = value;
+                NotifyPropertyChanged(nameof(ToDos));
+            }
+        }
+    }
+
+    public void RefreshPage()
+    {
+        UpdateShownProjects();
+    }
+
+    private void UpdateShownProjects()
+    {
+        var toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Take(100);
+        // If you don't want to show complete projects
+        if (!IsShowCompleteToDos)
+            // Show todos where IsComplete is not true
+            toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Where(t => !t.Model?.IsComplete ?? false).Take(100);
+
+
+        // Only get ToDos in selected project
+        if (SelectedProject != null)
+        {
+            int selectedId = _unitSvc.GetProjectByName(SelectedProject).Id;
+            toDos = toDos.Where(t => t.Model?.ProjectId == selectedId);
+        }
+
+        ToDos = new ObservableCollection<ToDoDetailViewModel>(toDos);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

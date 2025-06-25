@@ -21,7 +21,7 @@ public partial class ToDoDetailView : ContentPage
 
 	private void AddToDoClicked(object sender, EventArgs e)
 	{
-		(BindingContext as ToDoDetailViewModel).AddToDo();
+		(BindingContext as ToDoDetailViewModel)?.AddToDo();
 		Shell.Current.GoToAsync("//MainPage");
 	}
 

@@ -7,7 +7,7 @@ namespace Asana.Core.Models;
 
 public class Project : INameDescription
 {
-    public Project() { }
+    public Project(){ }
     public ObservableCollection<ToDo>? ToDos = ProjectService.Current.ToDos;
 
     private int? id;
@@ -24,7 +24,7 @@ public class Project : INameDescription
     private string? name;
     public string Name
     {
-        get { return name ?? ""; }
+        get { return name; }
         set
         {
             if (value != name)
@@ -35,7 +35,7 @@ public class Project : INameDescription
     private string? description;
     public string Description
     {
-        get { return description ?? ""; }
+        get { return description; }
         set
         {
             if (value != description)

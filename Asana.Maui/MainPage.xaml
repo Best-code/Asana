@@ -19,12 +19,20 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0"
                        Text="Show Completed Tasks:"/>
                 <CheckBox Margin="5"
                           Grid.Column="1"
                           IsChecked="{Binding IsShowCompleteToDos}"/>
+
+                <Label Grid.Column="2"
+                       Text="Select Project:"/>
+                <Picker Grid.Column="3"
+                        ItemsSource="{Binding ProjectNames}"
+                        SelectedItem="{Binding SelectedProject}"/>
             </Grid>
             <!-- List of Projects -->
             <ListView Grid.Row="1"
