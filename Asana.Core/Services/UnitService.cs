@@ -58,9 +58,6 @@ public class UnitService
     // Add a project to the array
     public bool AddProject(Project project)
     {
-        if (project == null)
-            return false;
-
         Projects.Add(project);
         return true;
     }

@@ -15,7 +15,7 @@ public class ProjectDetailViewModel : INotifyPropertyChanged
 
     public ProjectDetailViewModel(int projectId)
     {
-        Model = UnitService.Current.Projects.First(p => p.Id == projectId) ?? new Project();
+        Model = UnitService.Current.GetProjectById(projectId);
     }
 
     public ProjectDetailViewModel(Project model)
@@ -23,14 +23,31 @@ public class ProjectDetailViewModel : INotifyPropertyChanged
         Model = model ?? new Project();
     }
 
-    public Project? Model { get; set; }
+    private Project? model;
+    public Project? Model
+    {
+        get => model;
+        set
+        {
+            if (model != value)
+            {
+                model = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public void RefreshPage()
+    {
+        Model = new Project();
+        NotifyPropertyChanged(nameof(Model));
+    }
 
     public void AddProject()
     {
         UnitService.Current.AddProject(Model ?? new Project());
+        RefreshPage();
     }
-
-    
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

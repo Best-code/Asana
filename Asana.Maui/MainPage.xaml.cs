@@ -15,6 +15,11 @@ public partial class MainPage : ContentPage
 		Shell.Current.GoToAsync("//ToDoDetails");
 	}
 
+	private void AddProjectClicked(object sender, EventArgs e)
+	{
+		Shell.Current.GoToAsync("//ProjectDetails");
+	}
+
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
 		(BindingContext as MainPageViewModel)?.RefreshPage();

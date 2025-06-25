@@ -63,7 +63,7 @@
                                     <Label Grid.Row="1"
                                            Text="{Binding Model.Description}"/>
                                 </Grid>
-                                 <!-- Name / Description -->
+                                <!-- Name / Description -->
                                 <Grid Grid.Column="2">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -77,7 +77,7 @@
                                 <!-- Date -->
                                 <DatePicker Grid.Column="3"
                                             Date="{Binding Model.DueDate}"/>
-                                            <!-- Delete Button -->
+                                <!-- Delete Button -->
                                 <Button Grid.Column="4"
                                         Text="Delete"/>
                             </Grid>
@@ -86,9 +86,15 @@
                 </ListView.ItemTemplate>
             </ListView>
             <!-- Add ToDo Bar -->
-            <Grid Grid.Row="2">
-                <Button Text="Add ToDo"
+            <Grid Grid.Row="2" ColumnSpacing="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Text="Add ToDo"
                         Clicked="AddToDoClicked"/>
+                <Button Grid.Column="1" Text="Add Project"
+                        Clicked="AddProjectClicked"/>
             </Grid>
         </Grid>
     </VerticalStackLayout>

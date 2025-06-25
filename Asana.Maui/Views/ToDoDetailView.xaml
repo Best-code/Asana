@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Asana.Maui.Views.ToDoDetailView"
              Title="ToDoDetailView">
-       <VerticalStackLayout>
+       <VerticalStackLayout
+              Padding="30,0"
+              Spacing="25">
               <!-- Name and Due Date -->
-              <Grid>
+              <Grid ColumnSpacing="10">
                      <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="3*"/>
@@ -24,7 +26,7 @@
 
               </Grid>
               <!-- Description and ID -->
-              <Grid>
+              <Grid ColumnSpacing="10">
                      <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="3*"/>
@@ -44,7 +46,7 @@
               </Grid>
 
               <!-- Priority and Completion Status -->
-              <Grid>
+              <Grid ColumnSpacing="10">
                      <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="3*"/>
@@ -62,7 +64,7 @@
                                IsChecked="{Binding Model.IsComplete}"/>
               </Grid>
 
-              <Grid>
+              <Grid ColumnSpacing="10">
                      <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="3*"/>
@@ -75,11 +77,15 @@
                              ItemsSource="{Binding ProjectNames}"
                              SelectedItem="{Binding SelectedProject}"/>
               </Grid>
-
-
-              <Button Text="Add ToDo"
-                      Clicked="AddToDoClicked"/>
-              <Button Text="Cancel"
-                      Clicked="CancelClicked"/>
+              <Grid ColumnSpacing="10">
+                     <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                     </Grid.ColumnDefinitions>
+                     <Button Grid.Column="0" Text="Add ToDo"
+                             Clicked="AddToDoClicked"/>
+                     <Button Grid.Column="1" Text="Cancel"
+                             Clicked="CancelClicked"/>
+              </Grid>
        </VerticalStackLayout>
 </ContentPage>

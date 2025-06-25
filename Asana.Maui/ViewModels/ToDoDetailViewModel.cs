@@ -10,6 +10,7 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
 {
 
     UnitService _unitSvc;
+    ProjectService _projSvc;
     public ToDoDetailViewModel()
     {
         Model = new ToDo();
@@ -31,18 +32,20 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
     public void InitializeViewModel()
     {
         _unitSvc = UnitService.Current;
+        _projSvc = ProjectService.Current;
 
-        ProjectNames = new ObservableCollection<string>(_unitSvc.Projects.Select(p => p.Name));
-        if (ProjectNames != null && ProjectNames.Any())
-            SelectedProject = ProjectNames.First();
+        RefreshPage();
     }
 
 
     public void RefreshPage()
     {
         ProjectNames = new ObservableCollection<string>(_unitSvc.Projects.Select(p => p.Name));
-        if (ProjectNames != null && ProjectNames.Any())
+
+        if (ProjectNames.Any())
+        {
             SelectedProject = ProjectNames.First();
+        }
     }
 
 
@@ -50,7 +53,7 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
 
     public void AddToDo()
     {
-        ProjectService.Current.AddTodo(Model ?? new ToDo());
+        _projSvc.AddTodo(Model ?? new ToDo());
     }
 
     public List<int> Priorities

@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Asana.Core.Models;
 using Asana.Core.Services;
 
+// TODO Pickers are fucked when I leave a page and come back
 
 namespace Asana.Maui.ViewModels;
 
@@ -15,30 +16,19 @@ public class MainPageViewModel : INotifyPropertyChanged
     {
         _projSvc = ProjectService.Current;
         _unitSvc = UnitService.Current;
-
-        // ProjectNames = new ObservableCollection<string>([] _unitSvc.Projects.Select(p => p.Name));
-        ProjectNames = new ObservableCollection<string> { "All" };
-        foreach (Project p in _unitSvc.Projects)
-        {
-            ProjectNames.Add(p.Name);
-        }
-
-        if (ProjectNames != null && ProjectNames.Any())
-            SelectedProject = ProjectNames.First();
+        RefreshPage();
     }
-
-    public ToDo? Model { get; set; } = new();
 
     private ObservableCollection<String>? _projectNames;
     public ObservableCollection<String> ProjectNames
     {
-        get => _projectNames ?? new ObservableCollection<String>();
+        get => _projectNames;
         private set
         {
             if (_projectNames != value)
             {
                 _projectNames = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(ProjectNames));
             }
         }
     }
@@ -53,7 +43,7 @@ public class MainPageViewModel : INotifyPropertyChanged
             if (selectedProject != value)
             {
                 selectedProject = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(SelectedProject));
                 UpdateShownProjects();
             }
         }
@@ -70,7 +60,7 @@ public class MainPageViewModel : INotifyPropertyChanged
             {
                 isShowCompleteToDos = value;
                 UpdateShownProjects();
-                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(IsShowCompleteToDos));
             }
         }
     }
@@ -94,14 +84,21 @@ public class MainPageViewModel : INotifyPropertyChanged
 
     public void RefreshPage()
     {
-         ProjectNames = new ObservableCollection<string> { "All" };
+        ProjectNames = new ObservableCollection<string> { "All" };
         foreach (Project p in _unitSvc.Projects)
         {
             ProjectNames.Add(p.Name);
         }
 
-        if (ProjectNames != null && ProjectNames.Any())
+        if (!ProjectNames.Contains(SelectedProject))
+        {
             SelectedProject = ProjectNames.First();
+        }
+        else
+        {
+            UpdateShownProjects();
+        }
+
     }
 
     private void UpdateShownProjects()

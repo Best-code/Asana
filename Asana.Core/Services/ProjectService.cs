@@ -61,6 +61,7 @@ public class ProjectService
 
     public void AddTodo(ToDo toDo)
     {
+        toDo.Id = tIdGen.GetNextId();
         ToDos.Add(toDo);
     }
 
