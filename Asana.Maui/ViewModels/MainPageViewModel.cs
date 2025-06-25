@@ -16,7 +16,13 @@ public class MainPageViewModel : INotifyPropertyChanged
         _projSvc = ProjectService.Current;
         _unitSvc = UnitService.Current;
 
-        ProjectNames = new ObservableCollection<string>(_unitSvc.Projects.Select(p => p.Name));
+        // ProjectNames = new ObservableCollection<string>([] _unitSvc.Projects.Select(p => p.Name));
+        ProjectNames = new ObservableCollection<string> { "All" };
+        foreach (Project p in _unitSvc.Projects)
+        {
+            ProjectNames.Add(p.Name);
+        }
+
         if (ProjectNames != null && ProjectNames.Any())
             SelectedProject = ProjectNames.First();
     }
@@ -88,7 +94,12 @@ public class MainPageViewModel : INotifyPropertyChanged
 
     public void RefreshPage()
     {
-        ProjectNames = new ObservableCollection<string>(_unitSvc.Projects.Select(p => p.Name));
+         ProjectNames = new ObservableCollection<string> { "All" };
+        foreach (Project p in _unitSvc.Projects)
+        {
+            ProjectNames.Add(p.Name);
+        }
+
         if (ProjectNames != null && ProjectNames.Any())
             SelectedProject = ProjectNames.First();
     }
@@ -103,7 +114,7 @@ public class MainPageViewModel : INotifyPropertyChanged
 
 
         // Only get ToDos in selected project
-        if (SelectedProject != null)
+        if (SelectedProject != null && SelectedProject != "All")
         {
             int selectedId = _unitSvc.GetProjectByName(SelectedProject).Id;
             toDos = toDos.Where(t => t?.Model?.ProjectId == selectedId);
