@@ -17,7 +17,8 @@ public partial class MainPage : ContentPage
 	private void EditToDoClicked(object sender, EventArgs e)
 	{
 		var ToDoId = (BindingContext as MainPageViewModel)?.SelectedToDo?.Model?.Id ?? 0;
-		Shell.Current.GoToAsync($"//ToDoDetails?toDoId={ToDoId}");
+		if (ToDoId != 0)
+			Shell.Current.GoToAsync($"//ToDoDetails?toDoId={ToDoId}");
 	}
 
 	private void AddProjectClicked(object sender, EventArgs e)

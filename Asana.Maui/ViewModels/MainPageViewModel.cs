@@ -83,13 +83,20 @@ public class MainPageViewModel : INotifyPropertyChanged
             }
         }
     }
-
-    public ToDo EditToDo()
+    
+    private ToDoViewModel? selectedToDo;
+    public ToDoViewModel? SelectedToDo
     {
-        return _projSvc.AddUpdateToDo(SelectedToDo.Model);
+        get => selectedToDo;
+        set
+        {
+            if (value != selectedToDo)
+            {
+                selectedToDo = value;
+                NotifyPropertyChanged(nameof(SelectedToDo));
+            }
+        }
     }
-
-    public ToDoViewModel SelectedToDo { get; set; }
     private ObservableCollection<ToDoViewModel>? displayedToDos;
     public ObservableCollection<ToDoViewModel> ToDos
     {

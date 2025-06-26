@@ -10,7 +10,20 @@ public partial class ToDoDetailView : ContentPage
 		InitializeComponent();
 	}
 
-	public int ToDoId { get; set; }
+	private int toDoId;
+	public int ToDoId
+	{
+		get => toDoId;
+		set
+		{
+			if (value != toDoId)
+			{
+				toDoId = value;
+				BindingContext = new ToDoDetailViewModel(ToDoId);
+				(BindingContext as ToDoDetailViewModel)?.RefreshPage();
+			}
+		}
+	}
 
 
 	private void CancelClicked(object sender, EventArgs e)
@@ -27,8 +40,6 @@ public partial class ToDoDetailView : ContentPage
 
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
-		BindingContext = new ToDoDetailViewModel(ToDoId);
-		(BindingContext as ToDoDetailViewModel)?.RefreshPage();
 	}
 
 	private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)

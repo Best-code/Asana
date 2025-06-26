@@ -59,9 +59,9 @@ public class ProjectService
     //     AddTodo(createToDo);
     // }
 
-    public ToDo? AddUpdateToDo(ToDo toDo)
+    public ToDo? AddUpdateToDo(ToDo? toDo)
     {
-        if (toDo.Id == tIdGen.ShowNextId())
+        if (toDo != null && toDo.Id == tIdGen.ShowNextId())
         {
             toDo.Id = tIdGen.GetNextId();
             ToDos.Add(toDo);
