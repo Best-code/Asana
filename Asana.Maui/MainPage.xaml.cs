@@ -7,7 +7,6 @@ public partial class MainPage : ContentPage
 	public MainPage()
 	{
 		InitializeComponent();
-		BindingContext = new MainPageViewModel();
 	}
 
 	private void AddToDoClicked(object sender, EventArgs e)
@@ -22,6 +21,7 @@ public partial class MainPage : ContentPage
 
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
+		BindingContext = new MainPageViewModel();
 		(BindingContext as MainPageViewModel)?.RefreshPage();
 	}
 
