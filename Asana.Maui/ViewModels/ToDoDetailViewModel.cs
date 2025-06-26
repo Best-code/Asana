@@ -49,7 +49,10 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
 
         Model.ProjectId = _unitSvc.GetProjectByName(SelectedProject).Id;
         SelectedPriority = 0;
+        
         NotifyPropertyChanged(nameof(SelectedPriority));
+        NotifyPropertyChanged(nameof(SelectedProject));
+        NotifyPropertyChanged(nameof(Model));
     }
 
 

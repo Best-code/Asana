@@ -9,7 +9,6 @@ public partial class ProjectDetailView : ContentPage
 	public ProjectDetailView()
 	{
 		InitializeComponent();
-		BindingContext = new ProjectDetailViewModel();
 	}
 
 	public int ProjectId { get; set; }
