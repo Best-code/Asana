@@ -7,7 +7,7 @@ public class ToDo : INameDescription
 {
     public ToDo()
     {
-        Id = ToDoIdGenerator.Current.GetNextId();
+        Id = ToDoIdGenerator.Current.ShowNextId();
     }
     private int id;
     public int Id

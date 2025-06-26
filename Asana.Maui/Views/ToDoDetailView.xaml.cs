@@ -18,17 +18,16 @@ public partial class ToDoDetailView : ContentPage
 		Shell.Current.GoToAsync("//MainPage");
 	}
 
-	private void AddToDoClicked(object sender, EventArgs e)
+	private void SubmitClicked(object sender, EventArgs e)
 	{
-		(BindingContext as ToDoDetailViewModel).AddToDo();
+		(BindingContext as ToDoDetailViewModel).AddUpdateToDo();
 		Shell.Current.GoToAsync("//MainPage");
 		(BindingContext as ToDoDetailViewModel).RefreshPage();
 	}
 
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
-		// BindingContext = new ToDoDetailViewModel(ToDoId);
-		BindingContext = new ToDoDetailViewModel();
+		BindingContext = new ToDoDetailViewModel(ToDoId);
 		(BindingContext as ToDoDetailViewModel)?.RefreshPage();
 	}
 

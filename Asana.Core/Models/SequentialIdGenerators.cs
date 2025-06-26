@@ -6,6 +6,8 @@ public class ProjectIdGenerator : IIdGenerator
 {
     private int _currentId = 0;
     public int GetNextId() => ++_currentId;
+    public int ShowNextId() => _currentId + 1;
+
 
     private static ProjectIdGenerator? instance;
     public static ProjectIdGenerator Current
@@ -19,12 +21,16 @@ public class ProjectIdGenerator : IIdGenerator
             return instance;
         }
     }
+
+    private ProjectIdGenerator() { }
 }
 
 public class ToDoIdGenerator : IIdGenerator
 {
+
     private int _currentId = 0;
     public int GetNextId() => ++_currentId;
+    public int ShowNextId() => _currentId + 1;
 
 
     private static ToDoIdGenerator? instance;
@@ -40,4 +46,6 @@ public class ToDoIdGenerator : IIdGenerator
             return instance;
         }
     }
+
+    private ToDoIdGenerator() { }
 }
