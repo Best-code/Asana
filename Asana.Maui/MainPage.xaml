@@ -36,7 +36,8 @@
             </Grid>
             <!-- List of Projects -->
             <ListView Grid.Row="1"
-                      ItemsSource="{Binding ToDos}">
+                      ItemsSource="{Binding ToDos}"
+                      SelectedItem="{Binding SelectedToDo}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -90,10 +91,13 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Text="Add ToDo"
                         Clicked="AddToDoClicked"/>
-                <Button Grid.Column="1" Text="Add Project"
+                <Button Grid.Column="1" Text="Edit ToDo"
+                        Clicked="EditToDoClicked"/>
+                <Button Grid.Column="2" Text="Add Project"
                         Clicked="AddProjectClicked"/>
             </Grid>
         </Grid>

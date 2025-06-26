@@ -9,6 +9,8 @@ namespace Asana.Maui.ViewModels;
 public class ToDoDetailViewModel : INotifyPropertyChanged
 {
 
+    //TODO Even when I click Cancel it still submits the Model as Updated
+
     UnitService _unitSvc;
     ProjectService _projSvc;
     public ToDoDetailViewModel()
@@ -19,7 +21,7 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
 
     public ToDoDetailViewModel(int toDoId)
     {
-        Model = ProjectService.Current.ToDos.First(t => t.Id == toDoId) ?? new ToDo();
+        Model = ProjectService.Current.ToDos.FirstOrDefault(t => t.Id == toDoId) ?? new ToDo();
         InitializeViewModel();
     }
 
@@ -37,19 +39,23 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         RefreshPage();
     }
 
-
     public void RefreshPage()
     {
         ProjectNames = new ObservableCollection<string>(_unitSvc.Projects.Select(p => p.Name));
 
-        if (ProjectNames.Any())
+        if (Model == null)
+            Model = new();
+
+        // If the projectName isn't in the updated list then Default to being in the first project
+        SelectedProject = _unitSvc.GetProjectById(Model.ProjectId).Name;
+        if (!ProjectNames.Contains(SelectedProject))
         {
             SelectedProject = ProjectNames.First();
         }
 
         Model.ProjectId = _unitSvc.GetProjectByName(SelectedProject).Id;
-        SelectedPriority = 0;
-        
+        SelectedPriority = Model.Priority;
+
         NotifyPropertyChanged(nameof(SelectedPriority));
         NotifyPropertyChanged(nameof(SelectedProject));
         NotifyPropertyChanged(nameof(Model));
@@ -70,9 +76,9 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         }
     }
 
-    public void AddToDo()
+    public void AddUpdateToDo()
     {
-        _projSvc.AddTodo(Model ?? new ToDo());
+        _projSvc.AddUpdateToDo(Model ?? new ToDo());
         Model = new();
         SelectedProject = ProjectNames.FirstOrDefault() ?? "No Projects";
         Model.Priority = 0;

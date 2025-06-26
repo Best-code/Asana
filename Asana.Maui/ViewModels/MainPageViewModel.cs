@@ -19,10 +19,28 @@ public class MainPageViewModel : INotifyPropertyChanged
         RefreshPage();
     }
 
+    public void RefreshPage()
+    {
+        ProjectNames = new ObservableCollection<string> { "All" };
+        foreach (Project p in _unitSvc.Projects)
+        {
+            ProjectNames.Add(p.Name);
+        }
+
+        if (!ProjectNames.Contains(SelectedProject))
+        {
+            SelectedProject = ProjectNames.First();
+        }
+        else
+        {
+            UpdateShownProjects();
+        }
+    }
+
     private ObservableCollection<String>? _projectNames;
     public ObservableCollection<String> ProjectNames
     {
-        get => _projectNames;
+        get => _projectNames ?? new ObservableCollection<String>();
         private set
         {
             if (_projectNames != value)
@@ -50,6 +68,7 @@ public class MainPageViewModel : INotifyPropertyChanged
     }
 
 
+
     private bool? isShowCompleteToDos;
     public bool IsShowCompleteToDos
     {
@@ -65,6 +84,12 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
     }
 
+    public ToDo EditToDo()
+    {
+        return _projSvc.AddUpdateToDo(SelectedToDo.Model);
+    }
+
+    public ToDoViewModel SelectedToDo { get; set; }
     private ObservableCollection<ToDoViewModel>? displayedToDos;
     public ObservableCollection<ToDoViewModel> ToDos
     {
@@ -82,24 +107,7 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
     }
 
-    public void RefreshPage()
-    {
-        ProjectNames = new ObservableCollection<string> { "All" };
-        foreach (Project p in _unitSvc.Projects)
-        {
-            ProjectNames.Add(p.Name);
-        }
 
-        if (!ProjectNames.Contains(SelectedProject))
-        {
-            SelectedProject = ProjectNames.First();
-        }
-        else
-        {
-            UpdateShownProjects();
-        }
-
-    }
 
     private void UpdateShownProjects()
     {

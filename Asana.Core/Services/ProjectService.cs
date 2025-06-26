@@ -38,7 +38,7 @@ public class ProjectService
     }
 
 
-    private readonly ToDoIdGenerator tIdGen = new ToDoIdGenerator();
+    private readonly ToDoIdGenerator tIdGen = ToDoIdGenerator.Current;
 
     private ProjectService()
     {
@@ -59,11 +59,18 @@ public class ProjectService
     //     AddTodo(createToDo);
     // }
 
-    public void AddTodo(ToDo toDo)
+    public ToDo? AddUpdateToDo(ToDo toDo)
     {
-        toDo.Id = tIdGen.GetNextId();
-        ToDos.Add(toDo);
+        if (toDo.Id == tIdGen.ShowNextId())
+        {
+            toDo.Id = tIdGen.GetNextId();
+            ToDos.Add(toDo);
+        }
+
+        return toDo;
+
     }
+
 
     public ToDo GetToDoAt(int index)
     {

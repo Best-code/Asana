@@ -85,8 +85,8 @@
                             <ColumnDefinition/>
                      </Grid.ColumnDefinitions>
                      <Button Grid.Column="0"
-                                   Text="Add ToDo"
-                             Clicked="AddToDoClicked"/>
+                                   Text="Submit ToDo"
+                             Clicked="SubmitClicked"/>
                      <Button Grid.Column="1"
                                    Text="Cancel"
                              Clicked="CancelClicked"/>
