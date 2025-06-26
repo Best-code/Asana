@@ -129,7 +129,7 @@ public class MainPageViewModel : INotifyPropertyChanged
 
 
     // Updates the ToDos being shown based on the top menu bar - IsShowCompleted and the currently selected project
-    private void UpdateShownProjects()
+    public void UpdateShownProjects()
     {
         var toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Take(100);
         // If you don't want to show complete projects
@@ -146,6 +146,12 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
 
         ToDos = new ObservableCollection<ToDoDetailViewModel>(toDos);
+    }
+
+    public void InlineDeleteClicked()
+    {
+        UpdateShownProjects();
+        SelectedToDo = null;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

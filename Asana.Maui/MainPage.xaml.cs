@@ -36,6 +36,11 @@ public partial class MainPage : ContentPage
 		Shell.Current.GoToAsync("//ProjectDetails");
 	}
 
+	private void InlineDeleteClicked(object sender, EventArgs e)
+	{
+		(BindingContext as MainPageViewModel)?.InlineDeleteClicked();
+	}
+
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
 		BindingContext = new MainPageViewModel();

@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using Asana.Core.Models;
 using Asana.Core.Services;
 
@@ -40,6 +41,8 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         _unitSvc = UnitService.Current;
         _projSvc = ProjectService.Current;
 
+        DeleteCommand = new Command(DoDelete);
+
         RefreshPage();
     }
 
@@ -66,6 +69,8 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         NotifyPropertyChanged(nameof(Model));
     }
 
+
+    public ICommand DeleteCommand { get; set; }
     public ToDo? Model { get; set; }
 
     public void AddUpdateToDo()
@@ -74,6 +79,10 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         Model = new();
         SelectedProject = ProjectNames.FirstOrDefault() ?? "No Projects";
         Model.Priority = 0;
+    }
+
+    public void DoDelete() {
+        _projSvc.DeleteTodo(Model);
     }
 
     public List<int> Priorities

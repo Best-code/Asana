@@ -61,6 +61,7 @@ public class ProjectService
 
     public ToDo? AddUpdateToDo(ToDo? toDo)
     {
+        // This is the add part. If the toDo only has a place holder ID / ShowNextId then give it a the real next id and add it to the collection
         if (toDo != null && toDo.Id == tIdGen.ShowNextId())
         {
             toDo.Id = tIdGen.GetNextId();
@@ -70,18 +71,17 @@ public class ProjectService
         return toDo;
 
     }
-
+    // Deletes a passed in ToDo from the Collection
+    public ToDo? DeleteTodo(ToDo? toDo)
+    {
+        if (toDo != null)
+            ToDos.Remove(toDo);
+        return toDo;
+    }
 
     public ToDo GetToDoAt(int index)
     {
         return ToDos.ElementAtOrDefault(index) ?? new ToDo();
-    }
-
-    public ToDo? DeleteTodo(ToDo? toDo)
-    {
-        if(toDo != null)
-            ToDos.Remove(toDo);
-        return toDo;
     }
 
     public bool UpdateTodoName(int toDoIndex, string name)

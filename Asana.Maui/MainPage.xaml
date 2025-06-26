@@ -80,7 +80,7 @@
                                             Date="{Binding Model.DueDate}"/>
                                 <!-- Delete Button -->
                                 <Button Grid.Column="4"
-                                        Text="Delete"/>
+                                        Text="Delete" Clicked="InlineDeleteClicked" Command="{Binding DeleteCommand}"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
