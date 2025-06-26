@@ -46,6 +46,13 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         {
             SelectedProject = ProjectNames.First();
         }
+
+        Model.ProjectId = _unitSvc.GetProjectByName(SelectedProject).Id;
+        SelectedPriority = 0;
+        
+        NotifyPropertyChanged(nameof(SelectedPriority));
+        NotifyPropertyChanged(nameof(SelectedProject));
+        NotifyPropertyChanged(nameof(Model));
     }
 
 
@@ -68,7 +75,7 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         _projSvc.AddTodo(Model ?? new ToDo());
         Model = new();
         SelectedProject = ProjectNames.FirstOrDefault() ?? "No Projects";
-        SelectedPriority = 0;
+        Model.Priority = 0;
     }
 
     public List<int> Priorities

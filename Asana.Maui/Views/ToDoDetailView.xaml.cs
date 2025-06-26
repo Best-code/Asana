@@ -8,7 +8,6 @@ public partial class ToDoDetailView : ContentPage
 	public ToDoDetailView()
 	{
 		InitializeComponent();
-		BindingContext = new ToDoDetailViewModel();
 	}
 
 	public int ToDoId { get; set; }
@@ -29,6 +28,7 @@ public partial class ToDoDetailView : ContentPage
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
 		// BindingContext = new ToDoDetailViewModel(ToDoId);
+		BindingContext = new ToDoDetailViewModel();
 		(BindingContext as ToDoDetailViewModel)?.RefreshPage();
 	}
 
