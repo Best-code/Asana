@@ -50,12 +50,12 @@ public class MainPageViewModel : INotifyPropertyChanged
         return toDo;
     }
 
-    private ObservableCollection<ToDoViewModel>? displayedToDos;
-    public ObservableCollection<ToDoViewModel> ToDos
+    private ObservableCollection<ToDoDetailViewModel>? displayedToDos;
+    public ObservableCollection<ToDoDetailViewModel> ToDos
     {
         get
         {
-            return displayedToDos ?? new ObservableCollection<ToDoViewModel>();
+            return displayedToDos ?? new ObservableCollection<ToDoDetailViewModel>();
         }
         set
         {
@@ -114,8 +114,8 @@ public class MainPageViewModel : INotifyPropertyChanged
 
 
 
-    private ToDoViewModel? selectedToDo;
-    public ToDoViewModel? SelectedToDo
+    private ToDoDetailViewModel? selectedToDo;
+    public ToDoDetailViewModel? SelectedToDo
     {
         get => selectedToDo;
         set
@@ -132,11 +132,11 @@ public class MainPageViewModel : INotifyPropertyChanged
     // Updates the ToDos being shown based on the top menu bar - IsShowCompleted and the currently selected project
     private void UpdateShownProjects()
     {
-        var toDos = _projSvc.ToDos.Select(t => new ToDoViewModel(t)).Take(100);
+        var toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Take(100);
         // If you don't want to show complete projects
         if (!IsShowCompleteToDos)
             // Show todos where IsComplete is not true
-            toDos = _projSvc.ToDos.Select(t => new ToDoViewModel(t)).Where(t => !t?.Model?.IsComplete ?? false).Take(100);
+            toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Where(t => !t?.Model?.IsComplete ?? false).Take(100);
 
 
         // Only get ToDos in selected project
@@ -146,7 +146,7 @@ public class MainPageViewModel : INotifyPropertyChanged
             toDos = toDos.Where(t => t?.Model?.ProjectId == selectedId);
         }
 
-        ToDos = new ObservableCollection<ToDoViewModel>(toDos);
+        ToDos = new ObservableCollection<ToDoDetailViewModel>(toDos);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

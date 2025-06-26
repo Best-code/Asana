@@ -26,8 +26,8 @@ public partial class MainPage : ContentPage
 
 	private void DeleteToDoClicked(object sender, EventArgs e)
 	{
-		ToDoViewModel? toDo = (BindingContext as MainPageViewModel)?.SelectedToDo;
-		if(toDo != null)
+		ToDoDetailViewModel? toDo = (BindingContext as MainPageViewModel)?.SelectedToDo;
+		if (toDo != null)
 			(BindingContext as MainPageViewModel)?.DeleteToDo(toDo.Model);
 	}
 

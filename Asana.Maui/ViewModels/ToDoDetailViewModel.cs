@@ -59,6 +59,7 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
 
         Model.ProjectId = _unitSvc.GetProjectByName(SelectedProject).Id;
         SelectedPriority = Model.Priority;
+        ProjectName = _unitSvc.GetProjectByName(SelectedProject).Name;
 
         NotifyPropertyChanged(nameof(SelectedPriority));
         NotifyPropertyChanged(nameof(SelectedProject));
@@ -112,6 +113,21 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         }
     }
 
+
+
+    private string? projectName;
+    public string ProjectName
+    {
+        get { return projectName ?? "No Project Name"; }
+        set
+        {
+            if (value != projectName)
+            {
+                projectName = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
 
     private ObservableCollection<String>? _projectNames;
     public ObservableCollection<String> ProjectNames
