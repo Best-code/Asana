@@ -23,19 +23,7 @@ public class ProjectDetailViewModel : INotifyPropertyChanged
         Model = model ?? new Project();
     }
 
-    private Project? model;
-    public Project? Model
-    {
-        get => model;
-        set
-        {
-            if (model != value)
-            {
-                model = value;
-                NotifyPropertyChanged();
-            }
-        }
-    }
+    public Project? Model { get; set; }
 
     public void RefreshPage()
     {
@@ -45,7 +33,10 @@ public class ProjectDetailViewModel : INotifyPropertyChanged
 
     public void AddProject()
     {
-        UnitService.Current.AddProject(Model ?? new Project());
+        // As long as the Name is not null add the project
+        var modelName = Model?.Name;
+        if(modelName != null && modelName != "")
+            UnitService.Current.AddProject(Model ?? new Project());
         RefreshPage();
     }
 

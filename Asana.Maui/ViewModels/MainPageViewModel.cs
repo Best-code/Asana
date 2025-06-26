@@ -19,25 +19,24 @@ public class MainPageViewModel : INotifyPropertyChanged
         RefreshPage();
     }
 
+    // Reset the Selected ToDo, and the Displayed ToDos based on the Selected Project which may be reset if needed
     public void RefreshPage()
     {
+        // Get all the Project Names on refresh and add an All option to the top
         ProjectNames = new ObservableCollection<string> { "All" };
         foreach (Project p in _unitSvc.Projects)
         {
             ProjectNames.Add(p.Name);
         }
 
+        // If the new list doesn't have the name you selected then select first available option
         if (!ProjectNames.Contains(SelectedProject))
-        {
             SelectedProject = ProjectNames.First();
-        }
         else
-        {
             UpdateShownProjects();
-        }
 
-        selectedToDo = null;
-        NotifyPropertyChanged(nameof(SelectedToDo));
+        // ToDo selected for delete / Edit
+        SelectedToDo = null;
     }
 
 

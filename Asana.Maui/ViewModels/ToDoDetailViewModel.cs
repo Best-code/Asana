@@ -66,20 +66,7 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         NotifyPropertyChanged(nameof(Model));
     }
 
-
-    private ToDo? model;
-    public ToDo? Model
-    {
-        get => model;
-        set
-        {
-            if (model != value)
-            {
-                model = value;
-                NotifyPropertyChanged(nameof(Model));
-            }
-        }
-    }
+    public ToDo? Model { get; set; }
 
     public void AddUpdateToDo()
     {

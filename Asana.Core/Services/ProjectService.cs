@@ -77,9 +77,10 @@ public class ProjectService
         return ToDos.ElementAtOrDefault(index) ?? new ToDo();
     }
 
-    public ToDo? DeleteTodo(ToDo toDo)
+    public ToDo? DeleteTodo(ToDo? toDo)
     {
-        ToDos.Remove(toDo);
+        if(toDo != null)
+            ToDos.Remove(toDo);
         return toDo;
     }
 

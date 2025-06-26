@@ -39,11 +39,11 @@ public partial class ToDoDetailView : ContentPage
 		(BindingContext as ToDoDetailViewModel).RefreshPage();
 	}
 
-	// private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
-	// {
-	// }
+	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+	{
+	}
 
-	// private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)
-	// {
-	// }
+	private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)
+	{
+	}
 }
