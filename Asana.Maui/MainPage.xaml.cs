@@ -1,5 +1,7 @@
 ﻿namespace Asana.Maui;
 
+using Asana.Core.Models;
+using Asana.Core.Services;
 using ViewModels;
 
 public partial class MainPage : ContentPage
@@ -20,6 +22,13 @@ public partial class MainPage : ContentPage
 		var ToDoId = (BindingContext as MainPageViewModel)?.SelectedToDo?.Model?.Id ?? 0;
 		if (ToDoId != 0)
 			Shell.Current.GoToAsync($"//ToDoDetails?toDoId={ToDoId}");
+	}
+
+	private void DeleteToDoClicked(object sender, EventArgs e)
+	{
+		ToDoViewModel? toDo = (BindingContext as MainPageViewModel)?.SelectedToDo;
+		if(toDo != null)
+			(BindingContext as MainPageViewModel)?.DeleteToDo(toDo.Model);
 	}
 
 	private void AddProjectClicked(object sender, EventArgs e)

@@ -35,68 +35,21 @@ public class MainPageViewModel : INotifyPropertyChanged
         {
             UpdateShownProjects();
         }
+
+        selectedToDo = null;
+        NotifyPropertyChanged(nameof(SelectedToDo));
     }
 
-    private ObservableCollection<String>? _projectNames;
-    public ObservableCollection<String> ProjectNames
+
+    public ToDo? DeleteToDo(ToDo? toDo)
     {
-        get => _projectNames ?? new ObservableCollection<String>();
-        private set
-        {
-            if (_projectNames != value)
-            {
-                _projectNames = value;
-                NotifyPropertyChanged(nameof(ProjectNames));
-            }
-        }
+        _projSvc.DeleteTodo(toDo);
+        UpdateShownProjects();
+        selectedToDo = null;
+        NotifyPropertyChanged(nameof(SelectedToDo));
+        return toDo;
     }
 
-
-    private string? selectedProject;
-    public string SelectedProject
-    {
-        get => selectedProject ?? "Null Project";
-        set
-        {
-            if (selectedProject != value)
-            {
-                selectedProject = value;
-                NotifyPropertyChanged(nameof(SelectedProject));
-                UpdateShownProjects();
-            }
-        }
-    }
-
-
-
-    private bool? isShowCompleteToDos;
-    public bool IsShowCompleteToDos
-    {
-        get { return isShowCompleteToDos ?? true; }
-        set
-        {
-            if (isShowCompleteToDos != value)
-            {
-                isShowCompleteToDos = value;
-                UpdateShownProjects();
-                NotifyPropertyChanged(nameof(IsShowCompleteToDos));
-            }
-        }
-    }
-    
-    private ToDoViewModel? selectedToDo;
-    public ToDoViewModel? SelectedToDo
-    {
-        get => selectedToDo;
-        set
-        {
-            if (value != selectedToDo)
-            {
-                selectedToDo = value;
-                NotifyPropertyChanged(nameof(SelectedToDo));
-            }
-        }
-    }
     private ObservableCollection<ToDoViewModel>? displayedToDos;
     public ObservableCollection<ToDoViewModel> ToDos
     {
@@ -114,8 +67,69 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
     }
 
+    private bool? isShowCompleteToDos;
+    public bool IsShowCompleteToDos
+    {
+        get { return isShowCompleteToDos ?? true; }
+        set
+        {
+            if (isShowCompleteToDos != value)
+            {
+                isShowCompleteToDos = value;
+                UpdateShownProjects();
+                NotifyPropertyChanged(nameof(IsShowCompleteToDos));
+            }
+        }
+    }
+
+    private ObservableCollection<String>? _projectNames;
+    public ObservableCollection<String> ProjectNames
+    {
+        get => _projectNames ?? new ObservableCollection<String>();
+        private set
+        {
+            if (_projectNames != value)
+            {
+                _projectNames = value;
+                NotifyPropertyChanged(nameof(ProjectNames));
+            }
+        }
+    }
+
+    // Selected Project for displaying only the associated ToDos
+    private string? selectedProject;
+    public string SelectedProject
+    {
+        get => selectedProject ?? "Null Project";
+        set
+        {
+            if (selectedProject != value)
+            {
+                selectedProject = value;
+                NotifyPropertyChanged(nameof(SelectedProject));
+                UpdateShownProjects();
+            }
+        }
+    }
 
 
+
+    private ToDoViewModel? selectedToDo;
+    public ToDoViewModel? SelectedToDo
+    {
+        get => selectedToDo;
+        set
+        {
+            if (value != selectedToDo)
+            {
+                selectedToDo = value;
+                NotifyPropertyChanged(nameof(SelectedToDo));
+            }
+        }
+    }
+
+
+    // Updates the ToDos being shown based on the top menu bar - IsShowCompleted and the currently selected project
     private void UpdateShownProjects()
     {
         var toDos = _projSvc.ToDos.Select(t => new ToDoViewModel(t)).Take(100);
