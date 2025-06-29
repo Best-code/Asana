@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using Asana.Core.Models;
 using Asana.Core.Services;
 
@@ -40,6 +41,8 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         _unitSvc = UnitService.Current;
         _projSvc = ProjectService.Current;
 
+        DeleteCommand = new Command(DoDelete);
+
         RefreshPage();
     }
 
@@ -59,6 +62,7 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
 
         Model.ProjectId = _unitSvc.GetProjectByName(SelectedProject).Id;
         SelectedPriority = Model.Priority;
+        ProjectName = _unitSvc.GetProjectByName(SelectedProject).Name;
 
         NotifyPropertyChanged(nameof(SelectedPriority));
         NotifyPropertyChanged(nameof(SelectedProject));
@@ -66,19 +70,8 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
     }
 
 
-    private ToDo? model;
-    public ToDo? Model
-    {
-        get => model;
-        set
-        {
-            if (model != value)
-            {
-                model = value;
-                NotifyPropertyChanged(nameof(Model));
-            }
-        }
-    }
+    public ICommand DeleteCommand { get; set; }
+    public ToDo? Model { get; set; }
 
     public void AddUpdateToDo()
     {
@@ -86,6 +79,10 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         Model = new();
         SelectedProject = ProjectNames.FirstOrDefault() ?? "No Projects";
         Model.Priority = 0;
+    }
+
+    public void DoDelete() {
+        _projSvc.DeleteTodo(Model);
     }
 
     public List<int> Priorities
@@ -112,6 +109,21 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         }
     }
 
+
+
+    private string? projectName;
+    public string ProjectName
+    {
+        get { return projectName ?? "No Project Name"; }
+        set
+        {
+            if (value != projectName)
+            {
+                projectName = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
 
     private ObservableCollection<String>? _projectNames;
     public ObservableCollection<String> ProjectNames

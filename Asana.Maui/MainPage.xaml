@@ -80,28 +80,39 @@
                                             Date="{Binding Model.DueDate}"/>
                                 <!-- Delete Button -->
                                 <Button Grid.Column="4"
-                                        Text="Delete"/>
+                                        Text="Delete"
+                                        Clicked="InlineDeleteClicked"
+                                        Command="{Binding DeleteCommand}"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             <!-- Add ToDo Bar -->
-            <Grid Grid.Row="2" ColumnSpacing="5">
+            <Grid Grid.Row="2"
+                    ColumnSpacing="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Text="Add ToDo"
+                <Button Grid.Column="0"
+                        Text="Add ToDo"
                         Clicked="AddToDoClicked"/>
-                <Button Grid.Column="1" Text="Edit Selected ToDo"
+                <Button Grid.Column="1"
+                        Text="Edit Selected ToDo"
                         Clicked="EditToDoClicked"/>
-                <Button Grid.Column="2" Text="Delete Selected ToDo"
+                <Button Grid.Column="2"
+                        Text="Delete Selected ToDo"
                         Clicked="DeleteToDoClicked"/>
-                <Button Grid.Column="3" Text="Add Project"
+                <Button Grid.Column="3"
+                        Text="Add Project"
                         Clicked="AddProjectClicked"/>
+                <Button Grid.Column="4"
+                        Text="Delete Selected Project"
+                        Clicked="DeleteProjectClicked"/>
             </Grid>
         </Grid>
     </VerticalStackLayout>

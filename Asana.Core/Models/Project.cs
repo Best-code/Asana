@@ -26,7 +26,7 @@ public class Project : INameDescription
     private string? name;
     public string Name
     {
-        get { return name; }
+        get { return name ?? "No Project Name"; }
         set
         {
             if (value != name)
@@ -37,7 +37,7 @@ public class Project : INameDescription
     private string? description;
     public string Description
     {
-        get { return description; }
+        get { return description ?? "No Project Description"; }
         set
         {
             if (value != description)

@@ -43,7 +43,7 @@ public class UnitService
     {
         Projects = new ObservableCollection<Project>() {
             new Project(){Name = "Project One",  Description = "This is my first project", Id = pIdGen.GetNextId()},
-            new Project(){Name = "Project Two",  Description = "This is my second project", Id = pIdGen.GetNextId()},
+            // new Project(){Name = "Project Two",  Description = "This is my second project", Id = pIdGen.GetNextId()},
         };
     }
 
@@ -79,8 +79,9 @@ public class UnitService
     }
 
     // Delete a project
-    public bool DeleteProject(Project project)
+    public bool DeleteProject(Project? project)
     {
+        if (project == null) return false;
         return Projects.Remove(project);
     }
 

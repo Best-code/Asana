@@ -19,25 +19,24 @@ public class MainPageViewModel : INotifyPropertyChanged
         RefreshPage();
     }
 
+    // Reset the Selected ToDo, and the Displayed ToDos based on the Selected Project which may be reset if needed
     public void RefreshPage()
     {
+        // Get all the Project Names on refresh and add an All option to the top
         ProjectNames = new ObservableCollection<string> { "All" };
         foreach (Project p in _unitSvc.Projects)
         {
             ProjectNames.Add(p.Name);
         }
 
+        // If the new list doesn't have the name you selected then select first available option
         if (!ProjectNames.Contains(SelectedProject))
-        {
             SelectedProject = ProjectNames.First();
-        }
         else
-        {
             UpdateShownProjects();
-        }
 
-        selectedToDo = null;
-        NotifyPropertyChanged(nameof(SelectedToDo));
+        // ToDo selected for delete / Edit
+        SelectedToDo = null;
     }
 
 
@@ -50,12 +49,33 @@ public class MainPageViewModel : INotifyPropertyChanged
         return toDo;
     }
 
-    private ObservableCollection<ToDoViewModel>? displayedToDos;
-    public ObservableCollection<ToDoViewModel> ToDos
+    public Project? DeleteProject(Project? project)
+    {
+        _unitSvc.DeleteProject(project);
+        ClearToDosFromProject(project);
+        RefreshPage();
+        return project;
+    }
+
+    private void ClearToDosFromProject(Project? proj)
+    {
+        for (int x = _projSvc.ToDos.Count() - 1; x >= 0; x--)
+        {
+            if (_projSvc.ToDos[x]?.ProjectId == proj?.Id)
+            {
+                _projSvc.ToDos.RemoveAt(x);
+            }
+        }
+
+        SelectedProject = "All";
+    }
+
+    private ObservableCollection<ToDoDetailViewModel> displayedToDos;
+    public ObservableCollection<ToDoDetailViewModel> ToDos
     {
         get
         {
-            return displayedToDos ?? new ObservableCollection<ToDoViewModel>();
+            return displayedToDos;
         }
         set
         {
@@ -114,8 +134,8 @@ public class MainPageViewModel : INotifyPropertyChanged
 
 
 
-    private ToDoViewModel? selectedToDo;
-    public ToDoViewModel? SelectedToDo
+    private ToDoDetailViewModel? selectedToDo;
+    public ToDoDetailViewModel? SelectedToDo
     {
         get => selectedToDo;
         set
@@ -130,13 +150,13 @@ public class MainPageViewModel : INotifyPropertyChanged
 
 
     // Updates the ToDos being shown based on the top menu bar - IsShowCompleted and the currently selected project
-    private void UpdateShownProjects()
+    public void UpdateShownProjects()
     {
-        var toDos = _projSvc.ToDos.Select(t => new ToDoViewModel(t)).Take(100);
+        var toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Take(100);
         // If you don't want to show complete projects
         if (!IsShowCompleteToDos)
             // Show todos where IsComplete is not true
-            toDos = _projSvc.ToDos.Select(t => new ToDoViewModel(t)).Where(t => !t?.Model?.IsComplete ?? false).Take(100);
+            toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Where(t => !t?.Model?.IsComplete ?? false).Take(100);
 
 
         // Only get ToDos in selected project
@@ -146,7 +166,13 @@ public class MainPageViewModel : INotifyPropertyChanged
             toDos = toDos.Where(t => t?.Model?.ProjectId == selectedId);
         }
 
-        ToDos = new ObservableCollection<ToDoViewModel>(toDos);
+        ToDos = new ObservableCollection<ToDoDetailViewModel>(toDos);
+    }
+
+    public void InlineDeleteClicked()
+    {
+        UpdateShownProjects();
+        SelectedToDo = null;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -13,8 +13,14 @@ public partial class MainPage : ContentPage
 
 	private void AddToDoClicked(object sender, EventArgs e)
 	{
-		// Passing -1 So it still hits the getter and sets the binding context but also knows to create a new model and not look for old
-		Shell.Current.GoToAsync("//ToDoDetails?toDoId=-1");
+
+		// You must have atleast 1 projectName other than "All" to be able to add a toDo
+		int? projectCount = (BindingContext as MainPageViewModel)?.ProjectNames.Count();
+		if (projectCount != null && projectCount > 1)
+		{
+			// Passing -1 So it still hits the getter and sets the binding context but also knows to create a new model and not look for old
+			Shell.Current.GoToAsync("//ToDoDetails?toDoId=-1");
+		}
 	}
 
 	private void EditToDoClicked(object sender, EventArgs e)
@@ -26,14 +32,30 @@ public partial class MainPage : ContentPage
 
 	private void DeleteToDoClicked(object sender, EventArgs e)
 	{
-		ToDoViewModel? toDo = (BindingContext as MainPageViewModel)?.SelectedToDo;
-		if(toDo != null)
+		ToDoDetailViewModel? toDo = (BindingContext as MainPageViewModel)?.SelectedToDo;
+		if (toDo != null)
 			(BindingContext as MainPageViewModel)?.DeleteToDo(toDo.Model);
+	}
+
+	private void DeleteProjectClicked(object sender, EventArgs e)
+	{
+		string selectedProj = (BindingContext as MainPageViewModel)?.SelectedProject;
+		if (selectedProj != "All" && selectedProj != null)
+		{
+			Project proj = UnitService.Current.GetProjectByName(selectedProj);
+			if (proj != null)
+				(BindingContext as MainPageViewModel)?.DeleteProject(proj);
+		}
 	}
 
 	private void AddProjectClicked(object sender, EventArgs e)
 	{
 		Shell.Current.GoToAsync("//ProjectDetails");
+	}
+
+	private void InlineDeleteClicked(object sender, EventArgs e)
+	{
+		(BindingContext as MainPageViewModel)?.InlineDeleteClicked();
 	}
 
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
