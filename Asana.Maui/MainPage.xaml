@@ -21,6 +21,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0"
                        Text="Show Completed Tasks:"/>
@@ -33,6 +34,7 @@
                 <Picker Grid.Column="3"
                         ItemsSource="{Binding ProjectNames}"
                         SelectedItem="{Binding SelectedProject}"/>
+                <Button Grid.Column="4" Text="Delete Project" Clicked="DeleteProjectClicked"/>
             </Grid>
             <!-- List of Projects -->
             <ListView Grid.Row="1"

@@ -49,12 +49,33 @@ public class MainPageViewModel : INotifyPropertyChanged
         return toDo;
     }
 
-    private ObservableCollection<ToDoDetailViewModel>? displayedToDos;
+    public Project? DeleteProject(Project? project)
+    {
+        _unitSvc.DeleteProject(project);
+        ClearToDosFromProject(project);
+        RefreshPage();
+        return project;
+    }
+
+    private void ClearToDosFromProject(Project? proj)
+    {
+        for (int x = _projSvc.ToDos.Count() - 1; x >= 0; x--)
+        {
+            if (_projSvc.ToDos[x]?.ProjectId == proj?.Id)
+            {
+                _projSvc.ToDos.RemoveAt(x);
+            }
+        }
+
+        SelectedProject = "All";
+    }
+
+    private ObservableCollection<ToDoDetailViewModel> displayedToDos;
     public ObservableCollection<ToDoDetailViewModel> ToDos
     {
         get
         {
-            return displayedToDos ?? new ObservableCollection<ToDoDetailViewModel>();
+            return displayedToDos;
         }
         set
         {
