@@ -38,7 +38,7 @@ public class UnitService
     }
 
     private readonly ProjectIdGenerator pIdGen = ProjectIdGenerator.Current;
-    
+
     public UnitService()
     {
         Projects = new ObservableCollection<Project>() {
@@ -47,35 +47,33 @@ public class UnitService
         };
     }
 
-
-    // Create a project
-    public void CreateProject(string projectName, string projectDescription)
-    {
-        Project newProject = new Project() { Name = projectName, Description = projectDescription };
-        AddProject(newProject);
-    }
-
     // Add a project to the array
-    public bool AddProject(Project project)
+    public Project? AddUpdateProject(Project project)
     {
-        project.Id = pIdGen.GetNextId();
-        Projects.Add(project);
-        return true;
+
+        // This is the add part. If the toDo only has a place holder ID / ShowNextId then give it a the real next id and add it to the collection
+        if (project != null && project.Id == pIdGen.ShowNextId())
+        {
+            project.Id = pIdGen.GetNextId();
+            Projects.Add(project);
+        }
+
+        return project;
     }
 
-    public Project GetProjectAt(int index)
+    public Project? GetProjectAt(int index)
     {
-        return Projects.ElementAtOrDefault(index) ?? new Project();
+        return Projects.ElementAtOrDefault(index);
     }
 
-    public Project GetProjectByName(string name)
+    public Project? GetProjectByName(string name)
     {
-        return Projects.FirstOrDefault(p => p.Name == name) ?? new Project();
+        return Projects.FirstOrDefault(p => p.Name == name);
     }
 
-        public Project GetProjectById(int id)
+    public Project? GetProjectById(int id)
     {
-        return Projects.FirstOrDefault(p => p.Id == id) ?? new Project();
+        return Projects.FirstOrDefault(p => p.Id == id);
     }
 
     // Delete a project

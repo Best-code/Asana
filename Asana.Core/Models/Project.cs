@@ -8,7 +8,8 @@ namespace Asana.Core.Models;
 public class Project : INameDescription
 {
     public Project()
-    { 
+    {
+        Id = ToDoIdGenerator.Current.ShowNextId();
     }
     public ObservableCollection<ToDo>? ToDos = ProjectService.Current.ToDos;
 
@@ -26,7 +27,7 @@ public class Project : INameDescription
     private string? name;
     public string Name
     {
-        get { return name ?? "No Project Name"; }
+        get { return name ?? ""; }
         set
         {
             if (value != name)
@@ -37,7 +38,7 @@ public class Project : INameDescription
     private string? description;
     public string Description
     {
-        get { return description ?? "No Project Description"; }
+        get { return description ?? ""; }
         set
         {
             if (value != description)

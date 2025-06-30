@@ -11,22 +11,33 @@ public partial class ProjectDetailView : ContentPage
 		InitializeComponent();
 	}
 
-	public int ProjectId { get; set; }
+	private int projectId;
+	public int ProjectId
+	{
+		get => projectId;
+		set
+		{
+			if (value != projectId)
+			{
+				projectId = value;
+				BindingContext = new ProjectDetailViewModel(ProjectId);
+			}
+		}
+	}
 
 	private void CancelClicked(object sender, EventArgs e)
 	{
 		Shell.Current.GoToAsync("//MainPage");
 	}
 
-	private void AddProjectClicked(object sender, EventArgs e)
+	private void SubmitClicked(object sender, EventArgs e)
 	{
-		(BindingContext as ProjectDetailViewModel)?.AddProject();
+		(BindingContext as ProjectDetailViewModel).AddUpdateProject();
 		Shell.Current.GoToAsync("//MainPage");
 	}
 
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
-		BindingContext = new ProjectDetailViewModel(ProjectId);
 	}
 
 	private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)
