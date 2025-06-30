@@ -79,49 +79,4 @@ public class ProjectService
         return ToDos.ElementAtOrDefault(index) ?? new ToDo();
     }
 
-    public bool UpdateTodoName(int toDoIndex, string name)
-    {
-        if (ToDos.Count == 0)
-            return false;
-        if (toDoIndex < 0 || toDoIndex > ToDos.Count())
-            return false;
-
-        ToDos[toDoIndex].Name = name;
-        return true;
-    }
-
-    public bool UpdateTodoDescription(int toDoIndex, string description)
-    {
-        if (ToDos.Count == 0)
-            return false;
-        if (toDoIndex < 0 || toDoIndex > ToDos.Count())
-            return false;
-
-
-        ToDos[toDoIndex].Description = description;
-        return true;
-    }
-
-    public bool UpdateTodoDueDate(int toDoIndex, DateTime dueDate)
-    {
-        if (ToDos.Count == 0)
-            return false;
-        if (toDoIndex < 0 || toDoIndex > ToDos.Count())
-            return false;
-
-        ToDos[toDoIndex].DueDate = dueDate;
-        return true;
-    }
-
-    public bool UpdateTodoStatus(int toDoIndex, bool status)
-    {
-        if (ToDos.Count == 0)
-            return false;
-        if (toDoIndex < 0 || toDoIndex > ToDos.Count())
-            return false;
-
-        ToDos[toDoIndex].IsComplete = status;
-        return true;
-    }
-
 }

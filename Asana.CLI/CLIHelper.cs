@@ -54,7 +54,7 @@ public static class CLIHelper
                 Console.WriteLine();
                 Project addProject = new Project() { Name = projectName, Description = projectDescription };
 
-                UnitService.Current.AddProject(addProject);
+                UnitService.Current.AddUpdateProject(addProject);
                 break;
             case 2:
                 int projIndex = SelectItem("Which Project would you like to Delete?\n", Projects);
@@ -171,7 +171,7 @@ public static class CLIHelper
                     Console.WriteLine();
                     ToDo addMe = new ToDo() { Name = toDoName, Description = toDoDescription, DueDate = DateTime.Now };
 
-                    ProjectService.Current.AddTodo(addMe);
+                    ProjectService.Current.AddUpdateToDo(addMe);
                     break;
                 // Delete ToDo
                 case 4:
@@ -237,16 +237,16 @@ public static class CLIHelper
             {
                 case 1:
                     Console.Write($"Name: ");
-                    if (ProjectService.Current.UpdateTodoName(toDoIndex, Console.ReadLine() ?? "ToDo"))
+                    if (UpdateTodoName(toDoIndex, Console.ReadLine() ?? "ToDo"))
                         Console.WriteLine($"Name Updated to {project.ToDos[toDoIndex].Name}\n");
                     break;
                 case 2:
                     Console.Write($"Description: ");
-                    if (ProjectService.Current.UpdateTodoDescription(toDoIndex, Console.ReadLine() ?? "ToDo"))
+                    if (UpdateTodoDescription(toDoIndex, Console.ReadLine() ?? "ToDo"))
                         Console.WriteLine($"{project.ToDos[toDoIndex].Name} Description Updated\n");
                     break;
                 case 3:
-                    ProjectService.Current.UpdateTodoStatus(toDoIndex, !project.ToDos[toDoIndex].IsComplete);
+                    UpdateTodoStatus(toDoIndex, !project.ToDos[toDoIndex].IsComplete);
                     Console.WriteLine($"{project.ToDos[toDoIndex].Name} Status Updated to {(project.ToDos[toDoIndex].IsComplete ? "Complete" : "Incomplete")}\n");
                     break;
                 case 0:
@@ -286,4 +286,51 @@ public static class CLIHelper
 
         return projectIndex - 1;
     }
+
+
+    public static bool UpdateTodoName(int toDoIndex, string name)
+    {
+        if (ProjectService.Current.ToDos.Count == 0)
+            return false;
+        if (toDoIndex < 0 || toDoIndex > ProjectService.Current.ToDos.Count())
+            return false;
+
+        ProjectService.Current.ToDos[toDoIndex].Name = name;
+        return true;
+    }
+
+    public static bool UpdateTodoDescription(int toDoIndex, string description)
+    {
+        if (ProjectService.Current.ToDos.Count == 0)
+            return false;
+        if (toDoIndex < 0 || toDoIndex > ProjectService.Current.ToDos.Count())
+            return false;
+
+
+        ProjectService.Current.ToDos[toDoIndex].Description = description;
+        return true;
+    }
+
+    public static bool UpdateTodoDueDate(int toDoIndex, DateTime dueDate)
+    {
+        if (ProjectService.Current.ToDos.Count == 0)
+            return false;
+        if (toDoIndex < 0 || toDoIndex > ProjectService.Current.ToDos.Count())
+            return false;
+
+        ProjectService.Current.ToDos[toDoIndex].DueDate = dueDate;
+        return true;
+    }
+
+    public static bool UpdateTodoStatus(int toDoIndex, bool status)
+    {
+        if (ProjectService.Current.ToDos.Count == 0)
+            return false;
+        if (toDoIndex < 0 || toDoIndex > ProjectService.Current.ToDos.Count())
+            return false;
+
+        ProjectService.Current.ToDos[toDoIndex].IsComplete = status;
+        return true;
+    }
+
 }
