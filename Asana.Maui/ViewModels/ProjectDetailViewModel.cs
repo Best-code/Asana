@@ -8,36 +8,50 @@ namespace Asana.Maui.ViewModels;
 
 public class ProjectDetailViewModel : INotifyPropertyChanged
 {
+    UnitService _unitSvc;
     public ProjectDetailViewModel()
     {
+        InitializeViewModel();
         Model = new Project();
     }
 
     public ProjectDetailViewModel(int projectId)
     {
-                // Passing negative one is for adding a new model / Passing an existing ID is for editing
+        InitializeViewModel();
+
+        // Passing negative one is for adding a new model / Passing an existing ID is for editing
         if (projectId == -1)
             Model = new Project();
         else
-            Model = UnitService.Current.Projects.FirstOrDefault(p => p.Id == projectId) ?? new Project();
+            Model = _unitSvc.Projects.FirstOrDefault(p => p.Id == projectId) ?? new Project();
+
     }
 
     public ProjectDetailViewModel(Project model)
     {
+        InitializeViewModel();
         Model = model ?? new Project();
     }
 
     public Project? Model { get; set; }
 
+
+    public void InitializeViewModel()
+    {
+        _unitSvc = UnitService.Current;
+
+        RefreshPage();
+    }
     public void RefreshPage()
     {
+        Model = new();
         NotifyPropertyChanged(nameof(Model));
     }
 
     public void AddUpdateProject()
     {
         // As long as the Name is not null add the project
-        UnitService.Current.AddUpdateProject(Model);
+        _unitSvc.AddUpdateProject(Model);
         RefreshPage();
     }
 

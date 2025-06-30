@@ -33,9 +33,8 @@ public partial class ToDoDetailView : ContentPage
 
 	private void SubmitClicked(object sender, EventArgs e)
 	{
-		(BindingContext as ToDoDetailViewModel).AddUpdateToDo();
+		(BindingContext as ToDoDetailViewModel)?.AddUpdateToDo();
 		Shell.Current.GoToAsync("//MainPage");
-		// (BindingContext as ToDoDetailViewModel).RefreshPage();
 	}
 
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)

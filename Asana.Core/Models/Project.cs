@@ -9,14 +9,14 @@ public class Project : INameDescription
 {
     public Project()
     {
-        Id = ToDoIdGenerator.Current.ShowNextId();
+        Id = ProjectIdGenerator.Current.ShowNextId();
     }
     public ObservableCollection<ToDo>? ToDos = ProjectService.Current.ToDos;
 
-    private int? id;
+    private int id;
     public int Id
     {
-        get { return id ?? ProjectIdGenerator.Current.GetNextId(); }
+        get { return id; }
         set
         {
             if (value != id)

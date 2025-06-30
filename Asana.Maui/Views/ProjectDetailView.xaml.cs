@@ -38,6 +38,7 @@ public partial class ProjectDetailView : ContentPage
 
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
 	{
+		// BindingContext = new ProjectDetailViewModel(ProjectId);
 	}
 
 	private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)
