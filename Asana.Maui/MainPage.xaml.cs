@@ -13,7 +13,6 @@ public partial class MainPage : ContentPage
 
 	private void AddToDoClicked(object sender, EventArgs e)
 	{
-
 		// You must have atleast 1 projectName other than "All" to be able to add a toDo
 		int? projectCount = (BindingContext as MainPageViewModel)?.ProjectNames.Count();
 		if (projectCount != null && projectCount > 1)
@@ -50,7 +49,21 @@ public partial class MainPage : ContentPage
 
 	private void AddProjectClicked(object sender, EventArgs e)
 	{
-		Shell.Current.GoToAsync("//ProjectDetails");
+		Shell.Current.GoToAsync("//ProjectDetails?projectId=-1");
+	}
+
+	private void EditProjectClicked(object sender, EventArgs e)
+	{
+		Project? project = UnitService.Current.GetProjectByName((BindingContext as MainPageViewModel).SelectedProject);
+
+		//If the selectedProj exist and isn't the "All" option
+		if (project != null && project.Name != "All")
+		{
+			var ProjectId = project.Id;
+			if (ProjectId != 0)
+				Shell.Current.GoToAsync($"//ProjectDetails?projectId={ProjectId}");
+		}
+
 	}
 
 	private void InlineDeleteClicked(object sender, EventArgs e)

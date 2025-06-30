@@ -52,12 +52,7 @@ public class ProjectService
         // ToDos.Last().IsComplete = true;
     }
 
-    // public void CreateTodo(string toDoName, string toDoDescription, int projId, DateTime dueDate)
-    // {
-    //     if (toDoName == "") toDoName = "ToDo";
-    //     ToDo createToDo = new ToDo() { Name = toDoName, Description = toDoDescription, ProjectId = projId, DueDate = dueDate };
-    //     AddTodo(createToDo);
-    // }
+
 
     public ToDo? AddUpdateToDo(ToDo? toDo)
     {

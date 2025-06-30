@@ -54,15 +54,20 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
             Model = new();
 
         // If the projectName isn't in the updated list then Default to being in the first project
-        SelectedProject = _unitSvc.GetProjectById(Model.ProjectId).Name;
+        SelectedProject = _unitSvc.GetProjectById(Model.ProjectId)?.Name ?? _unitSvc.Projects.First().Name;
         if (!ProjectNames.Contains(SelectedProject))
         {
             SelectedProject = ProjectNames.First();
         }
 
-        Model.ProjectId = _unitSvc.GetProjectByName(SelectedProject).Id;
-        SelectedPriority = Model.Priority;
-        ProjectName = _unitSvc.GetProjectByName(SelectedProject).Name;
+        Project? project = _unitSvc.GetProjectByName(SelectedProject);
+        if (project != null)
+        {
+            Model.ProjectId = project.Id;
+            SelectedPriority = Model.Priority;
+            ProjectName = project.Name;
+        }
+
 
         NotifyPropertyChanged(nameof(SelectedPriority));
         NotifyPropertyChanged(nameof(SelectedProject));
@@ -81,7 +86,8 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
         Model.Priority = 0;
     }
 
-    public void DoDelete() {
+    public void DoDelete()
+    {
         _projSvc.DeleteTodo(Model);
     }
 

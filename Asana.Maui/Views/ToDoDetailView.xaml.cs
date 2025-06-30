@@ -21,7 +21,6 @@ public partial class ToDoDetailView : ContentPage
 				// Make sure that the toDoId is set first so that all the data is synced first and then loads properly
 				toDoId = value;
 				BindingContext = new ToDoDetailViewModel(ToDoId);
-				(BindingContext as ToDoDetailViewModel)?.RefreshPage();
 			}
 		}
 	}
@@ -36,7 +35,7 @@ public partial class ToDoDetailView : ContentPage
 	{
 		(BindingContext as ToDoDetailViewModel).AddUpdateToDo();
 		Shell.Current.GoToAsync("//MainPage");
-		(BindingContext as ToDoDetailViewModel).RefreshPage();
+		// (BindingContext as ToDoDetailViewModel).RefreshPage();
 	}
 
 	private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)

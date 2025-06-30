@@ -97,6 +97,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0"
                         Text="Add ToDo"
@@ -111,6 +112,9 @@
                         Text="Add Project"
                         Clicked="AddProjectClicked"/>
                 <Button Grid.Column="4"
+                        Text="Edit Project"
+                        Clicked="EditProjectClicked"/>
+                <Button Grid.Column="5"
                         Text="Delete Selected Project"
                         Clicked="DeleteProjectClicked"/>
             </Grid>

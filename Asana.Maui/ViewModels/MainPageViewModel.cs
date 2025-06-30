@@ -39,7 +39,6 @@ public class MainPageViewModel : INotifyPropertyChanged
         SelectedToDo = null;
     }
 
-
     public ToDo? DeleteToDo(ToDo? toDo)
     {
         _projSvc.DeleteTodo(toDo);
@@ -66,7 +65,6 @@ public class MainPageViewModel : INotifyPropertyChanged
                 _projSvc.ToDos.RemoveAt(x);
             }
         }
-
         SelectedProject = "All";
     }
 

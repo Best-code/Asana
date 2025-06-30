@@ -15,7 +15,11 @@ public class ProjectDetailViewModel : INotifyPropertyChanged
 
     public ProjectDetailViewModel(int projectId)
     {
-        Model = UnitService.Current.GetProjectById(projectId);
+                // Passing negative one is for adding a new model / Passing an existing ID is for editing
+        if (projectId == -1)
+            Model = new Project();
+        else
+            Model = UnitService.Current.Projects.FirstOrDefault(p => p.Id == projectId) ?? new Project();
     }
 
     public ProjectDetailViewModel(Project model)
@@ -27,16 +31,13 @@ public class ProjectDetailViewModel : INotifyPropertyChanged
 
     public void RefreshPage()
     {
-        Model = new Project();
         NotifyPropertyChanged(nameof(Model));
     }
 
-    public void AddProject()
+    public void AddUpdateProject()
     {
         // As long as the Name is not null add the project
-        var modelName = Model?.Name;
-        if(modelName != null && modelName != "")
-            UnitService.Current.AddProject(Model ?? new Project());
+        UnitService.Current.AddUpdateProject(Model);
         RefreshPage();
     }
 
