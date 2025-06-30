@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../Asana.Core/Asana.Core.csproj" />
+    <ProjectReference Include="../Asana.Maui/Asana.Maui.csproj" />
+  </ItemGroup>
+
 </Project>
