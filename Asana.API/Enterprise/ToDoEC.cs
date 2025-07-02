@@ -8,6 +8,11 @@ public class ToDoEC
 {
     public IEnumerable<ToDo> GetToDos()
     {
-        return new FakeDB().ToDos;
+        return new FakeDB().ToDos.Take(100);
+    }
+
+    public ToDo? GetToDoById(int id)
+    {
+        return GetToDos().FirstOrDefault(t => t.Id == id);
     }
 }

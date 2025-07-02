@@ -9,9 +9,9 @@ namespace Asana.Core.Util
 {
     public class WebRequestHandler
     {
-        private string protocol = "http";
+        private string protocol = "https";
         private string host = "localhost";
-        private string port = "5128";
+        private string port = "7196";
         private HttpClient Client { get; }
         public WebRequestHandler()
         {
