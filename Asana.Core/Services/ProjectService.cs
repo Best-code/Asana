@@ -1,7 +1,10 @@
 using System.Collections.ObjectModel;
 using Asana.Core.Models;
+using Asana.Core.Util;
 using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 namespace Asana.Core.Services;
+
 
 public class ProjectService
 {
@@ -42,14 +45,8 @@ public class ProjectService
 
     private ProjectService()
     {
-        ToDos = new ObservableCollection<ToDo>() {
-            new ToDo(){Name = "ToDo One",  Description = "This is my first ToDo w/ ProjID 1", Id = tIdGen.GetNextId(), DueDate = DateTime.Now, ProjectId = 1},
-            // new ToDo(){Name = "ToDo Two",  Description = "This is my second ToDo w/ ProjID 1", Id = tIdGen.GetNextId(), DueDate = DateTime.Now, ProjectId = 1},
-            // new ToDo(){Name = "ToDo Three",  Description = "This is my third ToDo w/ ProjID 2", Id = tIdGen.GetNextId(), DueDate = DateTime.Now, ProjectId = 2},
-        };
-
-        // ToDos.First().IsComplete = true;
-        // ToDos.Last().IsComplete = true;
+        var todoData = new WebRequestHandler().Get("/ToDo").Result;
+        ToDos = JsonConvert.DeserializeObject<ObservableCollection<ToDo>>(todoData) ?? new ObservableCollection<ToDo>(); 
     }
 
 

@@ -1,20 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "AneusiE9Cys=",
-  "success": false,
+  "dgSpecHash": "Rp6T0knPAVE=",
+  "success": true,
   "projectFilePath": "/Users/melons/Documents/Code/C#/School/Asana/Asana.CLI/Asana.CLI.csproj",
-  "expectedPackageFiles": [],
-  "logs": [
-    {
-      "code": "NU1201",
-      "level": "Error",
-      "message": "Project Asana.Maui is not compatible with net9.0 (.NETCoreApp,Version=v9.0). Project Asana.Maui supports:\n  - net9.0-android35.0 (.NETCoreApp,Version=v9.0)\n  - net9.0-ios18.4 (.NETCoreApp,Version=v9.0)\n  - net9.0-maccatalyst18.4 (.NETCoreApp,Version=v9.0)",
-      "projectPath": "/Users/melons/Documents/Code/C#/School/Asana/Asana.CLI/Asana.CLI.csproj",
-      "filePath": "/Users/melons/Documents/Code/C#/School/Asana/Asana.CLI/Asana.CLI.csproj",
-      "libraryId": "Asana.Maui",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    }
-  ]
+  "expectedPackageFiles": [
+    "/Users/melons/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
 }
