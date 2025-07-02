@@ -10,7 +10,7 @@ namespace Asana.API.Controllers
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class WeatherForecastController : ControllerBase
     {

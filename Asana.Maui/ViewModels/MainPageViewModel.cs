@@ -150,11 +150,11 @@ public class MainPageViewModel : INotifyPropertyChanged
     // Updates the ToDos being shown based on the top menu bar - IsShowCompleted and the currently selected project
     public void UpdateShownProjects()
     {
-        var toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Take(100);
+        var toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t));
         // If you don't want to show complete projects
         if (!IsShowCompleteToDos)
             // Show todos where IsComplete is not true
-            toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Where(t => !t?.Model?.IsComplete ?? false).Take(100);
+            toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t)).Where(t => !t?.Model?.IsComplete ?? false);
 
 
         // Only get ToDos in selected project

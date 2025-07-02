@@ -6,7 +6,7 @@ using Asana.Core.Models;
 
 namespace Asana.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ToDoController : ControllerBase
     {
@@ -14,6 +14,12 @@ namespace Asana.API.Controllers
         public IEnumerable<ToDo> Get()
         {
             return new ToDoEC().GetToDos();
+        }
+
+        [HttpGet("{id}")]
+        public ToDo? GetById(int id)
+        {
+            return new ToDoEC().GetToDoById(id);
         }
     }
 }
