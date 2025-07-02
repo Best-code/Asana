@@ -43,7 +43,7 @@ public class UnitService
     {
         Projects = new ObservableCollection<Project>() {
             new Project(){Name = "Project One",  Description = "This is my first project", Id = pIdGen.GetNextId()},
-            // new Project(){Name = "Project Two",  Description = "This is my second project", Id = pIdGen.GetNextId()},
+            new Project(){Name = "Project Two",  Description = "This is my second project", Id = pIdGen.GetNextId()},
         };
     }
 
