@@ -45,8 +45,9 @@ public class ProjectService
 
     private ProjectService()
     {
-        var todoData = new WebRequestHandler().Get("/ToDo").Result;
-        ToDos = JsonConvert.DeserializeObject<ObservableCollection<ToDo>>(todoData) ?? new ObservableCollection<ToDo>(); 
+        var todoData = new WebRequestHandler().Get("/api/ToDo").Result;
+        var listToDos = JsonConvert.DeserializeObject<List<ToDo>>(todoData) ?? new List<ToDo>();
+        ToDos = new ObservableCollection<ToDo>(listToDos);
     }
 
 
