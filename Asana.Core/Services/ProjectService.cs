@@ -46,7 +46,7 @@ public class ProjectService
     private ProjectService()
     {
         var todoData = new WebRequestHandler().Get("/api/ToDo").Result;
-        
+
         // Splitting these up so that it works with IEnumerable into Observable collection
         var listToDos = JsonConvert.DeserializeObject<List<ToDo>>(todoData) ?? new List<ToDo>();
         ToDos = new ObservableCollection<ToDo>(listToDos);
@@ -69,14 +69,22 @@ public class ProjectService
     // Deletes a passed in ToDo from the Collection
     public ToDo? DeleteTodo(ToDo? toDo)
     {
-        if (toDo != null)
-            ToDos.Remove(toDo);
+        if (toDo == null)
+            return null;
+
+        var todoData = new WebRequestHandler().Delete($"/api/ToDo/{toDo.Id}").Result;
+        var toDoToDelete = JsonConvert.DeserializeObject<ToDo>(todoData);
+
+        if (toDoToDelete != null)
+        {
+            ToDos.Remove(GetToDoById(toDo.Id) ?? new ToDo());
+        }
         return toDo;
     }
 
-    public ToDo GetToDoAt(int index)
+    public ToDo? GetToDoById(int id)
     {
-        return ToDos.ElementAtOrDefault(index) ?? new ToDo();
+        return ToDos.FirstOrDefault(t => t.Id == id);
     }
 
 }

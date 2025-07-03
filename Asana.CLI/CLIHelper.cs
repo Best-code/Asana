@@ -181,9 +181,11 @@ public static class CLIHelper
                         break;
                     }
                     // int toDoIndex = SelectItem(unit, "Which ToDo would you like to Delete?\n", currentProject.ToDos);
-                    int toDoIndex = 0;
-                    if (toDoIndex == -1) break;
-                    ProjectService.Current.DeleteTodo(ProjectService.Current.GetToDoAt(toDoIndex));
+                    
+                    // TODO: Update this to work with GetById not index
+                    // int toDoIndex = 0;
+                    // if (toDoIndex == -1) break;
+                    // ProjectService.Current.DeleteTodo(ProjectService.Current.GetToDoById(toDoIndex));
                     break;
                 // Update ToDo
                 case 5:
