@@ -88,7 +88,7 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
 
     public void DoDelete()
     {
-        _projSvc.DeleteTodo(Model);
+        _projSvc.DeleteTodo(Model.Id);
     }
 
     public List<int> Priorities
