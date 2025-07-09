@@ -33,7 +33,7 @@ public partial class MainPage : ContentPage
 	{
 		ToDoDetailViewModel? toDo = (BindingContext as MainPageViewModel)?.SelectedToDo;
 		if (toDo != null)
-			(BindingContext as MainPageViewModel)?.DeleteToDo(toDo.Model);
+			(BindingContext as MainPageViewModel)?.DeleteToDo(toDo.Model.Id);
 	}
 
 	private void DeleteProjectClicked(object sender, EventArgs e)

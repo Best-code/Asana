@@ -39,13 +39,17 @@ public class MainPageViewModel : INotifyPropertyChanged
         SelectedToDo = null;
     }
 
-    public ToDo? DeleteToDo(ToDo? toDo)
+    public ToDo? DeleteToDo(int id)
     {
-        _projSvc.DeleteTodo(toDo);
+        var localToDo = _projSvc.GetToDoById(id);
+        if (localToDo == null)
+            return null;
+
+        _projSvc.DeleteTodo(id);
         UpdateShownProjects();
         selectedToDo = null;
         NotifyPropertyChanged(nameof(SelectedToDo));
-        return toDo;
+        return localToDo;
     }
 
     public Project? DeleteProject(Project? project)

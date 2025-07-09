@@ -67,19 +67,20 @@ public class ProjectService
 
     }
     // Deletes a passed in ToDo from the Collection
-    public ToDo? DeleteTodo(ToDo? toDo)
+    public ToDo? DeleteTodo(int id)
     {
-        if (toDo == null)
+        var localToDo = GetToDoById(id);
+        if (localToDo == null)
             return null;
 
-        var todoData = new WebRequestHandler().Delete($"/api/ToDo/{toDo.Id}").Result;
+        var todoData = new WebRequestHandler().Delete($"/api/ToDo/{id}").Result;
         var toDoToDelete = JsonConvert.DeserializeObject<ToDo>(todoData);
 
         if (toDoToDelete != null)
         {
-            ToDos.Remove(GetToDoById(toDo.Id) ?? new ToDo());
+            ToDos.Remove(localToDo ?? new ToDo());
         }
-        return toDo;
+        return localToDo;
     }
 
     public ToDo? GetToDoById(int id)
