@@ -39,17 +39,4 @@ public static class FakeDB
             return 1;
         }
     }
-
-
-    // public static int NextProjectKey
-    // {
-    //     get
-    //     {
-    //         if (Projects.Any())
-    //         {
-    //             return Projects.Select(p => p.Id).Max() + 1;
-    //         }
-    //         return 1;
-    //     }
-    // }
 }
