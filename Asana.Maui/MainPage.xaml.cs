@@ -17,8 +17,7 @@ public partial class MainPage : ContentPage
 		int? projectCount = (BindingContext as MainPageViewModel)?.ProjectNames.Count();
 		if (projectCount != null && projectCount > 1)
 		{
-			// Passing -1 So it still hits the getter and sets the binding context but also knows to create a new model and not look for old
-			Shell.Current.GoToAsync("//ToDoDetails?toDoId=-1");
+			Shell.Current.GoToAsync("//ToDoDetails?toDoId=0");
 		}
 	}
 
@@ -49,7 +48,7 @@ public partial class MainPage : ContentPage
 
 	private void AddProjectClicked(object sender, EventArgs e)
 	{
-		Shell.Current.GoToAsync("//ProjectDetails?projectId=-1");
+		Shell.Current.GoToAsync("//ProjectDetails?projectId=0");
 	}
 
 	private void EditProjectClicked(object sender, EventArgs e)
@@ -60,7 +59,7 @@ public partial class MainPage : ContentPage
 		if (project != null && project.Name != "All")
 		{
 			var ProjectId = project.Id;
-			if (ProjectId != 0)
+			if (ProjectId > 0)
 				Shell.Current.GoToAsync($"//ProjectDetails?projectId={ProjectId}");
 		}
 

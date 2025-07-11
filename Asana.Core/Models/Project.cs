@@ -9,9 +9,8 @@ public class Project : INameDescription
 {
     public Project()
     {
-        Id = ProjectIdGenerator.Current.ShowNextId();
+        Id = 0; 
     }
-    public ObservableCollection<ToDo>? ToDos = ProjectService.Current.ToDos;
 
     private int id;
     public int Id
@@ -47,25 +46,25 @@ public class Project : INameDescription
     }
 
     // Calculate what percent of tasks in this project are complete
-    public float CompletePercent
-    {
-        get
-        {
-            float complete = 0;
-            float incomplete = 0;
-            foreach (ToDo toDo in ToDos ?? new ObservableCollection<ToDo>())
-            {
-                if (toDo.IsComplete)
-                    complete++;
-                else
-                    incomplete++;
-            }
+    // public float CompletePercent
+    // {
+    //     get
+    //     {
+    //         float complete = 0;
+    //         float incomplete = 0;
+    //         foreach (ToDo toDo in ToDos ?? new ObservableCollection<ToDo>())
+    //         {
+    //             if (toDo.IsComplete)
+    //                 complete++;
+    //             else
+    //                 incomplete++;
+    //         }
 
-            if (incomplete == 0) return 1.0f;
+    //         if (incomplete == 0) return 1.0f;
 
-            return complete / (ToDos?.Count() ?? 1);
-        }
-    }
+    //         return complete / (ToDos?.Count() ?? 1);
+    //     }
+    // }
 
 
 }

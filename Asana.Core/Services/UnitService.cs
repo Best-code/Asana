@@ -1,16 +1,19 @@
 using System.Collections.ObjectModel;
 using Asana.Core.Models;
+using Asana.Core.Util;
+using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 namespace Asana.Core.Services;
 
 public class UnitService
 {
 
-    private ObservableCollection<Project>? _projectsList;
+    private ObservableCollection<Project> _projectsList;
     public ObservableCollection<Project> Projects
     {
         get
         {
-            return _projectsList ?? new ObservableCollection<Project>();
+            return _projectsList;
         }
 
         private set
@@ -37,25 +40,49 @@ public class UnitService
         }
     }
 
-    private readonly ProjectIdGenerator pIdGen = ProjectIdGenerator.Current;
 
     public UnitService()
     {
-        Projects = new ObservableCollection<Project>() {
-            new Project(){Name = "Project One",  Description = "This is my first project", Id = pIdGen.GetNextId()},
-            new Project(){Name = "Project Two",  Description = "This is my second project", Id = pIdGen.GetNextId()},
-        };
+        refresh();
+    }
+
+    private void refresh()
+    {
+        var projectData = new WebRequestHandler().Get("/api/Project").Result;
+        // Splitting these up so that it works with IEnumerable into Observable collection
+        var listProjects = JsonConvert.DeserializeObject<List<Project>>(projectData) ?? new List<Project>();
+        Projects = new ObservableCollection<Project>(listProjects);
     }
 
     // Add a project to the array
     public Project? AddUpdateProject(Project project)
     {
+        if (project == null)
+            return null;
 
-        // This is the add part. If the toDo only has a place holder ID / ShowNextId then give it a the real next id and add it to the collection
-        if (project != null && project.Id == pIdGen.ShowNextId())
+
+        var isNewProject = project.Id == 0;
+        var projectData = new WebRequestHandler().Post($"/api/Project", project).Result;
+        var projectToAddUpdate = JsonConvert.DeserializeObject<Project>(projectData);
+
+        if (projectToAddUpdate != null)
         {
-            project.Id = pIdGen.GetNextId();
-            Projects.Add(project);
+            // Update Portion
+            if (!isNewProject)
+            {
+                // If it already exist, remove it then replace it with an updated copy at the same position 
+                var existingToDo = _projectsList.FirstOrDefault(t => t.Id == projectToAddUpdate.Id);
+                if (existingToDo != null)
+                {
+                    var index = _projectsList.IndexOf(existingToDo);
+                    _projectsList.RemoveAt(index);
+                    _projectsList.Insert(index, projectToAddUpdate);
+                }
+            }
+            else
+            {
+                Projects.Add(projectToAddUpdate);
+            }
         }
 
         return project;
@@ -110,6 +137,18 @@ public class UnitService
 
         Projects[projectIndex].Description = description;
         return true;
+    }
+
+    public int NextKey
+    {
+        get
+        {
+            if (Projects.Any())
+            {
+                return Projects.Select(p => p.Id).Max() + 1;
+            }
+            return 1;
+        }
     }
 
 }

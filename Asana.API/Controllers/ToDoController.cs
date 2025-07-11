@@ -27,5 +27,13 @@ namespace Asana.API.Controllers
         {
             return new ToDoEC().Delete(id);
         }
+
+        [HttpPost]
+        public ToDo? AddUpdate([FromBody] ToDo? toDo)
+        {
+            return new ToDoEC().AddUpdateToDo(toDo);
+        }
+
+
     }
 }

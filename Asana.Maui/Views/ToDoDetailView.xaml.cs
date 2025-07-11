@@ -10,7 +10,7 @@ public partial class ToDoDetailView : ContentPage
 		InitializeComponent();
 	}
 
-	private int toDoId;
+	private int toDoId = -1;
 	public int ToDoId
 	{
 		get => toDoId;

@@ -7,7 +7,8 @@ public class ToDo : INameDescription
 {
     public ToDo()
     {
-        Id = ToDoIdGenerator.Current.ShowNextId();
+        // Id = ProjectService.Current.NextKey;
+        Id = 0;
     }
     private int id;
     public int Id
@@ -80,7 +81,7 @@ public class ToDo : INameDescription
         }
     }
 
-    private int projectId = -1;
+    private int projectId = 0;
     public int ProjectId
     {
         get { return projectId; }
