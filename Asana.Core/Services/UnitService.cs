@@ -37,13 +37,12 @@ public class UnitService
         }
     }
 
-    private readonly ProjectIdGenerator pIdGen = ProjectIdGenerator.Current;
 
     public UnitService()
     {
         Projects = new ObservableCollection<Project>() {
-            new Project(){Name = "Project One",  Description = "This is my first project", Id = pIdGen.GetNextId()},
-            new Project(){Name = "Project Two",  Description = "This is my second project", Id = pIdGen.GetNextId()},
+            new Project(){Name = "Project One",  Description = "This is my first project", Id = 1},
+            new Project(){Name = "Project Two",  Description = "This is my second project", Id = 2},
         };
     }
 
@@ -51,10 +50,10 @@ public class UnitService
     public Project? AddUpdateProject(Project project)
     {
 
-        // This is the add part. If the toDo only has a place holder ID / ShowNextId then give it a the real next id and add it to the collection
-        if (project != null && project.Id == pIdGen.ShowNextId())
+        // This is the add part. If the toDo only has a place holder ID / 0 then give it a the real next id and add it to the collection
+        if (project != null && project.Id == 0)
         {
-            project.Id = pIdGen.GetNextId();
+            // project.Id = pIdGen.GetNextId();
             Projects.Add(project);
         }
 
@@ -110,6 +109,18 @@ public class UnitService
 
         Projects[projectIndex].Description = description;
         return true;
+    }
+
+    public int NextKey
+    {
+        get
+        {
+            if (Projects.Any())
+            {
+                return Projects.Select(p => p.Id).Max() + 1;
+            }
+            return 1;
+        }
     }
 
 }

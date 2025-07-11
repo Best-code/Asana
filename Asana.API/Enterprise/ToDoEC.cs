@@ -26,4 +26,16 @@ public class ToDoEC
         return toDoToDelete;
     }
 
+    public ToDo? AddUpdateToDo(ToDo? toDo)
+    {
+        // This is the add part. If the toDo only has a place holder ID / 0 then give it a the real next id and add it to the collection
+        if (toDo != null && toDo.Id == 0)
+        {
+            toDo.Id = FakeDB.NextKey;
+            FakeDB.ToDos.Add(toDo);
+        }
+
+        return toDo;
+    }
+
 }

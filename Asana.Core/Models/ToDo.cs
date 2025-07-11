@@ -7,7 +7,8 @@ public class ToDo : INameDescription
 {
     public ToDo()
     {
-        Id = ToDoIdGenerator.Current.ShowNextId();
+        // Id = ProjectService.Current.NextKey;
+        Id = 0;
     }
     private int id;
     public int Id

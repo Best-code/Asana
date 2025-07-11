@@ -41,9 +41,13 @@ public class ProjectService
     }
 
 
-    private readonly ToDoIdGenerator tIdGen = ToDoIdGenerator.Current;
 
     private ProjectService()
+    {
+        Refresh();
+    }
+
+    private void Refresh()
     {
         var todoData = new WebRequestHandler().Get("/api/ToDo").Result;
 
@@ -56,15 +60,35 @@ public class ProjectService
 
     public ToDo? AddUpdateToDo(ToDo? toDo)
     {
-        // This is the add part. If the toDo only has a place holder ID / ShowNextId then give it a the real next id and add it to the collection
-        if (toDo != null && toDo.Id == tIdGen.ShowNextId())
+        if (toDo == null)
+            return toDo;
+
+
+        var isNewToDo = toDo.Id == 0;
+        var todoData = new WebRequestHandler().Post($"/api/ToDo", toDo).Result;
+        var toDoToAddUpdate = JsonConvert.DeserializeObject<ToDo>(todoData);
+
+        if (toDoToAddUpdate != null)
         {
-            toDo.Id = tIdGen.GetNextId();
-            ToDos.Add(toDo);
+            // Update Portion
+            if (!isNewToDo)
+            {
+                // If it already exist, remove it then replace it with an updated copy at the same position 
+                var existingToDo = _toDoList.FirstOrDefault(t => t.Id == toDoToAddUpdate.Id);
+                if (existingToDo != null)
+                {
+                    var index = _toDoList.IndexOf(existingToDo);
+                    _toDoList.RemoveAt(index);
+                    _toDoList.Insert(index, toDoToAddUpdate);
+                }
+            }
+            else
+            {
+                ToDos.Add(toDoToAddUpdate);
+            }
         }
 
         return toDo;
-
     }
     // Deletes a passed in ToDo from the Collection
     public ToDo? DeleteTodo(int id)
@@ -86,6 +110,18 @@ public class ProjectService
     public ToDo? GetToDoById(int id)
     {
         return ToDos.FirstOrDefault(t => t.Id == id);
+    }
+
+    public int NextKey
+    {
+        get
+        {
+            if (ToDos.Any())
+            {
+                return ToDos.Select(t => t.Id).Max() + 1;
+            }
+            return 1;
+        }
     }
 
 }

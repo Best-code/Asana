@@ -9,7 +9,7 @@ public class Project : INameDescription
 {
     public Project()
     {
-        Id = ProjectIdGenerator.Current.ShowNextId();
+        Id = 0; 
     }
     public ObservableCollection<ToDo>? ToDos = ProjectService.Current.ToDos;
 
