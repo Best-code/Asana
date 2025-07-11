@@ -44,10 +44,10 @@ public class ProjectService
 
     private ProjectService()
     {
-        Refresh();
+        refresh();
     }
 
-    private void Refresh()
+    private void refresh()
     {
         var todoData = new WebRequestHandler().Get("/api/ToDo").Result;
 

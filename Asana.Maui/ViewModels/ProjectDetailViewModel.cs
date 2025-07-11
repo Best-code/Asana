@@ -19,8 +19,8 @@ public class ProjectDetailViewModel : INotifyPropertyChanged
     {
         InitializeViewModel();
 
-        // Passing negative one is for adding a new model / Passing an existing ID is for editing
-        if (projectId == -1)
+        // Passing 0 is for adding a new model / Passing an existing ID is for editing
+        if (projectId == 0)
             Model = new Project();
         else
             Model = _unitSvc.Projects.FirstOrDefault(p => p.Id == projectId) ?? new Project();

@@ -22,8 +22,8 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
 
     public ToDoDetailViewModel(int toDoId)
     {
-        // Passing negative one is for adding a new model / Passing an existing ID is for editing
-        if (toDoId == -1)
+        // Passing 0 is for adding a new model / Passing an existing ID is for editing
+        if (toDoId == 0)
             Model = new ToDo();
         else
             Model = ProjectService.Current.ToDos.FirstOrDefault(t => t.Id == toDoId) ?? new ToDo();
@@ -32,7 +32,7 @@ public class ToDoDetailViewModel : INotifyPropertyChanged
 
     public ToDoDetailViewModel(ToDo model)
     {
-        Model = model ?? new ToDo();
+        Model = model;
         InitializeViewModel();
     }
 

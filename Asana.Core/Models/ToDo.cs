@@ -81,7 +81,7 @@ public class ToDo : INameDescription
         }
     }
 
-    private int projectId = -1;
+    private int projectId = 0;
     public int ProjectId
     {
         get { return projectId; }

@@ -11,7 +11,7 @@ public partial class ProjectDetailView : ContentPage
 		InitializeComponent();
 	}
 
-	private int projectId;
+	private int projectId = -1;
 	public int ProjectId
 	{
 		get => projectId;
