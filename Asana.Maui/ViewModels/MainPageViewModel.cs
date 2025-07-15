@@ -33,11 +33,14 @@ public class MainPageViewModel : INotifyPropertyChanged
         // If the new list doesn't have the name you selected then select first available option
         if (!ProjectNames.Contains(SelectedProject))
             SelectedProject = ProjectNames.First();
-        else
-            UpdateShownProjects();
+
+        UpdateShownToDos();
 
         // ToDo selected for delete / Edit
         SelectedToDo = null;
+
+        // Reset the Query
+        Query = string.Empty;
     }
 
     public ToDo? DeleteToDo(int id)
@@ -47,7 +50,7 @@ public class MainPageViewModel : INotifyPropertyChanged
             return null;
 
         _projSvc.DeleteTodo(id);
-        UpdateShownProjects();
+        UpdateShownToDos();
         selectedToDo = null;
         NotifyPropertyChanged(nameof(SelectedToDo));
         return localToDo;
@@ -99,7 +102,7 @@ public class MainPageViewModel : INotifyPropertyChanged
             if (isShowCompleteToDos != value)
             {
                 isShowCompleteToDos = value;
-                UpdateShownProjects();
+                UpdateShownToDos();
                 NotifyPropertyChanged(nameof(IsShowCompleteToDos));
             }
         }
@@ -130,7 +133,7 @@ public class MainPageViewModel : INotifyPropertyChanged
             {
                 selectedProject = value;
                 NotifyPropertyChanged(nameof(SelectedProject));
-                UpdateShownProjects();
+                UpdateShownToDos();
             }
         }
     }
@@ -163,13 +166,8 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
     }
 
-    public void SearchQuery()
-    {
-        UpdateShownProjects();
-    }
-
     // Updates the ToDos being shown based on the top menu bar - IsShowCompleted and the currently selected project
-    public void UpdateShownProjects()
+    public void UpdateShownToDos()
     {
         var toDos = _projSvc.ToDos
         .Where(t => t.Name.Contains(query) || t.Description.Contains(query))
@@ -192,7 +190,7 @@ public class MainPageViewModel : INotifyPropertyChanged
 
     public void InlineDeleteClicked()
     {
-        UpdateShownProjects();
+        UpdateShownToDos();
         SelectedToDo = null;
     }
 
