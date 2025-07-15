@@ -26,16 +26,10 @@ public class ProjectEC
         return ProjectToDelete;
     }
 
-    public Project? AddUpdateProject(Project? Project)
+    public Project? AddUpdateProject(Project? project)
     {
-        // This is the add part. If the Project only has a place holder ID / 0 then give it a the real next id and add it to the collection
-        if (Project != null && Project.Id == 0)
-        {
-            Project.Id = FakeProjDB.NextProjectKey;
-            FakeProjDB.Projects.Add(Project);
-        }
-
-        return Project;
+        FakeProjDB.AddUpdateProject(project);
+        return project;
     }
 
 }

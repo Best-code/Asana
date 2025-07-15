@@ -43,5 +43,7 @@ public partial class ProjectDetailView : ContentPage
 
 	private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)
 	{
+		// Reset to defaults when you leave
+		projectId = -1;
 	}
 }

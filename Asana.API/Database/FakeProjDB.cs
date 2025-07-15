@@ -37,4 +37,30 @@ public static class FakeProjDB
             return 1;
         }
     }
+
+    public static Project? AddUpdateProject(Project? Project)
+    {
+        if (Project == null)
+            return Project;
+
+        // If its a new Project then add it
+        if (Project.Id == 0)
+        {
+            Project.Id = NextProjectKey;
+            Projects.Add(Project);
+        }
+        // If its an existing Project, overwrite the old one
+        else
+        {
+            var dbProject = Projects.FirstOrDefault(t => t.Id == Project.Id);
+            if (dbProject != null)
+            {
+                var index = Projects.IndexOf(dbProject);
+                // FakeDB.Projects.RemoveAt(index);
+                // FakeDB.Projects.Insert(index, Project);
+                Projects[index] = Project;
+            }
+        }
+        return Project;
+    }
 }
