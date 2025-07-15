@@ -27,7 +27,6 @@ public static class FakeDB
         }
     }
 
-
     public static int NextToDoKey
     {
         get
@@ -38,5 +37,31 @@ public static class FakeDB
             }
             return 1;
         }
+    }
+
+    public static ToDo? AddUpdateToDo(ToDo? toDo)
+    {
+        if (toDo == null)
+            return toDo;
+
+        // If its a new ToDo then add it
+        if (toDo.Id == 0)
+        {
+            toDo.Id = NextToDoKey;
+            ToDos.Add(toDo);
+        }
+        // If its an existing ToDo, overwrite the old one
+        else
+        {
+            var dbToDo = ToDos.FirstOrDefault(t => t.Id == toDo.Id);
+            if (dbToDo != null)
+            {
+                var index = ToDos.IndexOf(dbToDo);
+                // FakeDB.ToDos.RemoveAt(index);
+                // FakeDB.ToDos.Insert(index, toDo);
+                ToDos[index] = toDo;
+            }
+        }
+        return toDo;
     }
 }
