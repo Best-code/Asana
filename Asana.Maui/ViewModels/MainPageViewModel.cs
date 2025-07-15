@@ -16,6 +16,7 @@ public class MainPageViewModel : INotifyPropertyChanged
     {
         _projSvc = ProjectService.Current;
         _unitSvc = UnitService.Current;
+        Query = string.Empty;
         RefreshPage();
     }
 
@@ -134,8 +135,6 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
     }
 
-
-
     private ToDoDetailViewModel? selectedToDo;
     public ToDoDetailViewModel? SelectedToDo
     {
@@ -150,11 +149,31 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
     }
 
+    private string query;
+    public string Query
+    {
+        get => query;
+        set
+        {
+            if (query != value)
+            {
+                query = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    public void SearchQuery()
+    {
+        UpdateShownProjects();
+    }
 
     // Updates the ToDos being shown based on the top menu bar - IsShowCompleted and the currently selected project
     public void UpdateShownProjects()
     {
-        var toDos = _projSvc.ToDos.Select(t => new ToDoDetailViewModel(t));
+        var toDos = _projSvc.ToDos
+        .Where(t => t.Name.Contains(query) || t.Description.Contains(query))
+        .Select(t => new ToDoDetailViewModel(t));
         // If you don't want to show complete projects
         if (!IsShowCompleteToDos)
             // Show todos where IsComplete is not true

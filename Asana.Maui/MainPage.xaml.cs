@@ -80,4 +80,9 @@ public partial class MainPage : ContentPage
 	{
 	}
 
+	private void SearchClicked(object sender, EventArgs e)
+	{
+		(BindingContext as MainPageViewModel)?.SearchQuery();
+    }
+
 }

@@ -15,24 +15,50 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <!-- Tool bar Up Top -->
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0"
+                    ColumnSpacing="8"
+                    Margin="0,0,20,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0"
-                       Text="Show Completed Tasks:"/>
-                <CheckBox Margin="5"
-                          Grid.Column="1"
-                          IsChecked="{Binding IsShowCompleteToDos}"/>
 
-                <Label Grid.Column="2"
-                       Text="Select Project:"/>
-                <Picker Grid.Column="3"
-                        ItemsSource="{Binding ProjectNames}"
-                        SelectedItem="{Binding SelectedProject}"/>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                           Text="Show Completed Tasks:"/>
+                    <CheckBox Margin="5"
+                              Grid.Column="1"
+                              IsChecked="{Binding IsShowCompleteToDos}"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                           Text="Select Project:"/>
+                    <Picker Grid.Column="1"
+                            ItemsSource="{Binding ProjectNames}"
+                            SelectedItem="{Binding SelectedProject}"/>
+                </Grid>
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.15*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0"
+                           Text="{Binding Query}"/>
+                    <Button Grid.Column="1"
+                            Text="Search"
+                            Clicked="SearchClicked"/>
+                </Grid>
+
             </Grid>
             <!-- List of Projects -->
             <ListView Grid.Row="1"
@@ -90,7 +116,7 @@
             </ListView>
             <!-- Add ToDo Bar -->
             <Grid Grid.Row="2"
-                    ColumnSpacing="5">
+                  ColumnSpacing="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
