@@ -8,6 +8,7 @@ namespace Asana.Core.Services;
 public class UnitService
 {
 
+    private static object _lock = new();
     private ObservableCollection<Project> _projectsList;
     public ObservableCollection<Project> Projects
     {
@@ -31,11 +32,14 @@ public class UnitService
     {
         get
         {
-            if (instance == null)
-            {
-                instance = new UnitService();
-            }
 
+            lock (_lock)
+            {
+                if (instance == null)
+                {
+                    instance = new UnitService();
+                }
+            }
             return instance;
         }
     }

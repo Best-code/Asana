@@ -9,6 +9,7 @@ namespace Asana.Core.Services;
 public class ProjectService
 {
 
+    private static object _lock = new();
     private ObservableCollection<ToDo> _toDoList;
     public ObservableCollection<ToDo> ToDos
     {
@@ -31,9 +32,12 @@ public class ProjectService
     {
         get
         {
-            if (instance == null)
+            lock (_lock)
             {
-                instance = new ProjectService();
+                if (instance == null)
+                {
+                    instance = new ProjectService();
+                }
             }
 
             return instance;
