@@ -16,6 +16,19 @@ namespace Asana.API.Controllers
             return new ProjectEC().GetProjects();
         }
 
+        [HttpGet("Expand")]
+        public IEnumerable<Project> GetExpand()
+        {
+            return new ProjectEC().GetProjects(true);
+        }
+
+        [HttpGet("Expand/{id}")]
+        public Project? GetExpandById(int id)
+        {
+            return new ProjectEC().GetProjectById(id, true);
+        }
+
+
         [HttpGet("{id}")]
         public Project? GetById(int id)
         {

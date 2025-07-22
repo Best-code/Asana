@@ -39,6 +39,11 @@ public static class FakeDB
         }
     }
 
+    public static List<ToDo> Get()
+    {
+        return ToDos;
+    }
+
     public static ToDo? AddUpdateToDo(ToDo? toDo)
     {
         if (toDo == null)

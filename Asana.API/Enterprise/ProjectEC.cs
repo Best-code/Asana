@@ -8,12 +8,17 @@ public class ProjectEC
 {
     public IEnumerable<Project> GetProjects()
     {
-        return FakeProjDB.Projects.Take(100);
+        return FakeProjDB.GetProjects().Take(100);
     }
 
-    public Project? GetProjectById(int id)
+    public IEnumerable<Project> GetProjects(bool Expand = false)
     {
-        return GetProjects().FirstOrDefault(t => t.Id == id);
+        return FakeProjDB.GetProjects(Expand).Take(100);
+    }
+
+    public Project? GetProjectById(int id, bool Expand = false)
+    {
+        return GetProjects(Expand).FirstOrDefault(t => t.Id == id);
     }
 
     public Project? Delete(int id)

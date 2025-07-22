@@ -9,7 +9,7 @@ public class Project : INameDescription
 {
     public Project()
     {
-        Id = 0; 
+        Id = 0;
     }
 
     private int id;
@@ -44,6 +44,8 @@ public class Project : INameDescription
                 description = value;
         }
     }
+
+    public List<ToDo>? ToDoList { get; set; }
 
     // Calculate what percent of tasks in this project are complete
     // public float CompletePercent

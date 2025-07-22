@@ -1,6 +1,7 @@
 using System;
 using Asana.API.Enterprise;
 using Asana.Core.Models;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace Asana.API.Database;
 
@@ -36,6 +37,23 @@ public static class FakeProjDB
             }
             return 1;
         }
+    }
+
+    public static List<Project> GetProjects(bool Expand = false)
+    {
+        if (Expand)
+        {
+            var projectList = new List<Project>();
+            foreach (var proj in Projects)
+            {
+                proj.ToDoList = FakeDB.ToDos.Where(t => t.ProjectId == proj.Id).ToList();
+                projectList.Add(proj);
+            }
+
+            return projectList;
+        }
+
+        return Projects;
     }
 
     public static Project? AddUpdateProject(Project? Project)
