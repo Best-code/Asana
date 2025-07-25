@@ -11,40 +11,40 @@ namespace Asana.API.Controllers
     public class ProjectController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<Project> Get()
+        public async Task<IEnumerable<Project>> Get()
         {
-            return new ProjectEC().GetProjects();
+            return await new ProjectEC().GetProjects();
         }
 
         [HttpGet("Expand")]
-        public IEnumerable<Project> GetExpand()
+        public async Task<IEnumerable<Project>> GetExpand()
         {
-            return new ProjectEC().GetProjects(true);
+            return await new ProjectEC().GetProjects(true);
         }
 
         [HttpGet("Expand/{id}")]
-        public Project? GetExpandById(int id)
+        public async Task<Project?> GetExpandById(int id)
         {
-            return new ProjectEC().GetProjectById(id, true);
+            return await new ProjectEC().GetProjectById(id, true);
         }
 
 
         [HttpGet("{id}")]
-        public Project? GetById(int id)
+        public async Task<Project?> GetById(int id)
         {
-            return new ProjectEC().GetProjectById(id);
+            return await new ProjectEC().GetProjectById(id);
         }
 
         [HttpDelete("{id}")]
-        public Project? Delete(int id)
+        public Task<Project?> Delete(int id)
         {
             return new ProjectEC().Delete(id);
         }
 
         [HttpPost]
-        public Project? AddUpdate([FromBody] Project? Project)
+        public async Task<Project?> AddUpdate([FromBody] Project? Project)
         {
-            return new ProjectEC().AddUpdateProject(Project);
+            return await new ProjectEC().AddUpdateProject(Project);
         }
 
 

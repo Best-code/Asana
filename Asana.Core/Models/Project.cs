@@ -23,6 +23,8 @@ public class Project : INameDescription
         }
     }
 
+    public string? dbId { get; set; }
+
     private string? name;
     public string Name
     {

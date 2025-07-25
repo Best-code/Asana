@@ -6,34 +6,38 @@ namespace Asana.API.Enterprise;
 
 public class ProjectEC
 {
-    public IEnumerable<Project> GetProjects()
+    public async Task<IEnumerable<Project>> GetProjects()
     {
-        return FakeProjDB.GetProjects().Take(100);
+        var projects = await ProjectDB.GetProjects();
+        return projects.Take(100);
     }
 
-    public IEnumerable<Project> GetProjects(bool Expand = false)
+    public async Task<IEnumerable<Project>> GetProjects(bool Expand = false)
     {
-        return FakeProjDB.GetProjects(Expand).Take(100);
+        var projects = await ProjectDB.GetProjects(Expand);
+        return projects.Take(100);
     }
 
-    public Project? GetProjectById(int id, bool Expand = false)
+    public async Task<Project?> GetProjectById(int id, bool Expand = false)
     {
-        return GetProjects(Expand).FirstOrDefault(t => t.Id == id);
+        var projects = await GetProjects(Expand);
+        return projects.FirstOrDefault(t => t.Id == id);
     }
 
-    public Project? Delete(int id)
+    public async Task<Project?> Delete(int id)
     {
-        Project? ProjectToDelete = GetProjectById(id);
-        if (ProjectToDelete != null)
+        Project? projectToDelete = await GetProjectById(id);
+        if (projectToDelete != null)
         {
-            FakeProjDB.Projects.Remove(ProjectToDelete);
+            await ProjectDB.Delete(projectToDelete.dbId);
         }
-        return ProjectToDelete;
+        return projectToDelete;
     }
 
-    public Project? AddUpdateProject(Project? project)
+
+    public async Task<Project?> AddUpdateProject(Project? project)
     {
-        FakeProjDB.AddUpdateProject(project);
+        await ProjectDB.AddUpdateProject(project);
         return project;
     }
 

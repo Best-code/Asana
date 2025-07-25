@@ -8,7 +8,8 @@ public class ToDoEC
 {
     public async Task<IEnumerable<ToDo>> GetToDos()
     {
-        return await ToDoDB.Get();
+        var toDos = await ToDoDB.Get();
+        return toDos.Take(100);
     }
 
     public async Task<ToDo?> GetToDoById(int id)
@@ -22,7 +23,6 @@ public class ToDoEC
         ToDo? toDoToDelete = await GetToDoById(id);
         if (toDoToDelete != null)
         {
-            // ToDoDB.ToDos.Remove(toDoToDelete);
             await ToDoDB.Delete(toDoToDelete.dbId);
         }
         return toDoToDelete;

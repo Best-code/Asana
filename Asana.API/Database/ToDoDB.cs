@@ -10,32 +10,15 @@ public static class ToDoDB
 
     static FirebaseService firebase = new FirebaseService("https://csharpmills-default-rtdb.firebaseio.com/", authToken: null);
 
-    // Add a todo
-
-
-    private static List<ToDo> toDos = new List<ToDo>();
-    public static List<ToDo> ToDos
+    public static async Task<int> GetNextToDoKey()
     {
-        get => toDos;
-        set
-        {
-            if (value != toDos)
-            {
-                toDos = value;
-            }
-        }
-    }
+        var toDos = await firebase.GetAsync<Dictionary<string, ToDo>>("todos");
 
-    public static int NextToDoKey
-    {
-        get
-        {
-            if (ToDos.Any())
-            {
-                return ToDos.Select(t => t.Id).Max() + 1;
-            }
+        if (toDos == null || !toDos.Any())
             return 1;
-        }
+
+        int maxId = toDos.Values.Max(t => t.Id);
+        return maxId + 1;
     }
 
     public static async Task<List<ToDo>> Get()
@@ -69,13 +52,13 @@ public static class ToDoDB
         // If its a new ToDo then add it
         if (toDo.Id == 0)
         {
-            toDo.Id = NextToDoKey;
+            toDo.Id = await GetNextToDoKey();
             await firebase.PushAsync("todos", toDo);
         }
         // If its an existing ToDo, overwrite the old one
         else
         {
-            await new ToDoEC().Delete(toDo.Id);
+            await Delete(toDo.dbId);
             await firebase.PushAsync("todos", toDo);
         }
         return toDo;
