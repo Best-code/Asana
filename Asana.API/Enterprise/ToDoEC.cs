@@ -6,29 +6,31 @@ namespace Asana.API.Enterprise;
 
 public class ToDoEC
 {
-    public IEnumerable<ToDo> GetToDos()
+    public async Task<IEnumerable<ToDo>> GetToDos()
     {
-        return FakeDB.Get().Take(100);
+        return await ToDoDB.Get();
     }
 
-    public ToDo? GetToDoById(int id)
+    public async Task<ToDo?> GetToDoById(int id)
     {
-        return FakeDB.Get().FirstOrDefault(t => t.Id == id);
+        var toDos = await ToDoDB.Get();
+        return toDos.FirstOrDefault(t => t.Id == id);
     }
 
-    public ToDo? Delete(int id)
+    public async Task<ToDo?> Delete(int id)
     {
-        ToDo? toDoToDelete = GetToDoById(id);
+        ToDo? toDoToDelete = await GetToDoById(id);
         if (toDoToDelete != null)
         {
-            FakeDB.ToDos.Remove(toDoToDelete);
+            // ToDoDB.ToDos.Remove(toDoToDelete);
+            await ToDoDB.Delete(toDoToDelete.dbId);
         }
         return toDoToDelete;
     }
 
-    public ToDo? AddUpdateToDo(ToDo? toDo)
+    public async Task<ToDo?> AddUpdateToDo(ToDo? toDo)
     {
-        FakeDB.AddUpdateToDo(toDo);
+        await ToDoDB.AddUpdateToDo(toDo);
         return toDo;
     }
 

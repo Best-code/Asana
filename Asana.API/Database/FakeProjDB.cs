@@ -8,6 +8,8 @@ namespace Asana.API.Database;
 public static class FakeProjDB
 {
 
+    static FirebaseService firebase = new FirebaseService("https://csharpmills-default-rtdb.firebaseio.com/", authToken: null);
+    
     private static List<Project> projects = new()
     {
             new Project() { Name = "Project 1", Id = 1, Description = "This is project one" },
@@ -46,7 +48,7 @@ public static class FakeProjDB
             var projectList = new List<Project>();
             foreach (var proj in Projects)
             {
-                proj.ToDoList = FakeDB.ToDos.Where(t => t.ProjectId == proj.Id).ToList();
+                proj.ToDoList = ToDoDB.ToDos.Where(t => t.ProjectId == proj.Id).ToList();
                 projectList.Add(proj);
             }
 
@@ -74,8 +76,8 @@ public static class FakeProjDB
             if (dbProject != null)
             {
                 var index = Projects.IndexOf(dbProject);
-                // FakeDB.Projects.RemoveAt(index);
-                // FakeDB.Projects.Insert(index, Project);
+                // ToDoDB.Projects.RemoveAt(index);
+                // ToDoDB.Projects.Insert(index, Project);
                 Projects[index] = Project;
             }
         }

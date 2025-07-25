@@ -6,10 +6,10 @@ using Newtonsoft.Json;
 public class FirebaseService
 {
     private readonly HttpClient _httpClient;
-    private readonly string _baseUrl = "https://csharpmills-default-rtdb.firebaseio.com/";
-    private readonly string _authToken; // Optional if public DB
+    private readonly string _baseUrl; 
+    private readonly string? _authToken;
 
-    public FirebaseService(string baseUrl, string authToken = null)
+    public FirebaseService(string baseUrl, string? authToken = null)
     {
         _baseUrl = baseUrl.TrimEnd('/');
         _authToken = authToken;
