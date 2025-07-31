@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Asana.CLI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d36e4136c7b8ed43726dd8e3775c5b65c381fa4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4c9dd6f9a3a5c0e4a2fd23e50ab815be01fba412")]
 [assembly: System.Reflection.AssemblyProductAttribute("Asana.CLI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Asana.CLI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

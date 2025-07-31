@@ -108,10 +108,20 @@ public class UnitService
     }
 
     // Delete a project
-    public bool DeleteProject(Project? project)
+    public Project? DeleteProject(Project? project)
     {
-        if (project == null) return false;
-        return Projects.Remove(project);
+        if (project == null)
+            return null;
+
+        var projectData = new WebRequestHandler().Delete($"/api/Project/{project.Id}").Result;
+        var projectToDelete = JsonConvert.DeserializeObject<ToDo>(projectData);
+
+        if (projectToDelete != null)
+        {
+            Projects.Remove(project ?? new Project());
+        }
+        return project;
+
     }
 
     // Update project name
