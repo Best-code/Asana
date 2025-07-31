@@ -11,25 +11,25 @@ namespace Asana.API.Controllers
     public class ToDoController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<ToDo> Get()
+        public Task<IEnumerable<ToDo>> Get()
         {
             return new ToDoEC().GetToDos();
         }
 
         [HttpGet("{id}")]
-        public ToDo? GetById(int id)
+        public Task<ToDo?> GetById(int id)
         {
             return new ToDoEC().GetToDoById(id);
         }
 
         [HttpDelete("{id}")]
-        public ToDo? Delete(int id)
+        public Task<ToDo?> Delete(int id)
         {
             return new ToDoEC().Delete(id);
         }
 
         [HttpPost]
-        public ToDo? AddUpdate([FromBody] ToDo? toDo)
+        public Task<ToDo?> AddUpdate([FromBody] ToDo? toDo)
         {
             return new ToDoEC().AddUpdateToDo(toDo);
         }

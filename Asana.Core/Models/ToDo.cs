@@ -21,6 +21,8 @@ public class ToDo : INameDescription
         }
     }
 
+    public string? dbId { get; set; }
+
     private DateTime? dueDate;
     public DateTime DueDate
     {
