@@ -37,8 +37,8 @@ public class ProjectEC
 
     public async Task<Project?> AddUpdateProject(Project? project)
     {
-        await ProjectDB.AddUpdateProject(project);
-        return project;
+        var retMe = await ProjectDB.AddUpdateProject(project);
+        return retMe;
     }
 
 }

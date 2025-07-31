@@ -40,9 +40,13 @@ public static class ToDoDB
         return todos;
     }
 
-    public static async Task Delete(string DbId)
+    public static async Task<ToDo?> Delete(string DbId)
     {
+        var todos = await Get();
+        var todo = todos.FirstOrDefault(t => t.DbId == DbId);
         await firebase.DeleteAsync($"todos/{DbId}");
+
+        return todo;
     }
 
 

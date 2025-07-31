@@ -55,9 +55,13 @@ public static class ProjectDB
         return projects;
     }
 
-    public static async Task Delete(string DbId)
+    public static async Task<Project?> Delete(string DbId)
     {
+        var projects = await GetProjects();
+        var project = projects.FirstOrDefault(p => p.DbId == DbId);
         await firebase.DeleteAsync($"projects/{DbId}");
+
+        return project;
     }
 
     public static async Task<Project?> AddUpdateProject(Project? project)

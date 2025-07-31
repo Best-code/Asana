@@ -40,7 +40,7 @@ public class FirebaseService
         var response = await _httpClient.PostAsync(BuildUrl(path), new StringContent(json, Encoding.UTF8, "application/json"));
         var result = await response.Content.ReadAsStringAsync();
         dynamic resObj = JsonConvert.DeserializeObject(result);
-        return resObj.name; // Firebase returns the generated key
+        return resObj.name;
     }
 
     public async Task DeleteAsync(string path)

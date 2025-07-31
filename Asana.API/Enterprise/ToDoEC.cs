@@ -30,8 +30,8 @@ public class ToDoEC
 
     public async Task<ToDo?> AddUpdateToDo(ToDo? toDo)
     {
-        await ToDoDB.AddUpdateToDo(toDo);
-        return toDo;
+        var retMe = await ToDoDB.AddUpdateToDo(toDo);
+        return retMe;
     }
 
 }
