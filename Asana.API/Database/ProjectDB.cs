@@ -1,4 +1,5 @@
 using System;
+using Asana.API.DTOs;
 using Asana.API.Enterprise;
 using Asana.Core.Models;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
@@ -11,7 +12,7 @@ public static class ProjectDB
 
     public static async Task<int> GetNextProjectKey()
     {
-        var projects = await firebase.GetAsync<Dictionary<string, Project>>("projects");
+        var projects = await firebase.GetAsync<Dictionary<string, ProjectDTO>>("projects");
 
         if (projects == null || !projects.Any())
             return 1;
@@ -24,36 +25,39 @@ public static class ProjectDB
     {
 
 
-        var data = await firebase.GetAsync<Dictionary<string, Project>>("projects");
+        var data = await firebase.GetAsync<Dictionary<string, ProjectDTO>>("projects");
 
         if (data == null)
             return new List<Project>();
 
-        var projects = data.Select(kvp =>
+        var projectDTOs = data.Select(kvp =>
         {
-            kvp.Value.dbId = kvp.Key;
+            kvp.Value.DbId = kvp.Key;
             return kvp.Value;
         }).ToList();
 
         if (Expand)
         {
-            var expandProjects = new List<Project>();
-            foreach (var proj in projects)
+            var expandProjectDTOs = new List<ProjectDTO>();
+            foreach (var proj in projectDTOs)
             {
                 var toDos = await ToDoDB.Get();
-                proj.ToDoList = toDos.Where(t => t.ProjectId == proj.Id).ToList();
-                expandProjects.Add(proj);
+                proj.ToDoDTOList = toDos.Where(t => t.ProjectId == proj.Id).Select(t => DtoMapper.ToDoToToDoDTO(t)).ToList();
+                expandProjectDTOs.Add(proj);
             }
+
+            var expandProjects = expandProjectDTOs.Select(pd => DtoMapper.ProjectFromProjectDTO(pd)).ToList();
 
             return expandProjects;
         }
 
+        var projects = projectDTOs.Select(pd => DtoMapper.ProjectFromProjectDTO(pd)).ToList();
         return projects;
     }
 
-    public static async Task Delete(string dbId)
+    public static async Task Delete(string DbId)
     {
-        await firebase.DeleteAsync($"projects/{dbId}");
+        await firebase.DeleteAsync($"projects/{DbId}");
     }
 
     public static async Task<Project?> AddUpdateProject(Project? project)
@@ -61,19 +65,21 @@ public static class ProjectDB
         if (project == null)
             return project;
 
+        var dto = DtoMapper.ProjectToProjectDTO(project);
         // If its a new Project then add it
-        if (project.Id == 0)
+        if (dto.Id == 0)
         {
-            project.Id = await GetNextProjectKey();
-            await firebase.PushAsync("projects", project);
+            dto.Id = await GetNextProjectKey();
+            await firebase.PushAsync("projects", dto);
         }
         // If its an existing project, overwrite the old one
         else
         {
-            await Delete(project.dbId);
-            await firebase.PushAsync("projects", project);
+            // await Delete(dto.DbId);
+            // await firebase.PushAsync("projects", dto);
+            await firebase.SetAsync("projects", dto);
         }
-        return project;
+        return DtoMapper.ProjectFromProjectDTO(dto);
 
     }
 }

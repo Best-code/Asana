@@ -23,7 +23,7 @@ public class ToDoEC
         ToDo? toDoToDelete = await GetToDoById(id);
         if (toDoToDelete != null)
         {
-            await ToDoDB.Delete(toDoToDelete.dbId);
+            await ToDoDB.Delete(toDoToDelete.DbId);
         }
         return toDoToDelete;
     }

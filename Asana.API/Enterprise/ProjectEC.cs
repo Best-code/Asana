@@ -29,7 +29,7 @@ public class ProjectEC
         Project? projectToDelete = await GetProjectById(id);
         if (projectToDelete != null)
         {
-            await ProjectDB.Delete(projectToDelete.dbId);
+            await ProjectDB.Delete(projectToDelete.DbId);
         }
         return projectToDelete;
     }
