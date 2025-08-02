@@ -29,7 +29,7 @@ public class ProjectEC
         Project? projectToDelete = await GetProjectById(id);
         if (projectToDelete != null)
         {
-            await ProjectDB.Delete(projectToDelete.dbId);
+            await ProjectDB.Delete(projectToDelete.DbId);
         }
         return projectToDelete;
     }
@@ -37,8 +37,8 @@ public class ProjectEC
 
     public async Task<Project?> AddUpdateProject(Project? project)
     {
-        await ProjectDB.AddUpdateProject(project);
-        return project;
+        var retMe = await ProjectDB.AddUpdateProject(project);
+        return retMe;
     }
 
 }

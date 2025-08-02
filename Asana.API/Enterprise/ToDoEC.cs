@@ -23,15 +23,15 @@ public class ToDoEC
         ToDo? toDoToDelete = await GetToDoById(id);
         if (toDoToDelete != null)
         {
-            await ToDoDB.Delete(toDoToDelete.dbId);
+            await ToDoDB.Delete(toDoToDelete.DbId);
         }
         return toDoToDelete;
     }
 
     public async Task<ToDo?> AddUpdateToDo(ToDo? toDo)
     {
-        await ToDoDB.AddUpdateToDo(toDo);
-        return toDo;
+        var retMe = await ToDoDB.AddUpdateToDo(toDo);
+        return retMe;
     }
 
 }

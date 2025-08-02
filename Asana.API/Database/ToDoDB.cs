@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Asana.API.DTOs;
 using Asana.API.Enterprise;
 using Asana.Core.Models;
 
@@ -12,7 +13,7 @@ public static class ToDoDB
 
     public static async Task<int> GetNextToDoKey()
     {
-        var toDos = await firebase.GetAsync<Dictionary<string, ToDo>>("todos");
+        var toDos = await firebase.GetAsync<Dictionary<string, ToDoDTO>>("todos");
 
         if (toDos == null || !toDos.Any())
             return 1;
@@ -23,23 +24,29 @@ public static class ToDoDB
 
     public static async Task<List<ToDo>> Get()
     {
-        var data = await firebase.GetAsync<Dictionary<string, ToDo>>("todos");
+        var data = await firebase.GetAsync<Dictionary<string, ToDoDTO>>("todos");
 
         if (data == null)
             return new List<ToDo>();
 
-        var todos = data.Select(kvp =>
+        var todoDTOs = data.Select(kvp =>
         {
-            kvp.Value.dbId = kvp.Key;
+            kvp.Value.DbId = kvp.Key;
             return kvp.Value;
         }).ToList();
+
+        var todos = todoDTOs.Select(td => DtoMapper.ToDoFromToDoDTO(td)).ToList();
 
         return todos;
     }
 
-    public static async Task Delete(string dbId)
+    public static async Task<ToDo?> Delete(string DbId)
     {
-        await firebase.DeleteAsync($"todos/{dbId}");
+        var todos = await Get();
+        var todo = todos.FirstOrDefault(t => t.DbId == DbId);
+        await firebase.DeleteAsync($"todos/{DbId}");
+
+        return todo;
     }
 
 
@@ -49,18 +56,21 @@ public static class ToDoDB
         if (toDo == null)
             return toDo;
 
+        var dto = DtoMapper.ToDoToToDoDTO(toDo);
         // If its a new ToDo then add it
-        if (toDo.Id == 0)
+        if (dto.Id == 0)
         {
-            toDo.Id = await GetNextToDoKey();
-            await firebase.PushAsync("todos", toDo);
+            dto.Id = await GetNextToDoKey();
+            await firebase.PushAsync("todos", dto);
         }
         // If its an existing ToDo, overwrite the old one
         else
         {
-            await Delete(toDo.dbId);
-            await firebase.PushAsync("todos", toDo);
+            // await Delete(dto.DbId);
+            // await firebase.PushAsync("todos", dto);
+            await firebase.SetAsync("todos", dto);
         }
-        return toDo;
+
+        return DtoMapper.ToDoFromToDoDTO(dto);
     }
 }

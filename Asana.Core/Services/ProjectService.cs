@@ -92,7 +92,7 @@ public class ProjectService
             }
         }
 
-        return toDo;
+        return toDoToAddUpdate;
     }
     // Deletes a passed in ToDo from the Collection
     public ToDo? DeleteTodo(int id)
