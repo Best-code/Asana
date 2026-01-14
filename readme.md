@@ -1,6 +1,6 @@
 # 🧠 Asana Task Management Clone – Full Stack C# .NET MAUI Application
 
-A sleek, high-performance **Asana-inspired Task Management App**, built entirely with **.NET MAUI** for cross-platform compatibility. This project demonstrates full-stack development skills using **C#**, **.NET 8**, **Entity Framework Core**, and **modern UI/UX principles**.
+A sleek, high-performance **Asana-inspired Task Management App**, built entirely with **.NET MAUI** for cross-platform compatibility with **modern UI/UX principles**.
 
 ---
 
